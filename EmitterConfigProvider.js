@@ -45,9 +45,9 @@ class EmitterConfigProvider {
                 "min": 0.02,
                 "max": 0.20
             },
-            "frequency": 0.005,
+            "frequency": 0.02,
             "emitterLifetime": 1,
-            "maxParticles": 100,
+            "maxParticles": 15,
             "pos": {
                 "x": 0,
                 "y": -4
