@@ -7,9 +7,11 @@ class AssetLoader {
             .add('assets/sprites/DamageBar.png')
             .add('assets/sprites/Bullet.png')
             .add('assets/sprites/Bullet2.png')
-            .add('assets/textures/28884-8-galaxy-photos.png')
-            .add('assets/textures/Parallax60.png')
             .add('assets/sprites/particle.png')
+            .add('assets/textures/NebulaBlue.png')
+            .add('assets/textures/StarsSmall_1.png')
+            .add('assets/textures/StarsSmall_2.png')
+
             .load(AssetLoader.onAssetsLoaded);
     }
 

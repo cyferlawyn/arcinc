@@ -11,8 +11,8 @@ class ArcInc {
     initPixiApp() {
         this.pixiApp = new PIXI.Application(
             {
-                width: 800,
-                height: 600
+                width: 1024,
+                height: 768
             }
         );
 

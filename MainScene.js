@@ -50,24 +50,21 @@ class MainScene extends Scene{
     initBackground() {
         let backgroundContainer = this.objectStore.get('backgroundContainer');
 
-        let backgroundFarLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/28884-8-galaxy-photos.png'].texture, 640, 432);
+        let backgroundFarLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/NebulaBlue.png'].texture, 1024, 1024);
         backgroundFarLayer.position.x = 0;
         backgroundFarLayer.position.y = 0;
-        backgroundFarLayer.scale.set(1.5);
         backgroundContainer.addChild(backgroundFarLayer);
         this.objectStore.put('backgroundFarLayer', backgroundFarLayer);
 
-        let backgroundMidLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/Parallax60.png'].texture, 500, 500);
+        let backgroundMidLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/StarsSmall_1.png'].texture, 1024, 1024);
         backgroundMidLayer.position.x = 0;
         backgroundMidLayer.position.y = 0;
-        backgroundMidLayer.scale.set(1.5);
         backgroundContainer.addChild(backgroundMidLayer);
         this.objectStore.put('backgroundMidLayer', backgroundMidLayer);
 
-        let backgroundNearLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/Parallax60.png'].texture, 500, 500);
+        let backgroundNearLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/StarsSmall_2.png'].texture, 1024, 1024);
         backgroundNearLayer.position.x = 0;
         backgroundNearLayer.position.y = 0;
-        backgroundNearLayer.scale.set(2);
         backgroundContainer.addChild(backgroundNearLayer);
         this.objectStore.put('backgroundNearLayer', backgroundNearLayer);
     }
@@ -100,7 +97,7 @@ class MainScene extends Scene{
         this.objectStore.put('score', score);
 
         let fps = new PIXI.Text(this.pixiApp.ticker.FPS, scoreStyle);
-        fps.position.set(650, 5);
+        fps.position.set(this.pixiApp.renderer.view.width - 50, 5);
         guiContainer.addChild(fps);
         this.objectStore.put('fps', fps);
 
@@ -188,9 +185,9 @@ class MainScene extends Scene{
     }
 
     updateBackground() {
-        this.objectStore.get('backgroundFarLayer').tilePosition.y += 0.2;
-        this.objectStore.get('backgroundMidLayer').tilePosition.y += 0.1;
-        this.objectStore.get('backgroundNearLayer').tilePosition.y += 0.3;
+        this.objectStore.get('backgroundFarLayer').tilePosition.y += 0.05;
+        this.objectStore.get('backgroundMidLayer').tilePosition.y += 0.2;
+        this.objectStore.get('backgroundNearLayer').tilePosition.y += 0.4;
     }
 
     updatePlayer() {
