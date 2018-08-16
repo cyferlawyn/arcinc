@@ -2,26 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fa763ac8-e85a-4bd4-9465-7476785b5cd2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ArcInc.js" beforeDir="false" afterPath="$PROJECT_DIR$/ArcInc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AssetLoader.js" beforeDir="false" afterPath="$PROJECT_DIR$/AssetLoader.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmitterConfigProvider.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/MainScene.js" beforeDir="false" afterPath="$PROJECT_DIR$/MainScene.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprites/A1 - Kopie (2).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprites/A1 - Kopie.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprites/Bullet2 - Kopie.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/textures/238126271098212.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/textures/28884-8-galaxy-photos - Kopie.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/textures/28884-8-galaxy-photos.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/textures/386913main_Swift_M31_large_UV.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/textures/5873853ff3a71010b5e8ef3e.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/textures/BackdropBlackLittleSparkBlack.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/textures/Parallax100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/textures/Parallax60 - Kopie.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/textures/Parallax60.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/textures/Parallax80.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/textures/boss-fight-free-high-quality-stock-images-photos-photography-star-sky.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/textures/ff2e305c92fd63caba05f3e76c2bc803.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/textures/kisspng-light-blue-sky-pattern-galaxy-transparent-png-5a77eb988dd9a8.800565301517808536581.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spawner.js" beforeDir="false" afterPath="$PROJECT_DIR$/Spawner.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/bump.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pixi-particles.min.js" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -60,14 +47,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="html" value="327" />
-          <entry key="js" value="13059" />
+          <entry key="html" value="353" />
+          <entry key="js" value="13262" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="327" />
-          <entry key="JavaScript" value="13059" />
+          <entry key="HTML" value="353" />
+          <entry key="JavaScript" value="13262" />
         </counts>
       </usages-collector>
     </session>
@@ -77,16 +64,16 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MainScene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="110" column="76" selection-start-line="110" selection-start-column="70" selection-end-line="110" selection-end-column="76" />
+            <state relative-caret-position="2116">
+              <caret line="92" column="63" selection-start-line="92" selection-start-column="63" selection-end-line="92" selection-end-column="63" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Player.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1145">
+            <state relative-caret-position="414">
               <caret line="48" column="36" selection-start-line="48" selection-start-column="36" selection-end-line="48" selection-end-column="36" />
             </state>
           </provider>
@@ -95,8 +82,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Spawner.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="84" column="34" lean-forward="true" selection-start-line="84" selection-start-column="34" selection-end-line="84" selection-end-column="34" />
+            <state relative-caret-position="252">
+              <caret line="76" selection-start-line="76" selection-end-line="76" />
             </state>
           </provider>
         </entry>
@@ -113,17 +100,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/EmitterConfigProvider.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="460">
-              <caret line="47" column="29" selection-start-line="47" selection-start-column="29" selection-end-line="47" selection-end-column="29" />
+            <state relative-caret-position="529">
+              <caret line="23" column="22" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -137,11 +115,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AssetLoader.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
+            <state relative-caret-position="299">
+              <caret line="13" selection-start-line="13" selection-end-line="13" />
             </state>
           </provider>
         </entry>
@@ -150,7 +128,7 @@
         <entry file="file://$PROJECT_DIR$/ArcInc.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="69">
-              <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
+              <caret line="3" column="5" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -172,7 +150,10 @@
       <find>child</find>
       <find>player.</find>
       <find>renderer</find>
+      <find>particle</find>
       <find>assets</find>
+      <find>emitter</find>
+      <find>healthba</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -189,13 +170,13 @@
         <option value="$PROJECT_DIR$/lib/gli.all.js" />
         <option value="$PROJECT_DIR$/EmitterConfig.js" />
         <option value="$PROJECT_DIR$/Enemy.js" />
-        <option value="$PROJECT_DIR$/Spawner.js" />
         <option value="$PROJECT_DIR$/Player.js" />
         <option value="$PROJECT_DIR$/EmitterConfigProvider.js" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/ArcInc.js" />
-        <option value="$PROJECT_DIR$/MainScene.js" />
         <option value="$PROJECT_DIR$/AssetLoader.js" />
+        <option value="$PROJECT_DIR$/Spawner.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/MainScene.js" />
       </list>
     </option>
   </component>
@@ -234,8 +215,7 @@
             <path>
               <item name="arcinc" type="b2602c69:ProjectViewProjectNode" />
               <item name="arcinc" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-              <item name="textures" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -283,12 +263,12 @@
       <option name="presentableId" value="Default" />
       <updated>1534176771890</updated>
       <workItem from="1534176773100" duration="30551000" />
-      <workItem from="1534228229144" duration="44632000" />
+      <workItem from="1534228229144" duration="47019000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="75183000" />
+    <option name="totallyTimeSpent" value="77570000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -377,13 +357,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Player.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1145">
-          <caret line="48" column="36" selection-start-line="48" selection-start-column="36" selection-end-line="48" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/EmitterConfigProvider.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="460">
@@ -398,44 +371,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/assets/textures/386913main_Swift_M31_large_UV.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/textures/28884-8-galaxy-photos.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/MainScene.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="110" column="76" selection-start-line="110" selection-start-column="70" selection-end-line="110" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Spawner.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="84" column="34" lean-forward="true" selection-start-line="84" selection-start-column="34" selection-end-line="84" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ArcInc.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="69">
-          <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
+          <caret line="3" column="5" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AssetLoader.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
+        <state relative-caret-position="299">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spawner.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="76" selection-start-line="76" selection-end-line="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="529">
+          <caret line="23" column="22" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MainScene.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2116">
+          <caret line="92" column="63" selection-start-line="92" selection-start-column="63" selection-end-line="92" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Player.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="48" column="36" selection-start-line="48" selection-start-column="36" selection-end-line="48" selection-end-column="36" />
         </state>
       </provider>
     </entry>

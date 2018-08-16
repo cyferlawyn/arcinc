@@ -47,10 +47,6 @@ class Spawner {
         projectile.scale.set(0.4);
         projectile.damage = 5;
 
-        let particleContainer = this.objectStore.get('particleContainer');
-        projectile.emitter = new PIXI.particles.Emitter(particleContainer, [PIXI.Texture.from('assets/sprites/particle.png')], EmitterConfigProvider.getPlayerProjectileTrail(0x23f206));
-        projectile.emitter.emit = false;
-
         playerProjectileContainer.addChild(projectile);
 
         return projectile;
@@ -84,11 +80,6 @@ class Spawner {
         let projectile = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/Bullet2.png"].texture);
         projectile.scale.set(0.4);
         projectile.damage = 5;
-
-        let particleContainer = this.objectStore.get('particleContainer');
-        projectile.emitter = new PIXI.particles.Emitter(particleContainer, [PIXI.Texture.from('assets/sprites/particle.png')], EmitterConfigProvider.getEnemyProjectileTrail(tint));
-        projectile.emitter.emit = false;
-
         enemyProjectileContainer.addChild(projectile);
 
         return projectile;
@@ -101,12 +92,6 @@ class Spawner {
         for (let i = 0; i < enemyProjectileContainer.children.length; i++) {
             if (!enemyProjectileContainer.children[i].visible) {
                 projectile = enemyProjectileContainer.children[i];
-
-                // reinitialize the emitter to change color properly
-                projectile.emitter.destroy();
-                let particleContainer = this.objectStore.get('particleContainer');
-                projectile.emitter = new PIXI.particles.Emitter(particleContainer, [PIXI.Texture.from('assets/sprites/particle.png')], EmitterConfigProvider.getEnemyProjectileTrail(tint));
-                projectile.emitter.emit = false;
                 break;
             }
         }
