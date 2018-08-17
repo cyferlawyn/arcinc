@@ -6,6 +6,7 @@ class ArcInc {
     init() {
         this.initPixiApp();
         this.initScenes();
+        this.initKeyboard();
     }
 
     initPixiApp() {
@@ -22,7 +23,19 @@ class ArcInc {
     initScenes() {
         this.sceneManager = new SceneManager(this.pixiApp);
         this.sceneManager.registerScene(new MainScene(this.pixiApp));
-        this.sceneManager.loadScene('main');
+        this.sceneManager.registerScene(new UpgradeScene(this.pixiApp));
+        this.sceneManager.loadScene('upgrade');
+    }
+
+    initKeyboard() {
+        window.addEventListener('keypress', function (event) {
+
+            if (event.keyCode === 32) {
+                arcInc.sceneManager.paused = !arcInc.sceneManager.paused;
+            }
+
+            event.preventDefault();
+        });
     }
 }
 

@@ -9,12 +9,36 @@ class MainScene extends Scene{
         this.spawner = new Spawner(this.pixiApp, this.objectStore);
         this.now = Date.now();
         this.elapsed = Date.now();
-        this.score = 0;
+        this.credits = 0;
 
         this.initContainer();
         this.initBackground();
         this.initGui();
         this.initPlayer();
+    }
+
+    reset() {
+        let enemyContainer = this.objectStore.get('enemyContainer');
+        for (let i = 0; i < enemyContainer.children.length; i++) {
+            enemyContainer.children[i].visible = false;
+        }
+
+        let enemyProjectileContainer = this.objectStore.get('enemyProjectileContainer');
+        for (let i = 0; i < enemyProjectileContainer.children.length; i++) {
+            enemyProjectileContainer.children[i].visible = false;
+        }
+
+        let playerProjectileContainer = this.objectStore.get('playerProjectileContainer');
+        for (let i = 0; i < playerProjectileContainer.children.length; i++) {
+            playerProjectileContainer.children[i].visible = false;
+        }
+
+        let player = this.objectStore.get('player');
+        player.currentShield = player.maxShield;
+        player.currentArmor = player.maxArmor;
+        player.currentStructure = player.maxStructure;
+
+        this.credits = 0;
     }
 
     initContainer() {
@@ -68,7 +92,7 @@ class MainScene extends Scene{
     initGui() {
         let guiContainer = this.objectStore.get('guiContainer');
 
-        let scoreStyle = new PIXI.TextStyle({
+        let creditsStyle = new PIXI.TextStyle({
             fontFamily: "Arial",
             fontSize: 36,
             fill: "white",
@@ -84,12 +108,12 @@ class MainScene extends Scene{
             strokeThickness: 3
         });
 
-        let score = new PIXI.Text(this.score, scoreStyle);
-        score.position.set(5, 5);
-        guiContainer.addChild(score);
-        this.objectStore.put('score', score);
+        let credits = new PIXI.Text(this.credits, creditsStyle);
+        credits.position.set(5, 5);
+        guiContainer.addChild(credits);
+        this.objectStore.put('credits', credits);
 
-        let fps = new PIXI.Text(this.pixiApp.ticker.FPS, scoreStyle);
+        let fps = new PIXI.Text(this.pixiApp.ticker.FPS, creditsStyle);
         fps.position.set(this.pixiApp.renderer.view.width - 125, 5);
         guiContainer.addChild(fps);
         this.objectStore.put('fps', fps);
@@ -153,6 +177,17 @@ class MainScene extends Scene{
         structure.position.set(this.pixiApp.renderer.view.width/2-40, this.pixiApp.renderer.view.height -23);
         guiContainer.addChild(structure);
         this.objectStore.put('structure', structure);
+
+        // Warp button
+        let warpButton = new Button(this.pixiApp.renderer.view.width - 55, this.pixiApp.renderer.view.height - 55, 50, 50);
+        warpButton.on('click', function() {
+            let mainScene = arcInc.sceneManager.scenes['main'];
+            let player = mainScene.objectStore.get('player');
+            player.credits += mainScene.credits;
+            arcInc.sceneManager.loadScene('upgrade');
+        });
+        guiContainer.addChild(warpButton);
+        this.objectStore.put('warpButton', warpButton);
     }
 
     initPlayer() {
@@ -200,7 +235,8 @@ class MainScene extends Scene{
                         enemy.y - enemy.height,
                         enemy.vx * 2,
                         enemy.vy * 2,
-                        enemy.tint);
+                        enemy.tint,
+                        5);
                 }
             }
         }
@@ -278,7 +314,7 @@ class MainScene extends Scene{
                         enemy.currentHealth -= projectile.damage;
                         projectile.visible = false;
                         if (enemy.currentHealth <= 0) {
-                            this.score += enemyContainer.children[enemyIndex].maxHealth;
+                            this.credits += enemyContainer.children[enemyIndex].maxHealth;
                             enemy.visible = false;
                         } else {
                             enemy.updateHealthBar();
@@ -303,7 +339,7 @@ class MainScene extends Scene{
     }
 
     updateGui() {
-        this.objectStore.get('score').text = this.score;
+        this.objectStore.get('credits').text = this.credits + '$';
         this.objectStore.get('fps').text = Math.round(this.pixiApp.ticker.FPS) + ' FPS';
 
         let player = this.objectStore.get('player');

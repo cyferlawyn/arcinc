@@ -52,7 +52,7 @@ class Spawner {
         return projectile;
     }
 
-    spawnPlayerProjectile(x, y, vx, vy) {
+    spawnPlayerProjectile(x, y, vx, vy, damage) {
         let playerProjectileContainer = this.objectStore.get('playerProjectileContainer');
 
         let projectile;
@@ -72,6 +72,7 @@ class Spawner {
         projectile.y = y;
         projectile.vx = vx;
         projectile.vy = vy;
+        projectile.damage = damage;
         projectile.visible = true;
     }
 
@@ -79,13 +80,12 @@ class Spawner {
         let enemyProjectileContainer = this.objectStore.get('enemyProjectileContainer');
         let projectile = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/Bullet2.png"].texture);
         projectile.scale.set(0.4);
-        projectile.damage = 5;
         enemyProjectileContainer.addChild(projectile);
 
         return projectile;
     }
 
-    spawnEnemyProjectile(x, y, vx, vy, tint) {
+    spawnEnemyProjectile(x, y, vx, vy, tint, damage) {
         let enemyProjectileContainer = this.objectStore.get('enemyProjectileContainer');
 
         let projectile;
@@ -106,6 +106,7 @@ class Spawner {
         projectile.vx = vx;
         projectile.vy = vy;
         projectile.tint = tint;
+        projectile.damage = damage;
 
         projectile.visible = true;
     }

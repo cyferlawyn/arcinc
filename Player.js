@@ -6,33 +6,54 @@ class Player extends PIXI.Sprite {
         this.boundaryWidth = boundaryWidth;
         this.boundaryHeight = boundaryHeight;
 
+        this.credits = 0;
+
         this.baseValues = {
             'movementSpeed': 5,
             'maxShield': 150,
+            'shieldRechargeTime': 600,
             'maxArmor': 100,
             'maxStructure': 50,
+            'projectileDamage': 5,
+            'projectileVelocity': 3,
+            'projectileAmount': 1,
             'rateOfFire': 1
         };
 
         this.upgradeEffects = {
             'movementSpeed': 0.05,
             'maxShield': 0.05,
+            'shieldRechargeTime': 0.05,
             'maxArmor': 0.05,
             'maxStructure': 0.05,
+            'projectileDamage': 0.05,
+            'projectileVelocity': 0.05,
+            'projectileAmount': 1,
             'rateOfFire': 0.05
         };
+
         this.upgrades = {
-            'movementSpeed': 500,
-            'maxShield': 500,
-            'maxArmor': 500,
-            'maxStructure': 500,
-            'rateOfFire': 200
+            'movementSpeed': 0,
+            'maxShield': 0,
+            'shieldRechargeTime': 0,
+            'maxArmor': 0,
+            'maxStructure': 0,
+            'projectileDamage': 0,
+            'projectileVelocity': 0,
+            'projectileAmount': 0,
+            'rateOfFire': 0
         };
 
+        this.applyUpgrades();
+    }
+
+    applyUpgrades() {
         this.movementSpeed = this.baseValues['movementSpeed'] * (1 + this.upgradeEffects['movementSpeed'] * this.upgrades['movementSpeed']);
 
         this.maxShield = this.baseValues['maxShield'] * (1 + this.upgradeEffects['maxShield'] * this.upgrades['maxShield']);
         this.currentShield = this.maxShield;
+
+        this.shieldRechargeTime = this.baseValues['shieldRechargeTime'] / (1 + this.upgradeEffects['shieldRechargeTime'] * this.upgrades['shieldRechargeTime']);
 
         this.maxArmor = this.baseValues['maxArmor'] * (1 + this.upgradeEffects['maxArmor'] * this.upgrades['maxArmor']);
         this.currentArmor = this.maxArmor;
@@ -40,15 +61,15 @@ class Player extends PIXI.Sprite {
         this.maxStructure = this.baseValues['maxStructure'] * (1 + this.upgradeEffects['maxStructure'] * this.upgrades['maxStructure']);
         this.currentStructure = this.maxStructure;
 
+        this.projectileDamage = this.baseValues['projectileDamage'] * (1 + this.upgradeEffects['projectileDamage'] * this.upgrades['projectileDamage']);
+
+        this.projectileVelocity = this.baseValues['projectileVelocity'] * (1 + this.upgradeEffects['projectileVelocity'] * this.upgrades['projectileVelocity']);
+
+        this.projectileAmount = this.baseValues['projectileAmount'] * (1 + this.upgradeEffects['projectileAmount'] * this.upgrades['projectileAmount']);
+
         this.rateOfFire = this.baseValues['rateOfFire'] * (1 + this.upgradeEffects['rateOfFire'] * this.upgrades['rateOfFire']);
-         console.log(this.rateOfFire);
         this.fireDelay = 60 / this.rateOfFire;
         this.currentDelay = 0;
-
-        this.projectileAmount = 10;
-        this.projectileVelocity = 10;
-
-        this.shieldRechargeTime = 600;
     }
 
     update(frame, mousePosition) {
@@ -136,10 +157,8 @@ class Player extends PIXI.Sprite {
                 vx *= this.projectileVelocity;
                 vy *= this.projectileVelocity;
 
-                this.spawner.spawnPlayerProjectile(x, y, vx, vy);
+                this.spawner.spawnPlayerProjectile(x, y, vx, vy, this.projectileDamage);
             }
-
-            //this.spawner.spawnPlayerProjectile(this.x + this.width/2 , this.y, this.projectileVelocity);
         }
     }
 
@@ -165,11 +184,15 @@ class Player extends PIXI.Sprite {
 
         this.currentStructure -= damage;
 
-        if (damage > 0) {
-            // Oops, you are dead. Reset stats, for now
-            this.currentShield = this.maxShield;
-            this.currentArmor = this.maxArmor;
-            this.currentStructure = this.maxStructure;
+        if (this.currentStructure <= 0) {
+            // Oops, you are dead. Back to station with ya. Or more like upgrades scene, for now.
+            arcInc.sceneManager.loadScene('upgrade');
+
         }
+    }
+
+    upgrade(upgrade) {
+        this.upgrades[upgrade] += 1;
+        this.applyUpgrades();
     }
 }

@@ -1,14 +1,17 @@
 class SceneManager {
     constructor (pixiApp) {
+        this.pixiApp = pixiApp;
         this.scenes = [];
         this.currentScene = undefined;
-        this.pixiApp = pixiApp;
+        this.paused = false;
         this.pixiApp.ticker.add(delta=> this.update(delta));
     }
 
     update() {
-        this.currentScene.frame += 1;
-        this.currentScene.update();
+        if (!this.paused) {
+            this.currentScene.frame += 1;
+            this.currentScene.update();
+        }
     }
 
     registerScene(scene) {
@@ -24,5 +27,9 @@ class SceneManager {
 
         this.currentScene = this.scenes[id];
         this.currentScene.visible = true;
+    }
+
+    resetScene(id) {
+        this.scenes[id].reset();
     }
 }
