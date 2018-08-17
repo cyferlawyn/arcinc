@@ -14,7 +14,13 @@ class Spawner {
         return enemy;
     }
 
-    spawnRandomEnemy() {
+    spawnEnemyWave(wave) {
+        for (let i = 0; i < Math.ceil(0.2 * wave + 5); i++) {
+            this.spawnRandomEnemy(wave);
+        }
+    }
+
+    spawnRandomEnemy(wave) {
         let enemyContainer = this.objectStore.get('enemyContainer');
         let enemy;
         for (let i = 0; i < enemyContainer.children.length; i++) {
@@ -31,9 +37,13 @@ class Spawner {
 
         enemy.x = Math.random() * (this.pixiApp.renderer.view.width - enemy.width);
         enemy.y = Math.random() * -1000 - enemy.height;
-        enemy.vy = 3;
+        enemy.vy = 2;
         enemy.vx = Math.random() * 0.6 - 0.3;
-        enemy.currentHealth = 10;
+
+        enemy.maxHealth = Math.floor(5 * Math.pow(1.07, wave));
+        enemy.currentHealth = enemy.maxHealth;
+        enemy.credits = Math.floor(10 * Math.pow(1.06, wave));
+        enemy.damage = Math.floor(5 * Math.pow(1.05, wave));
 
         enemy.tint = this.enemyColors[Math.floor(Math.random()*this.enemyColors.length)];
 
@@ -76,7 +86,7 @@ class Spawner {
         projectile.visible = true;
     }
 
-    prepareEnemyProjectile(tint) {
+    prepareEnemyProjectile() {
         let enemyProjectileContainer = this.objectStore.get('enemyProjectileContainer');
         let projectile = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/Bullet2.png"].texture);
         projectile.scale.set(0.4);
@@ -98,7 +108,7 @@ class Spawner {
 
         // if no enemy projectile is available in the enemy projectile container, create another
         if (projectile === undefined) {
-            projectile = this.prepareEnemyProjectile(tint);
+            projectile = this.prepareEnemyProjectile();
         }
 
         projectile.x = x;

@@ -12,6 +12,8 @@ class MainScene extends Scene{
         this.now = Date.now();
         this.elapsed = Date.now();
         this.credits = 0;
+        this.wave = 1;
+        this.framesTillWave = 0;
 
         this.initContainer();
         this.initBackground();
@@ -41,6 +43,7 @@ class MainScene extends Scene{
         player.currentStructure = player.maxStructure;
 
         this.credits = 0;
+        this.wave = 1;
     }
 
     initContainer() {
@@ -228,27 +231,37 @@ class MainScene extends Scene{
     }
 
     engageEnemies() {
-        if (this.frame%180 === 0) {
+        if (this.frame%120 === 0) {
             let enemyContainer = this.objectStore.get('enemyContainer');
             for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
                 let enemy = enemyContainer.children[enemyIndex];
                 if (enemy.visible) {
                     this.spawner.spawnEnemyProjectile(enemy.x + enemy.width / 2,
-                        enemy.y - enemy.height,
+                        enemy.y + enemy.height/2,
                         enemy.vx * 2,
                         enemy.vy * 2,
                         enemy.tint,
-                        5);
+                        enemy.damage);
                 }
             }
         }
     }
 
     updateEnemies() {
+        this.framesTillWave--;
         let enemyContainer = this.objectStore.get('enemyContainer');
 
-        if (this.frame%2 === 0) {
-            this.spawner.spawnRandomEnemy();
+        let enemiesRemaining = 0;
+        for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
+            if (enemyContainer.children[enemyIndex].visible) {
+                enemiesRemaining++;
+            }
+        }
+        if (this.framesTillWave <= 0 || enemiesRemaining < 5) {
+            this.wave++;
+            this.framesTillWave = 600;
+            console.log('spawning wave ' + this.wave + '( ' + Math.floor(5 * Math.pow(1.07, this.wave)) + ' - ' + Math.floor(10 * Math.pow(1.06, this.wave)) + ' - ' + Math.floor(5 * Math.pow(1.05, this.wave)) + ' )');
+            this.spawner.spawnEnemyWave(this.wave);
         }
 
         for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
@@ -316,7 +329,7 @@ class MainScene extends Scene{
                         enemy.currentHealth -= projectile.damage;
                         projectile.visible = false;
                         if (enemy.currentHealth <= 0) {
-                            this.credits += enemyContainer.children[enemyIndex].maxHealth;
+                            this.credits += enemyContainer.children[enemyIndex].credits;
                             enemy.visible = false;
                         } else {
                             enemy.updateHealthBar();

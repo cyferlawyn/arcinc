@@ -16,54 +16,54 @@ class Player extends PIXI.Sprite {
                 'effect': 0.05,
                 'cost': 10,
             },
-            'maxShield': {
-                'title': ' Shield\nAmount',
-                'baseValue': 150,
-                'effect': 0.05,
-                'cost': 10,
-            },
             'shieldRechargeTime': {
                 'title': '  Shield\nRecharge',
                 'baseValue': 600,
                 'effect': 0.05,
-                'cost': 10,
+                'cost': 25,
+            },
+            'maxShield': {
+                'title': ' Shield\nAmount',
+                'baseValue': 150,
+                'effect': 0.05,
+                'cost': 25,
             },
             'maxArmor': {
                 'title': ' Armor\nAmount',
                 'baseValue': 100,
                 'effect': 0.05,
-                'cost': 10,
+                'cost': 25,
             },
             'maxStructure': {
                 'title': 'Structure\n Amount',
                 'baseValue': 50,
                 'effect': 0.05,
-                'cost': 10,
-            },
-            'projectileDamage': {
-                'title': 'Projectile\n Damage',
-                'baseValue': 5,
-                'effect': 0.05,
-                'cost': 10,
-            },
-            'projectileVelocity': {
-                'title': 'Projectile\n Velocity',
-                'baseValue': 3,
-                'effect': 0.05,
-                'cost': 10,
-            },
-            'projectileAmount': {
-                'title': 'Projectile\n Amount',
-                'baseValue': 1,
-                'effect': 1,
-                'cost': 1000,
+                'cost': 25,
             },
             'rateOfFire': {
                 'title': 'Rate of\n   Fire',
                 'baseValue': 1,
                 'effect': 0.05,
-                'cost': 10,
+                'cost': 50,
             },
+            'projectileDamage': {
+                'title': 'Projectile\n Damage',
+                'baseValue': 5,
+                'effect': 0.05,
+                'cost': 50,
+            },
+            'projectileVelocity': {
+                'title': 'Projectile\n Velocity',
+                'baseValue': 3,
+                'effect': 0.05,
+                'cost': 100,
+            },
+            'projectileAmount': {
+                'title': 'Projectile\n Amount',
+                'baseValue': 1,
+                'effect': 1,
+                'cost': 5000,
+            }
         };
 
         this.applyUpgrades();
@@ -173,11 +173,15 @@ class Player extends PIXI.Sprite {
                 let distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
                 // normalize velocity vector length
+                /*
                 let vx = distanceX / distance;
                 let vy = distanceY / distance;
 
                 vx *= this.projectileVelocity;
                 vy *= this.projectileVelocity;
+                */
+                let vx = 0;
+                let vy = -this.projectileVelocity;
 
                 this.spawner.spawnPlayerProjectile(x, y, vx, vy, this.projectileDamage);
             }
@@ -208,13 +212,9 @@ class Player extends PIXI.Sprite {
             this.currentStructure -= damage;
         } else {
             // Oops, you are dead. Back to station with ya. Or more like upgrades scene, for now.
+            let mainScene = arcInc.sceneManager.scenes['main'];
+            arcInc.savegame.credits += mainScene.credits;
             arcInc.sceneManager.loadScene('upgrade');
         }
-    }
-
-    upgrade(upgrade) {
-        this.arcInc.savegame.upgrades[upgrade] += 1;
-        this.arcInc.saveSavegame();
-        this.applyUpgrades();
     }
 }

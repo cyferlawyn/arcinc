@@ -59,6 +59,8 @@ class Upgrade extends PIXI.Container {
             if (arcInc.savegame.credits >= event.currentTarget.effectiveCost) {
                 arcInc.savegame.credits -= event.currentTarget.effectiveCost;
                 arcInc.savegame.upgrades[event.currentTarget.name] += 1;
+                arcInc.saveSavegame();
+                arcInc.sceneManager.scenes['main'].objectStore.get('player').applyUpgrades();
             }
         });
 
