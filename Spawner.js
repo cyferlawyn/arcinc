@@ -15,7 +15,7 @@ class Spawner {
     }
 
     spawnEnemyWave(wave) {
-        for (let i = 0; i < Math.ceil(0.2 * wave + 5); i++) {
+        for (let i = 0; i < Math.ceil(0.2 * wave + 10); i++) {
             this.spawnRandomEnemy(wave);
         }
     }

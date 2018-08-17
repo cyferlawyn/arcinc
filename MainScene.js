@@ -12,7 +12,7 @@ class MainScene extends Scene{
         this.now = Date.now();
         this.elapsed = Date.now();
         this.credits = 0;
-        this.wave = 1;
+        this.wave = 0;
         this.framesTillWave = 0;
 
         this.initContainer();
@@ -122,6 +122,11 @@ class MainScene extends Scene{
         fps.position.set(this.pixiApp.renderer.view.width - 125, 5);
         guiContainer.addChild(fps);
         this.objectStore.put('fps', fps);
+
+        let wave = new PIXI.Text('Wave: ' + this.wave, creditsStyle);
+        wave.position.set(this.pixiApp.renderer.view.width / 2 - wave.width/2, 5);
+        guiContainer.addChild(wave);
+        this.objectStore.put('wave', wave);
 
         let shieldDamage = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/DamageBar.png"].texture);
         shieldDamage.x = this.pixiApp.renderer.view.width/2-100;
@@ -260,7 +265,6 @@ class MainScene extends Scene{
         if (this.framesTillWave <= 0 || enemiesRemaining < 5) {
             this.wave++;
             this.framesTillWave = 600;
-            console.log('spawning wave ' + this.wave + '( ' + Math.floor(5 * Math.pow(1.07, this.wave)) + ' - ' + Math.floor(10 * Math.pow(1.06, this.wave)) + ' - ' + Math.floor(5 * Math.pow(1.05, this.wave)) + ' )');
             this.spawner.spawnEnemyWave(this.wave);
         }
 
@@ -356,6 +360,8 @@ class MainScene extends Scene{
     updateGui() {
         this.objectStore.get('credits').text = this.credits + '$';
         this.objectStore.get('fps').text = Math.round(this.pixiApp.ticker.FPS) + ' FPS';
+        this.objectStore.get('wave').text = 'Wave: ' + this.wave;
+        this.objectStore.get('wave').x = this.pixiApp.renderer.view.width/2 - this.objectStore.get('wave').width/2;
 
         let player = this.objectStore.get('player');
         this.objectStore.get('shieldBar').width = 200 * player.currentShield / player.maxShield;
