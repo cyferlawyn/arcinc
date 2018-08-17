@@ -16,7 +16,8 @@ class AssetLoader {
     }
 
     static onAssetsLoaded(){
-        arcInc = new ArcInc();
+        window.arcInc = new ArcInc();
+        arcInc.init();
     }
 }
 

@@ -1,73 +1,95 @@
 class Player extends PIXI.Sprite {
-    constructor(texture, spawner, boundaryWidth, boundaryHeight) {
+    constructor(texture, arcInc, spawner, boundaryWidth, boundaryHeight) {
         super(texture);
 
+        this.arcInc = arcInc;
         this.spawner = spawner;
         this.boundaryWidth = boundaryWidth;
         this.boundaryHeight = boundaryHeight;
 
         this.credits = 0;
 
-        this.baseValues = {
-            'movementSpeed': 5,
-            'maxShield': 150,
-            'shieldRechargeTime': 600,
-            'maxArmor': 100,
-            'maxStructure': 50,
-            'projectileDamage': 5,
-            'projectileVelocity': 3,
-            'projectileAmount': 1,
-            'rateOfFire': 1
-        };
-
-        this.upgradeEffects = {
-            'movementSpeed': 0.05,
-            'maxShield': 0.05,
-            'shieldRechargeTime': 0.05,
-            'maxArmor': 0.05,
-            'maxStructure': 0.05,
-            'projectileDamage': 0.05,
-            'projectileVelocity': 0.05,
-            'projectileAmount': 1,
-            'rateOfFire': 0.05
-        };
-
         this.upgrades = {
-            'movementSpeed': 0,
-            'maxShield': 0,
-            'shieldRechargeTime': 0,
-            'maxArmor': 0,
-            'maxStructure': 0,
-            'projectileDamage': 0,
-            'projectileVelocity': 0,
-            'projectileAmount': 0,
-            'rateOfFire': 0
+            'movementSpeed': {
+                'title': 'Movement\n   Speed',
+                'baseValue': 5,
+                'effect': 0.05,
+                'cost': 10,
+            },
+            'maxShield': {
+                'title': ' Shield\nAmount',
+                'baseValue': 150,
+                'effect': 0.05,
+                'cost': 10,
+            },
+            'shieldRechargeTime': {
+                'title': '  Shield\nRecharge',
+                'baseValue': 600,
+                'effect': 0.05,
+                'cost': 10,
+            },
+            'maxArmor': {
+                'title': ' Armor\nAmount',
+                'baseValue': 100,
+                'effect': 0.05,
+                'cost': 10,
+            },
+            'maxStructure': {
+                'title': 'Structure\n Amount',
+                'baseValue': 50,
+                'effect': 0.05,
+                'cost': 10,
+            },
+            'projectileDamage': {
+                'title': 'Projectile\n Damage',
+                'baseValue': 5,
+                'effect': 0.05,
+                'cost': 10,
+            },
+            'projectileVelocity': {
+                'title': 'Projectile\n Velocity',
+                'baseValue': 3,
+                'effect': 0.05,
+                'cost': 10,
+            },
+            'projectileAmount': {
+                'title': 'Projectile\n Amount',
+                'baseValue': 1,
+                'effect': 1,
+                'cost': 1000,
+            },
+            'rateOfFire': {
+                'title': 'Rate of\n   Fire',
+                'baseValue': 1,
+                'effect': 0.05,
+                'cost': 10,
+            },
         };
 
         this.applyUpgrades();
     }
 
     applyUpgrades() {
-        this.movementSpeed = this.baseValues['movementSpeed'] * (1 + this.upgradeEffects['movementSpeed'] * this.upgrades['movementSpeed']);
+        this.movementSpeed = this.upgrades['movementSpeed'].baseValue * (1 + this.upgrades['movementSpeed'].effect * this.arcInc.savegame.upgrades['movementSpeed']);
 
-        this.maxShield = this.baseValues['maxShield'] * (1 + this.upgradeEffects['maxShield'] * this.upgrades['maxShield']);
+        this.maxShield = this.upgrades['maxShield'].baseValue * (1 + this.upgrades['maxShield'].effect * this.arcInc.savegame.upgrades['maxShield']);
         this.currentShield = this.maxShield;
 
-        this.shieldRechargeTime = this.baseValues['shieldRechargeTime'] / (1 + this.upgradeEffects['shieldRechargeTime'] * this.upgrades['shieldRechargeTime']);
+        this.shieldRechargeTime = this.upgrades['shieldRechargeTime'].baseValue / (1 + this.upgrades['shieldRechargeTime'].effect * this.arcInc.savegame.upgrades['shieldRechargeTime']);
 
-        this.maxArmor = this.baseValues['maxArmor'] * (1 + this.upgradeEffects['maxArmor'] * this.upgrades['maxArmor']);
+        this.maxArmor = this.upgrades['maxArmor'].baseValue * (1 + this.upgrades['maxArmor'].effect * this.arcInc.savegame.upgrades['maxArmor']);
         this.currentArmor = this.maxArmor;
 
-        this.maxStructure = this.baseValues['maxStructure'] * (1 + this.upgradeEffects['maxStructure'] * this.upgrades['maxStructure']);
+        this.maxStructure = this.upgrades['maxStructure'].baseValue * (1 + this.upgrades['maxStructure'].effect * this.arcInc.savegame.upgrades['maxStructure']);
         this.currentStructure = this.maxStructure;
 
-        this.projectileDamage = this.baseValues['projectileDamage'] * (1 + this.upgradeEffects['projectileDamage'] * this.upgrades['projectileDamage']);
+        this.projectileDamage = this.upgrades['projectileDamage'].baseValue * (1 + this.upgrades['projectileDamage'].effect * this.arcInc.savegame.upgrades['projectileDamage']);
 
-        this.projectileVelocity = this.baseValues['projectileVelocity'] * (1 + this.upgradeEffects['projectileVelocity'] * this.upgrades['projectileVelocity']);
+        this.projectileVelocity = this.upgrades['projectileVelocity'].baseValue * (1 + this.upgrades['projectileVelocity'].effect * this.arcInc.savegame.upgrades['projectileVelocity']);
 
-        this.projectileAmount = this.baseValues['projectileAmount'] * (1 + this.upgradeEffects['projectileAmount'] * this.upgrades['projectileAmount']);
+        this.projectileAmount = this.upgrades['projectileAmount'].baseValue * (1 + this.upgrades['projectileAmount'].effect * this.arcInc.savegame.upgrades['projectileAmount']);
 
-        this.rateOfFire = this.baseValues['rateOfFire'] * (1 + this.upgradeEffects['rateOfFire'] * this.upgrades['rateOfFire']);
+        this.rateOfFire = this.upgrades['rateOfFire'].baseValue * (1 + this.upgrades['rateOfFire'].effect * this.arcInc.savegame.upgrades['rateOfFire']);
         this.fireDelay = 60 / this.rateOfFire;
         this.currentDelay = 0;
     }
@@ -182,17 +204,17 @@ class Player extends PIXI.Sprite {
             this.currentArmor = 0;
         }
 
-        this.currentStructure -= damage;
-
-        if (this.currentStructure <= 0) {
+        if (damage < this.currentStructure) {
+            this.currentStructure -= damage;
+        } else {
             // Oops, you are dead. Back to station with ya. Or more like upgrades scene, for now.
             arcInc.sceneManager.loadScene('upgrade');
-
         }
     }
 
     upgrade(upgrade) {
-        this.upgrades[upgrade] += 1;
+        this.arcInc.savegame.upgrades[upgrade] += 1;
+        this.arcInc.saveSavegame();
         this.applyUpgrades();
     }
 }

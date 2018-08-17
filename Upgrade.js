@@ -1,11 +1,13 @@
 class Upgrade extends PIXI.Container {
-    constructor(name, cost, level, effect) {
+    constructor(name, title, baseCost, effect, level) {
         super();
 
         this.name = name;
-        this.cost = cost;
-        this.level = level;
+        this.title = title;
+        this.baseCost = baseCost;
+        this.effectiveCost = this.baseCost;
         this.effect = effect;
+        this.level = level;
 
         this.init();
     }
@@ -16,7 +18,7 @@ class Upgrade extends PIXI.Container {
             fontSize: 20,
             fill: "white",
             stroke: 'black',
-            strokeThickness: 5
+            strokeThickness: 3
         });
 
         // outer box
@@ -29,9 +31,9 @@ class Upgrade extends PIXI.Container {
         this.addChild(outerBox);
 
         // name
-        let name = new PIXI.Text(this.name, style);
-        name.position.set(this.width/2 - name.width/2, 10);
-        this.addChild(name);
+        let nameText = new PIXI.Text(this.title, style);
+        nameText.position.set(this.width/2 - nameText.width/2, 10);
+        this.addChild(nameText);
 
         // level
         this.levelText = new PIXI.Text('Level ' + this.level, style);
@@ -44,20 +46,30 @@ class Upgrade extends PIXI.Container {
         this.addChild(this.totalText);
 
         // effect
-        let effect = new PIXI.Text('+ ' + this.effect * 100 + '%', style);
-        effect.position.set(this.width/2 - effect.width/2, 210);
-        this.addChild(effect);
+        let effectText = new PIXI.Text('+ ' + this.effect * 100 + '%', style);
+        effectText.position.set(this.width/2 - effectText.width/2, 210);
+        this.addChild(effectText);
 
         // cost
-        let cost = new PIXI.Text(this.cost + '$', style);
-        cost.position.set(this.width/2 - cost.width/2, 235);
-        this.addChild(cost);
+        this.costText = new PIXI.Text(this.effectiveCost + '$', style);
+        this.costText.position.set(this.width/2 - this.costText.width/2, 235);
+        this.addChild(this.costText);
+
+        this.on('click', function(event){
+            if (arcInc.savegame.credits >= event.currentTarget.effectiveCost) {
+                arcInc.savegame.credits -= event.currentTarget.effectiveCost;
+                arcInc.savegame.upgrades[event.currentTarget.name] += 1;
+            }
+        });
 
         this.interactive = true;
     }
 
     update() {
+        this.effectiveCost = Math.ceil(this.baseCost * Math.pow(1.07, this.level));
+
         this.levelText.text = 'Level ' + this.level;
         this.totalText.text = '( + ' + Math.round(this.level * this.effect * 100) + '% )';
+        this.costText.text = this.effectiveCost + '$'
     }
 }

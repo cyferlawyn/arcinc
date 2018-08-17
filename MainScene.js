@@ -1,6 +1,8 @@
 class MainScene extends Scene{
-    constructor(pixiApp) {
-        super('main', pixiApp);
+    constructor(arcInc) {
+        super('main', arcInc.pixiApp);
+        this.arcInc = arcInc;
+        this.pixiApp = arcInc.pixiApp;
         this.init();
     }
 
@@ -182,8 +184,8 @@ class MainScene extends Scene{
         let warpButton = new Button(this.pixiApp.renderer.view.width - 55, this.pixiApp.renderer.view.height - 55, 50, 50);
         warpButton.on('click', function() {
             let mainScene = arcInc.sceneManager.scenes['main'];
-            let player = mainScene.objectStore.get('player');
-            player.credits += mainScene.credits;
+            arcInc.savegame.credits += mainScene.credits;
+            arcInc.saveSavegame();
             arcInc.sceneManager.loadScene('upgrade');
         });
         guiContainer.addChild(warpButton);
@@ -192,7 +194,7 @@ class MainScene extends Scene{
 
     initPlayer() {
         let playerContainer = this.objectStore.get('playerContainer');
-        let player = new Player(PIXI.Loader.shared.resources["assets/sprites/A5.png"].texture, this.spawner, this.pixiApp.renderer.view.width, this.pixiApp.renderer.view.height);
+        let player = new Player(PIXI.Loader.shared.resources["assets/sprites/A5.png"].texture, this.arcInc, this.spawner, this.pixiApp.renderer.view.width, this.pixiApp.renderer.view.height);
         player.scale.set(0.5);
         player.x = this.pixiApp.renderer.view.width/2 - player.width/2;
         player.y = this.pixiApp.renderer.view.height - player.height;

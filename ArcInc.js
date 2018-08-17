@@ -1,12 +1,11 @@
 class ArcInc {
-    constructor() {
-        this.init();
-    }
-
     init() {
         this.initPixiApp();
-        this.initScenes();
+        this.initSavegame();
         this.initKeyboard();
+        this.initScenes();
+
+        window.setInterval(arcInc.saveSavegame, 5000);
     }
 
     initPixiApp() {
@@ -21,10 +20,10 @@ class ArcInc {
     }
 
     initScenes() {
-        this.sceneManager = new SceneManager(this.pixiApp);
-        this.sceneManager.registerScene(new MainScene(this.pixiApp));
-        this.sceneManager.registerScene(new UpgradeScene(this.pixiApp));
-        this.sceneManager.loadScene('upgrade');
+        this.sceneManager = new SceneManager(this);
+        this.sceneManager.registerScene(new MainScene(this));
+        this.sceneManager.registerScene(new UpgradeScene(this));
+        this.sceneManager.loadScene('main');
     }
 
     initKeyboard() {
@@ -37,6 +36,16 @@ class ArcInc {
             event.preventDefault();
         });
     }
-}
 
-let arcInc;
+    initSavegame() {
+        this.savegame = JSON.parse(localStorage.getItem('savegame'));
+        if (this.savegame === null) {
+            this.savegame = new Savegame();
+            this.saveSavegame();
+        }
+    }
+
+    saveSavegame() {
+        localStorage.setItem('savegame', JSON.stringify(arcInc.savegame));
+    }
+}

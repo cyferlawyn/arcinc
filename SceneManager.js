@@ -1,6 +1,7 @@
 class SceneManager {
-    constructor (pixiApp) {
-        this.pixiApp = pixiApp;
+    constructor (arcInc) {
+        this.arcInc = arcInc;
+        this.pixiApp = arcInc.pixiApp;
         this.scenes = [];
         this.currentScene = undefined;
         this.paused = false;
