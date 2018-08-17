@@ -9,7 +9,7 @@ class Button extends PIXI.Graphics {
         this.position.set(posX, posY);
         this.interactive = true;
         this.on('mouseover', function() {
-            this.tint = 0xff3333;
+            this.tint = 0xdddddd;
         });
         this.on('mouseout', function() {
             this.tint = 0xffffff;

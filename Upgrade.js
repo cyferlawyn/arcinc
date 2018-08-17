@@ -22,13 +22,13 @@ class Upgrade extends PIXI.Container {
         });
 
         // outer box
-        let outerBox = new PIXI.Graphics();
-        outerBox.lineStyle(6, 0xffffff, 1);
-        outerBox.beginFill(0xdddddd);
-        outerBox.drawRoundedRect(0, 0, 150, 275, 10);
-        outerBox.endFill();
-        outerBox.position.set(0, 0);
-        this.addChild(outerBox);
+        this.outerBox = new PIXI.Graphics();
+        this.outerBox.lineStyle(6, 0xffffff, 1);
+        this.outerBox.beginFill(0xdddddd);
+        this.outerBox.drawRoundedRect(0, 0, 150, 275, 10);
+        this.outerBox.endFill();
+        this.outerBox.position.set(0, 0);
+        this.addChild(this.outerBox);
 
         // name
         let nameText = new PIXI.Text(this.title, style);
@@ -62,6 +62,14 @@ class Upgrade extends PIXI.Container {
             }
         });
 
+        this.on('mouseover', function(event){
+            event.currentTarget.outerBox.tint = 0xdddddd;
+        });
+
+        this.on('mouseout', function(event){
+            event.currentTarget.outerBox.tint = 0xffffff;
+        });
+
         this.interactive = true;
     }
 
@@ -70,6 +78,12 @@ class Upgrade extends PIXI.Container {
 
         this.levelText.text = 'Level ' + this.level;
         this.totalText.text = '( + ' + Math.round(this.level * this.effect * 100) + '% )';
-        this.costText.text = this.effectiveCost + '$'
+        this.costText.text = this.effectiveCost + '$';
+
+        if (arcInc.savegame.credits >= this.effectiveCost) {
+            this.costText.tint = 0x66ff66;
+        } else {
+            this.costText.tint = 0xff6666;
+        }
     }
 }

@@ -45,10 +45,7 @@ class UpgradeScene extends Scene {
 
             this.upgrades[upgradeName] = new Upgrade(upgradeName, upgradeValue.title, upgradeValue.cost, upgradeValue.effect, this.arcInc.savegame.upgrades[upgradeName]);
             this.upgrades[upgradeName].position.set(posX, posY);
-            this.upgrades[upgradeName].on('click', function(upgradeName){
 
-                arcInc.sceneManager.scenes['main'].objectStore.get('player').upgrade(upgradeName);
-            });
             this.addChild(this.upgrades[upgradeName]);
 
             if (posX <= 635) {
