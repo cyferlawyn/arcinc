@@ -43,6 +43,15 @@ class ArcInc {
             this.savegame = new Savegame();
             this.saveSavegame();
         }
+
+        // Fill update-induced gaps
+        if (!this.savegame.upgrades.hasOwnProperty('projectileSpread')) {
+            this.savegame.upgrades['projectileSpread'] = 0;
+        }
+
+        if (!this.savegame.hasOwnProperty('highestWave')) {
+            this.savegame['highestWave'] = 0;
+        }
     }
 
     saveSavegame() {

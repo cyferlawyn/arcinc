@@ -12,7 +12,7 @@ class MainScene extends Scene{
         this.now = Date.now();
         this.elapsed = Date.now();
         this.credits = 0;
-        this.wave = 0;
+        this.wave = Math.floor(arcInc.savegame.highestWave / 2);
         this.framesTillWave = 0;
 
         this.initContainer();
@@ -43,7 +43,7 @@ class MainScene extends Scene{
         player.currentStructure = player.maxStructure;
 
         this.credits = 0;
-        this.wave = 1;
+        this.wave = Math.floor(arcInc.savegame.highestWave / 2);
     }
 
     initContainer() {
@@ -262,23 +262,25 @@ class MainScene extends Scene{
                 enemiesRemaining++;
             }
         }
-        if (this.framesTillWave <= 0 || enemiesRemaining < 5) {
+        if (enemiesRemaining === 0 && arcInc.savegame.highestWave < this.wave) {
+            arcInc.savegame.highestWave = this.wave;
+        }
+        if (this.framesTillWave <= 0 || enemiesRemaining === 0) {
             this.wave++;
             this.framesTillWave = 600;
             this.spawner.spawnEnemyWave(this.wave);
         }
-
-        for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
-            let enemy = enemyContainer.children[enemyIndex];
-            if (enemy.visible) {
-                if (enemy.y > this.pixiApp.renderer.view.height) {
-                    enemy.visible = false;
-                } else {
-                    enemy.x += enemy.vx;
-                    enemy.y += enemy.vy;
+            for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
+                let enemy = enemyContainer.children[enemyIndex];
+                if (enemy.visible) {
+                    if (enemy.y > this.pixiApp.renderer.view.height) {
+                        enemy.visible = false;
+                    } else {
+                        enemy.x += enemy.vx;
+                        enemy.y += enemy.vy;
+                    }
                 }
             }
-        }
     }
 
     updateProjectiles() {

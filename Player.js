@@ -58,6 +58,12 @@ class Player extends PIXI.Sprite {
                 'effect': 0.05,
                 'cost': 100,
             },
+            'projectileSpread': {
+                'title': 'Projectile\n Spread',
+                'baseValue': 1,
+                'effect': 0.1,
+                'cost': 1000,
+            },
             'projectileAmount': {
                 'title': 'Projectile\n Amount',
                 'baseValue': 1,
@@ -86,6 +92,8 @@ class Player extends PIXI.Sprite {
         this.projectileDamage = this.upgrades['projectileDamage'].baseValue * (1 + this.upgrades['projectileDamage'].effect * this.arcInc.savegame.upgrades['projectileDamage']);
 
         this.projectileVelocity = this.upgrades['projectileVelocity'].baseValue * (1 + this.upgrades['projectileVelocity'].effect * this.arcInc.savegame.upgrades['projectileVelocity']);
+
+        this.projectileSpread = this.upgrades['projectileSpread'].baseValue * (1 + this.upgrades['projectileSpread'].effect * this.arcInc.savegame.upgrades['projectileSpread']);
 
         this.projectileAmount = this.upgrades['projectileAmount'].baseValue * (1 + this.upgrades['projectileAmount'].effect * this.arcInc.savegame.upgrades['projectileAmount']);
 
@@ -162,25 +170,7 @@ class Player extends PIXI.Sprite {
                 let x = Math.cos(angle) * radius + this.x + this.width/2;
                 let y = Math.sin(angle) * radius + this.y + this.height/2;
 
-                // calculate the velocity
-                let pX = this.x + this.width/2;
-                let pY = this.y + this.height/2;
-
-                let distanceX = x - pX;
-                let distanceY = y - pY;
-
-                // calculate the velocity vector length
-                let distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-
-                // normalize velocity vector length
-                /*
-                let vx = distanceX / distance;
-                let vy = distanceY / distance;
-
-                vx *= this.projectileVelocity;
-                vy *= this.projectileVelocity;
-                */
-                let vx = 0;
+                let vx = this.projectileSpread*2 / this.projectileAmount*i - this.projectileSpread;
                 let vy = -this.projectileVelocity;
 
                 this.spawner.spawnPlayerProjectile(x, y, vx, vy, this.projectileDamage);
