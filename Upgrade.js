@@ -64,6 +64,15 @@ class Upgrade extends PIXI.Container {
             }
         });
 
+        this.on('tap', function(event){
+            if (arcInc.savegame.credits >= event.currentTarget.effectiveCost) {
+                arcInc.savegame.credits -= event.currentTarget.effectiveCost;
+                arcInc.savegame.upgrades[event.currentTarget.name] += 1;
+                arcInc.saveSavegame();
+                arcInc.sceneManager.scenes['main'].objectStore.get('player').applyUpgrades();
+            }
+        });
+
         this.on('mouseover', function(event){
             event.currentTarget.outerBox.tint = 0xdddddd;
         });

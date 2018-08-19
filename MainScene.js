@@ -188,13 +188,19 @@ class MainScene extends Scene{
         guiContainer.addChild(structure);
         this.objectStore.put('structure', structure);
 
-        // Warp button
-        let warpButton = new Button(this.pixiApp.renderer.view.width - 55, this.pixiApp.renderer.view.height - 55, 50, 50);
-        warpButton.on('click', function() {
+        this.warpButtonHandler = function() {
             let mainScene = arcInc.sceneManager.scenes['main'];
             arcInc.savegame.credits += mainScene.credits;
             arcInc.saveSavegame();
             arcInc.sceneManager.loadScene('upgrade');
+        };
+        // Warp button
+        let warpButton = new Button(this.pixiApp.renderer.view.width - 55, this.pixiApp.renderer.view.height - 55, 50, 50);
+        warpButton.on('click', function() {
+            arcInc.sceneManager.scenes['main'].warpButtonHandler();
+        });
+        warpButton.on('tap', function() {
+            arcInc.sceneManager.scenes['main'].warpButtonHandler();
         });
         guiContainer.addChild(warpButton);
         this.objectStore.put('warpButton', warpButton);

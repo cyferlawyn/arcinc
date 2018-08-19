@@ -17,6 +17,11 @@ class ArcInc {
         );
 
         document.body.appendChild(this.pixiApp.view);
+
+        this.pixiApp.stage.interactive = true;
+        this.pixiApp.stage.on('touchmove', function(event) {
+            arcInc.pixiApp.renderer.plugins.interaction.mouse.global = event.data.global;
+        });
     }
 
     initScenes() {

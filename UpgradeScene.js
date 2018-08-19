@@ -21,6 +21,10 @@ class UpgradeScene extends Scene {
             arcInc.sceneManager.resetScene('main');
             arcInc.sceneManager.loadScene('main');
         });
+        warpButton.on('tap', function() {
+            arcInc.sceneManager.resetScene('main');
+            arcInc.sceneManager.loadScene('main');
+        });
         this.addChild(warpButton);
 
         // credits text
