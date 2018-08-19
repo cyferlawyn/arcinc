@@ -170,7 +170,11 @@ class Player extends PIXI.Sprite {
                 let x = Math.cos(angle) * radius + this.x + this.width/2;
                 let y = Math.sin(angle) * radius + this.y + this.height/2;
 
-                let vx = this.projectileSpread*2 / this.projectileAmount*i - this.projectileSpread;
+                let vx = 0;
+                if (this.projectileAmount > 1) {
+                    vx = this.projectileSpread / (this.projectileAmount - 1) * (i-1) - this.projectileSpread/2;
+                }
+                console.log(vx);
                 let vy = -this.projectileVelocity;
 
                 this.spawner.spawnPlayerProjectile(x, y, vx, vy, this.projectileDamage);
