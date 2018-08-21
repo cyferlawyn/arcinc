@@ -11,8 +11,10 @@ class MainScene extends Scene{
         this.spawner = new Spawner(this.pixiApp, this.objectStore);
         this.now = Date.now();
         this.elapsed = Date.now();
-        this.credits = 0;
-        this.wave = Math.floor(arcInc.savegame.highestWave / 2);
+        this.wave = arcInc.savegame.highestWave - 10;
+        if (this.wave < 0) {
+            this.wave = 0;
+        }
         this.framesTillWave = 0;
 
         this.initContainer();
@@ -42,8 +44,10 @@ class MainScene extends Scene{
         player.currentArmor = player.maxArmor;
         player.currentStructure = player.maxStructure;
 
-        this.credits = 0;
-        this.wave = Math.floor(arcInc.savegame.highestWave / 2);
+        this.wave = Math.floor(arcInc.savegame.highestWave - 10);
+        if (this.wave < 0) {
+            this.wave = 0;
+        }
     }
 
     initContainer() {
@@ -112,11 +116,6 @@ class MainScene extends Scene{
             stroke: 'black',
             strokeThickness: 3
         });
-
-        let credits = new PIXI.Text(this.credits, creditsStyle);
-        credits.position.set(5, 5);
-        guiContainer.addChild(credits);
-        this.objectStore.put('credits', credits);
 
         let fps = new PIXI.Text(this.pixiApp.ticker.FPS, creditsStyle);
         fps.position.set(this.pixiApp.screen.width/this.pixiApp.stage.scale.x - 125, 5);
@@ -187,23 +186,6 @@ class MainScene extends Scene{
         structure.position.set(this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-40, this.pixiApp.screen.height/this.pixiApp.stage.scale.y -23);
         guiContainer.addChild(structure);
         this.objectStore.put('structure', structure);
-
-        this.warpButtonHandler = function() {
-            let mainScene = arcInc.sceneManager.scenes['main'];
-            arcInc.savegame.credits += mainScene.credits;
-            arcInc.saveSavegame();
-            arcInc.sceneManager.loadScene('upgrade');
-        };
-        // Warp button
-        let warpButton = new Button(this.pixiApp.screen.width/this.pixiApp.stage.scale.x - 55, this.pixiApp.screen.height/this.pixiApp.stage.scale.y - 55, 50, 50);
-        warpButton.on('click', function() {
-            arcInc.sceneManager.scenes['main'].warpButtonHandler();
-        });
-        warpButton.on('tap', function() {
-            arcInc.sceneManager.scenes['main'].warpButtonHandler();
-        });
-        guiContainer.addChild(warpButton);
-        this.objectStore.put('warpButton', warpButton);
     }
 
     initPlayer() {
@@ -346,7 +328,8 @@ class MainScene extends Scene{
                         enemy.currentHealth -= projectile.damage;
                         projectile.visible = false;
                         if (enemy.currentHealth <= 0) {
-                            this.credits += enemyContainer.children[enemyIndex].credits;
+                            this.arcInc.savegame.credits += enemyContainer.children[enemyIndex].credits;
+                            document.getElementById('credits').innerText = 'Credits: ' + arcInc.savegame.credits + '$';
                             enemy.visible = false;
                         } else {
                             enemy.updateHealthBar();
@@ -371,22 +354,21 @@ class MainScene extends Scene{
     }
 
     updateGui() {
-        this.objectStore.get('credits').text = this.credits + '$';
         this.objectStore.get('fps').text = Math.round(this.pixiApp.ticker.FPS) + ' FPS';
         this.objectStore.get('wave').text = 'Wave: ' + this.wave;
         this.objectStore.get('wave').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('wave').width/2;
 
         let player = this.objectStore.get('player');
         this.objectStore.get('shieldBar').width = 200 * player.currentShield / player.maxShield;
-        this.objectStore.get('shield').text = '' + Math.floor(player.currentShield)  + ' / ' + player.maxShield;
+        this.objectStore.get('shield').text = '' + Math.floor(player.currentShield)  + ' / ' + Math.floor(player.maxShield);
         this.objectStore.get('shield').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('shield').width/2;
 
         this.objectStore.get('armorBar').width = 200 * player.currentArmor / player.maxArmor;
-        this.objectStore.get('armor').text = '' + Math.floor(player.currentArmor)  + ' / ' + player.maxArmor;
+        this.objectStore.get('armor').text = '' + Math.floor(player.currentArmor)  + ' / ' + Math.floor(player.maxArmor);
         this.objectStore.get('armor').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('armor').width/2;
 
         this.objectStore.get('structureBar').width = 200 * player.currentStructure / player.maxStructure;
-        this.objectStore.get('structure').text = '' + Math.floor(player.currentStructure)  + ' / ' + player.maxStructure;
+        this.objectStore.get('structure').text = '' + Math.floor(player.currentStructure)  + ' / ' + Math.floor(player.maxStructure);
         this.objectStore.get('structure').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('structure').width/2;
     }
 }

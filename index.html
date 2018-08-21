@@ -5,32 +5,6 @@
     <meta charset="utf-8">
     <title> ArcInc</title>
     <style>
-        /*
-
-
-
-        canvas {
-            position: absolute;
-            top:0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-
-            margin: auto;
-        }
-
-        h1 {
-            font: bold italic 2em/1em "Times New Roman", "MS Serif", "New York", serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            color: #0a82c7;
-            border-top: solid #0a82c7 medium;
-            border-bottom: dotted #0a82c7 thin;
-            width: 100%;
-        }
-        */
-
         .bg-chinese-violet {
             background-color: #855988;
         }
@@ -69,38 +43,22 @@
 <body class="bg-cetacean-blue">
 <div class="container-fluid text-light">
     <div class="row">
-        <div class="col-lg-12 col-xl-8 order-xl-1" id="canvas">
-
+        <div class="col-lg-12 col-xl-8 order-xl-1" id="container-center">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h3 class="text-left" id="credits">Credits: 0$</h3>
+                </div>
+                <div>
+                    <h3 class="pull-right">Arc-Inc v0.4</h3>
+                </div>
+            </div>
         </div>
 
-        <div class="col-lg-6 col-md-6 col-sm6 col-xl-2 order-xl-0 float-right text-right">
+        <div class="col-lg-6 col-md-6 col-sm6 col-xl-2 order-xl-0 float-right text-right" id="container-left">
             <h2>Station Modules</h2>
-            <div class="card bg-st-patricks-blue">
-                <h5 class="card-header bg-space-cadet">Solar Panels</h5>
-                <div class="card-body">
-                    <p class="card-text">Level 13 (746$ / s)</p>
-                    <a href="#" id="solarPanelsButton">Buy 1 (100$)</a>
-                </div>
-            </div>
-
-            <div class="card bg-st-patricks-blue">
-                <h5 class="card-header bg-space-cadet">Science Lab</h5>
-                <div class="card-body">
-                    <p class="card-text">Level 13 (746$ / s)</p>
-                    <a href="#" id="solarPanelsButton">Buy 1 (100$)</a>
-                </div>
-            </div>
-
-            <div class="card bg-st-patricks-blue">
-                <h5 class="card-header bg-space-cadet">Factory</h5>
-                <div class="card-body">
-                    <p class="card-text">Level 13 (746$ / s)</p>
-                    <a href="#" id="solarPanelsButton">Buy 1 (100$)</a>
-                </div>
-            </div>
         </div>
 
-        <div class="col-lg-6 col-md-6 col-sm6 col-xl-2 order-md-2">
+        <div class="col-lg-6 col-md-6 col-sm6 col-xl-2 order-md-2" id="container-right">
             <h2>Ship Upgrades</h2>
             <ul class="nav nav-pills">
                 <li class="nav-item">
@@ -112,87 +70,9 @@
             </ul>
 
             <div id="defense-upgrades-list">
-                <div class="card bg-st-patricks-blue">
-                    <h5 class="card-header bg-space-cadet">Movement Speed</h5>
-                    <div class="card-body">
-                        <p class="card-text">Level 13 (746$ / s)</p>
-                        <a href="#" id="solarPanelsButton">Buy 1 (100$)</a>
-                    </div>
-                </div>
-
-                <div class="card bg-st-patricks-blue">
-                    <h5 class="card-header bg-space-cadet">Shield Recharge</h5>
-                    <div class="card-body">
-                        <p class="card-text">Level 13 (746$ / s)</p>
-                        <a href="#" id="solarPanelsButton">Buy 1 (100$)</a>
-                    </div>
-                </div>
-
-                <div class="card bg-st-patricks-blue">
-                    <h5 class="card-header bg-space-cadet">Shield Amount</h5>
-                    <div class="card-body">
-                        <p class="card-text">Level 13 (746$ / s)</p>
-                        <a href="#" id="solarPanelsButton">Buy 1 (100$)</a>
-                    </div>
-                </div>
-
-                <div class="card bg-st-patricks-blue">
-                    <h5 class="card-header bg-space-cadet">Armor Amount</h5>
-                    <div class="card-body">
-                        <p class="card-text">Level 13 (746$ / s)</p>
-                        <a href="#" id="solarPanelsButton">Buy 1 (100$)</a>
-                    </div>
-                </div>
-
-                <div class="card bg-st-patricks-blue">
-                    <h5 class="card-header bg-space-cadet">Structure Amount</h5>
-                    <div class="card-body">
-                        <p class="card-text">Level 13 (746$ / s)</p>
-                        <a href="#" id="solarPanelsButton">Buy 1 (100$)</a>
-                    </div>
-                </div>
             </div>
 
             <div class="d-none" id="offense-upgrades-list">
-                <div class="card bg-st-patricks-blue">
-                    <h5 class="card-header bg-space-cadet">Rate of Fire</h5>
-                    <div class="card-body">
-                        <p class="card-text">Level 13 (746$ / s)</p>
-                        <a href="#" id="solarPanelsButton">Buy 1 (100$)</a>
-                    </div>
-                </div>
-
-                <div class="card bg-st-patricks-blue">
-                    <h5 class="card-header bg-space-cadet">Projectile Damage</h5>
-                    <div class="card-body">
-                        <p class="card-text">Level 13 (746$ / s)</p>
-                        <a href="#" id="solarPanelsButton">Buy 1 (100$)</a>
-                    </div>
-                </div>
-
-                <div class="card bg-st-patricks-blue">
-                    <h5 class="card-header bg-space-cadet">Projectile Velocity</h5>
-                    <div class="card-body">
-                        <p class="card-text">Level 13 (746$ / s)</p>
-                        <a href="#" id="solarPanelsButton">Buy 1 (100$)</a>
-                    </div>
-                </div>
-
-                <div class="card bg-st-patricks-blue">
-                    <h5 class="card-header bg-space-cadet">Projectile Spread</h5>
-                    <div class="card-body">
-                        <p class="card-text">Level 13 (746$ / s)</p>
-                        <a href="#" id="solarPanelsButton">Buy 1 (100$)</a>
-                    </div>
-                </div>
-
-                <div class="card bg-st-patricks-blue">
-                    <h5 class="card-header bg-space-cadet">Projectile Amount</h5>
-                    <div class="card-body">
-                        <p class="card-text">Level 13 (746$ / s)</p>
-                        <a href="#" id="solarPanelsButton">Buy 1 (100$)</a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

@@ -1,5 +1,6 @@
 class Savegame {
     constructor() {
+        this.version = 'v0.4';
         this.credits = 0;
         this.highestWave = 0;
         this.upgrades = {
@@ -17,7 +18,9 @@ class Savegame {
         this.modules = {
             'solarPanels': 0,
             'scienceLab': 0,
-            'factory': 0
+            'factory': 0,
+            'crewQuarters': 0,
+            'waterTreatmentPlant': 0
         }
     }
 }
