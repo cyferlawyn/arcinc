@@ -35,7 +35,7 @@ class Spawner {
             enemy = this.prepareEnemy();
         }
 
-        enemy.x = Math.random() * (this.pixiApp.renderer.view.width - enemy.width);
+        enemy.x = Math.random() * (this.pixiApp.screen.width/this.pixiApp.stage.scale.x - enemy.width);
         enemy.y = Math.random() * -500 - enemy.height;
         enemy.vy = 2;
         enemy.vx = Math.random() * 0.6 - 0.3;

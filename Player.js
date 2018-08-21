@@ -113,12 +113,12 @@ class Player extends PIXI.Sprite {
         let pY = this.y + this.height/2;
 
         // To prevent costly calculations in case the player is already very close to the cursor, start with a check
-        if (Math.abs(pX - mousePosition.x)  < this.movementSpeed && Math.abs(pY - mousePosition.y)  < this.movementSpeed) {
-            this.position.set(mousePosition.x - this.width/2, mousePosition.y - this.height/2);
+        if (Math.abs(pX - mousePosition.x/arcInc.pixiApp.stage.scale.x)  < this.movementSpeed && Math.abs(pY - mousePosition.y/arcInc.pixiApp.stage.scale.y)  < this.movementSpeed) {
+            this.position.set(mousePosition.x/arcInc.pixiApp.stage.scale.x - this.width/2, mousePosition.y/arcInc.pixiApp.stage.scale.y - this.height/2);
         } else {
 
-            let distanceX = mousePosition.x - pX;
-            let distanceY = mousePosition.y - pY;
+            let distanceX = mousePosition.x/arcInc.pixiApp.stage.scale.x - pX;
+            let distanceY = mousePosition.y/arcInc.pixiApp.stage.scale.y - pY;
 
             // calculate the velocity vector length
             let distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);

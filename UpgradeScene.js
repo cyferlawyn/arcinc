@@ -16,7 +16,7 @@ class UpgradeScene extends Scene {
         });
 
         // warp button
-        let warpButton = new Button(this.pixiApp.renderer.view.width - 55, this.pixiApp.renderer.view.height - 55, 50, 50);
+        let warpButton = new Button(this.pixiApp.screen.width/this.pixiApp.stage.scale.x - 55, this.pixiApp.screen.height/this.pixiApp.stage.scale.y - 55, 50, 50);
         warpButton.on('click', function() {
             arcInc.sceneManager.resetScene('main');
             arcInc.sceneManager.loadScene('main');
@@ -44,13 +44,13 @@ class UpgradeScene extends Scene {
         this.upgrades = {};
 
         for (let i = 0; i < Object.keys(player.upgrades).length; i++) {
-            let upgradeName = Object.keys(player.upgrades)[i];
-            let upgradeValue = player.upgrades[upgradeName];
+            let upgradeKey = Object.keys(player.upgrades)[i];
+            let upgradeValue = player.upgrades[upgradeKey];
 
-            this.upgrades[upgradeName] = new Upgrade(upgradeName, upgradeValue.title, upgradeValue.cost, upgradeValue.effect, this.arcInc.savegame.upgrades[upgradeName]);
-            this.upgrades[upgradeName].position.set(posX, posY);
+            this.upgrades[upgradeKey] = new Upgrade(upgradeKey, upgradeValue.title, upgradeValue.cost, upgradeValue.effect, this.arcInc.savegame.upgrades[upgradeKey]);
+            this.upgrades[upgradeKey].position.set(posX, posY);
 
-            this.addChild(this.upgrades[upgradeName]);
+            this.addChild(this.upgrades[upgradeKey]);
 
             if (posX <= 635) {
                 posX += 200;

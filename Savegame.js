@@ -14,5 +14,10 @@ class Savegame {
             'projectileSpread': 0,
             'rateOfFire': 0
         };
+        this.modules = {
+            'solarPanels': 0,
+            'scienceLab': 0,
+            'factory': 0
+        }
     }
 }

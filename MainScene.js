@@ -119,72 +119,72 @@ class MainScene extends Scene{
         this.objectStore.put('credits', credits);
 
         let fps = new PIXI.Text(this.pixiApp.ticker.FPS, creditsStyle);
-        fps.position.set(this.pixiApp.renderer.view.width - 125, 5);
+        fps.position.set(this.pixiApp.screen.width/this.pixiApp.stage.scale.x - 125, 5);
         guiContainer.addChild(fps);
         this.objectStore.put('fps', fps);
 
         let wave = new PIXI.Text('Wave: ' + this.wave, creditsStyle);
-        wave.position.set(this.pixiApp.renderer.view.width / 2 - wave.width/2, 5);
+        wave.position.set(this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.wave.width/2, 5);
         guiContainer.addChild(wave);
         this.objectStore.put('wave', wave);
 
         let shieldDamage = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/DamageBar.png"].texture);
-        shieldDamage.x = this.pixiApp.renderer.view.width/2-100;
-        shieldDamage.y = this.pixiApp.renderer.view.height -60;
+        shieldDamage.x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-100;
+        shieldDamage.y = this.pixiApp.screen.height/this.pixiApp.stage.scale.y -60;
         shieldDamage.width = 200;
         shieldDamage.height = 15;
         guiContainer.addChild(shieldDamage);
 
         let shieldBar = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/HealthBar.png"].texture);
-        shieldBar.x = this.pixiApp.renderer.view.width/2-100;
-        shieldBar.y = this.pixiApp.renderer.view.height -60;
+        shieldBar.x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-100;
+        shieldBar.y = this.pixiApp.screen.height/this.pixiApp.stage.scale.y -60;
         shieldBar.width = 200;
         shieldBar.height = 15;
         guiContainer.addChild(shieldBar);
         this.objectStore.put('shieldBar', shieldBar);
 
         let shield = new PIXI.Text('0 / 0', healthStyle);
-        shield.position.set(this.pixiApp.renderer.view.width/2-40, this.pixiApp.renderer.view.height -63);
+        shield.position.set(this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-40, this.pixiApp.screen.height/this.pixiApp.stage.scale.y -63);
         guiContainer.addChild(shield);
         this.objectStore.put('shield', shield);
 
         let armorDamage = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/DamageBar.png"].texture);
-        armorDamage.x = this.pixiApp.renderer.view.width/2-100;
-        armorDamage.y = this.pixiApp.renderer.view.height -40;
+        armorDamage.x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-100;
+        armorDamage.y = this.pixiApp.screen.height/this.pixiApp.stage.scale.y -40;
         armorDamage.width = 200;
         armorDamage.height = 15;
         guiContainer.addChild(armorDamage);
 
         let armorBar = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/HealthBar.png"].texture);
-        armorBar.x = this.pixiApp.renderer.view.width/2-100;
-        armorBar.y = this.pixiApp.renderer.view.height -40;
+        armorBar.x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-100;
+        armorBar.y = this.pixiApp.screen.height/this.pixiApp.stage.scale.y -40;
         armorBar.width = 200;
         armorBar.height = 15;
         guiContainer.addChild(armorBar);
         this.objectStore.put('armorBar', armorBar);
 
         let armor = new PIXI.Text('0 / 0', healthStyle);
-        armor.position.set(this.pixiApp.renderer.view.width/2-40, this.pixiApp.renderer.view.height -43);
+        armor.position.set(this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-40, this.pixiApp.screen.height/this.pixiApp.stage.scale.y -43);
         guiContainer.addChild(armor);
         this.objectStore.put('armor', armor);
 
         let structureDamage = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/DamageBar.png"].texture);
-        structureDamage.x = this.pixiApp.renderer.view.width/2-100;
-        structureDamage.y = this.pixiApp.renderer.view.height -20;
+        structureDamage.x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-100;
+        structureDamage.y = this.pixiApp.screen.height/this.pixiApp.stage.scale.y -20;
         structureDamage.width = 200;
         structureDamage.height = 15;
         guiContainer.addChild(structureDamage);
 
         let structureBar = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/HealthBar.png"].texture);
-        structureBar.x = this.pixiApp.renderer.view.width/2-100;
-        structureBar.y = this.pixiApp.renderer.view.height -20;
+        structureBar.x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-100;
+        structureBar.y = this.pixiApp.screen.height/this.pixiApp.stage.scale.y -20;
         structureBar.width = 200;
         structureBar.height = 15;
         guiContainer.addChild(structureBar);
         this.objectStore.put('structureBar', structureBar);
 
         let structure = new PIXI.Text('0 / 0', healthStyle);
-        structure.position.set(this.pixiApp.renderer.view.width/2-40, this.pixiApp.renderer.view.height -23);
+        structure.position.set(this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-40, this.pixiApp.screen.height/this.pixiApp.stage.scale.y -23);
         guiContainer.addChild(structure);
         this.objectStore.put('structure', structure);
 
@@ -195,7 +195,7 @@ class MainScene extends Scene{
             arcInc.sceneManager.loadScene('upgrade');
         };
         // Warp button
-        let warpButton = new Button(this.pixiApp.renderer.view.width - 55, this.pixiApp.renderer.view.height - 55, 50, 50);
+        let warpButton = new Button(this.pixiApp.screen.width/this.pixiApp.stage.scale.x - 55, this.pixiApp.screen.height/this.pixiApp.stage.scale.y - 55, 50, 50);
         warpButton.on('click', function() {
             arcInc.sceneManager.scenes['main'].warpButtonHandler();
         });
@@ -208,10 +208,15 @@ class MainScene extends Scene{
 
     initPlayer() {
         let playerContainer = this.objectStore.get('playerContainer');
-        let player = new Player(PIXI.Loader.shared.resources["assets/sprites/A5.png"].texture, this.arcInc, this.spawner, this.pixiApp.renderer.view.width, this.pixiApp.renderer.view.height);
+        let player = new Player(
+            PIXI.Loader.shared.resources["assets/sprites/A5.png"].texture,
+            this.arcInc,
+            this.spawner,
+            this.pixiApp.screen.width/this.pixiApp.stage.scale.x,
+            this.pixiApp.screen.height/this.pixiApp.stage.scale.y);
         player.scale.set(0.5);
-        player.x = this.pixiApp.renderer.view.width/2 - player.width/2;
-        player.y = this.pixiApp.renderer.view.height - player.height;
+        player.x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - player.width/2;
+        player.y = this.pixiApp.screen.height/this.pixiApp.stage.scale.y - player.height;
         playerContainer.addChild(player);
         this.objectStore.put('player', player);
     }
@@ -279,7 +284,7 @@ class MainScene extends Scene{
             for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
                 let enemy = enemyContainer.children[enemyIndex];
                 if (enemy.visible) {
-                    if (enemy.y > this.pixiApp.renderer.view.height) {
+                    if (enemy.y > this.pixiApp.screen.height/this.pixiApp.stage.scale.y) {
                         enemy.visible = false;
                     } else {
                         enemy.x += enemy.vx;
@@ -310,7 +315,7 @@ class MainScene extends Scene{
         for (let enemyProjectileIndex = enemyProjectileContainer.children.length - 1; enemyProjectileIndex >= 0; enemyProjectileIndex--) {
             let enemyProjectile = enemyProjectileContainer.children[enemyProjectileIndex];
             if (enemyProjectile.visible) {
-                if (enemyProjectile.y > this.pixiApp.renderer.view.height) {
+                if (enemyProjectile.y > this.pixiApp.screen.height/this.pixiApp.stage.scale.y) {
                     enemyProjectile.visible = false;
                 } else {
                     enemyProjectile.x += enemyProjectile.vx;
@@ -369,19 +374,19 @@ class MainScene extends Scene{
         this.objectStore.get('credits').text = this.credits + '$';
         this.objectStore.get('fps').text = Math.round(this.pixiApp.ticker.FPS) + ' FPS';
         this.objectStore.get('wave').text = 'Wave: ' + this.wave;
-        this.objectStore.get('wave').x = this.pixiApp.renderer.view.width/2 - this.objectStore.get('wave').width/2;
+        this.objectStore.get('wave').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('wave').width/2;
 
         let player = this.objectStore.get('player');
         this.objectStore.get('shieldBar').width = 200 * player.currentShield / player.maxShield;
         this.objectStore.get('shield').text = '' + Math.floor(player.currentShield)  + ' / ' + player.maxShield;
-        this.objectStore.get('shield').x = this.pixiApp.renderer.view.width/2 - this.objectStore.get('shield').width/2;
+        this.objectStore.get('shield').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('shield').width/2;
 
         this.objectStore.get('armorBar').width = 200 * player.currentArmor / player.maxArmor;
         this.objectStore.get('armor').text = '' + Math.floor(player.currentArmor)  + ' / ' + player.maxArmor;
-        this.objectStore.get('armor').x = this.pixiApp.renderer.view.width/2 - this.objectStore.get('armor').width/2;
+        this.objectStore.get('armor').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('armor').width/2;
 
         this.objectStore.get('structureBar').width = 200 * player.currentStructure / player.maxStructure;
         this.objectStore.get('structure').text = '' + Math.floor(player.currentStructure)  + ' / ' + player.maxStructure;
-        this.objectStore.get('structure').x = this.pixiApp.renderer.view.width/2 - this.objectStore.get('structure').width/2;
+        this.objectStore.get('structure').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('structure').width/2;
     }
 }
