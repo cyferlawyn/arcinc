@@ -25,6 +25,11 @@ class Station {
                 'title': 'Water Treatment Plant',
                 'cost': 1400000,
                 'effect': 1327
+            },
+            'teleporter': {
+                'title': 'Teleporter',
+                'cost': 15000000,
+                'effect': 6428
             }
         };
     }
