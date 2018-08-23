@@ -15,9 +15,13 @@ class Spawner {
     }
 
     spawnEnemyWave(wave) {
+        let amountSpawned = 0;
         for (let i = 0; i < Math.ceil(0.2 * wave + 10); i++) {
             this.spawnRandomEnemy(wave);
+            amountSpawned++;
         }
+
+        return amountSpawned;
     }
 
     spawnRandomEnemy(wave) {
@@ -48,6 +52,7 @@ class Spawner {
         enemy.tint = this.enemyColors[Math.floor(Math.random()*this.enemyColors.length)];
 
         enemy.updateHealthBar();
+        enemy.wave = wave;
         enemy.visible = true;
     }
 

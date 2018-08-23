@@ -91,12 +91,34 @@
 <body class="bg-cetacean-blue">
 <div class="container-fluid text-light">
     <div class="row">
-        <div class="col-8" id="container-left"></div>
+        <div class="col-8" id="container-left">
+            <div id="login-screen" class="d-none">
+                <h1>Login</h1>
+                <p><strong>No need to freak out</strong>, this is just for cloud save / chat /leaderboards and takes five seconds to set up</p>
+                <p>and then you will most likely never see this screen again</p>
+                <p>Neither an email-address nor a particular strong password is required, just make sure</p>
+                <p>that you can remember it and that it is not used anywhere else</p>
+                <p>The <strong>username</strong> will be your <strong>chat name</strong> as well, so keep it appropriate please</p>
+                <form>
+                    <div class="form-group">
+                        <label for="username-input">Username</label>
+                        <input type="text" class="form-control" id="username-input" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password-input">Password</label>
+                        <input type="password" class="form-control" id="password-input" />
+                    </div>
+                </form>
+                <p id="login-feedback"> </p>
+                <button type="Button" class="btn btn-primary" id="register-button">Register</button>
+                <button type="Button" class="btn btn-primary" id="login-button">Login</button>
+            </div>
+        </div>
 
         <div class="col-4" id="container-right">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h5 id="credits">Credits: 0$</h5>
+                    <h5 id="credits"> </h5>
                 </div>
                 <div>
                     <h5>Arc-Inc v0.5</h5>
@@ -111,11 +133,12 @@
 
 <!-- Scripts -->
 <script src="lib/pixi.min.js"></script>
+<script src="lib/sha256.js"></script>
 <script src="AssetLoader.js"></script>
+<script src="Backend.js"></script>
 <script src="ArcInc.js"></script>
 <script src="Savegame.js"></script>
 <script src="Station.js"></script>
-<script src="Upgrade.js"></script>
 <script src="Button.js"></script>
 <script src="Player.js"></script>
 <script src="Enemy.js"></script>
@@ -123,7 +146,6 @@
 <script src="ObjectStore.js"></script>
 <script src="Scene.js"></script>
 <script src="MainScene.js"></script>
-<script src="UpgradeScene.js"></script>
 <script src="SceneManager.js"></script>
 </body>
 </html>

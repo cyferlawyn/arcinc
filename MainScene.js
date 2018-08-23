@@ -11,7 +11,7 @@ class MainScene extends Scene{
         this.spawner = new Spawner(this.pixiApp, this.objectStore);
         this.now = Date.now();
         this.elapsed = Date.now();
-        this.wave = arcInc.savegame.highestWave - 10;
+        this.wave = arcInc.savegame.highestWave - 11;
         if (this.wave < 0) {
             this.wave = 0;
         }
@@ -103,7 +103,7 @@ class MainScene extends Scene{
 
         let creditsStyle = new PIXI.TextStyle({
             fontFamily: "Arial",
-            fontSize: 36,
+            fontSize: 24,
             fill: "white",
             stroke: 'black',
             strokeThickness: 4
@@ -249,19 +249,13 @@ class MainScene extends Scene{
         this.framesTillWave--;
         let enemyContainer = this.objectStore.get('enemyContainer');
 
-        let enemiesRemaining = 0;
-        for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
-            if (enemyContainer.children[enemyIndex].visible) {
-                enemiesRemaining++;
-            }
-        }
-        if (enemiesRemaining === 0 && arcInc.savegame.highestWave < this.wave) {
+        if (this.remainingEnemies === 0 && arcInc.savegame.highestWave < this.wave) {
             arcInc.savegame.highestWave = this.wave;
         }
-        if (this.framesTillWave <= 0 || enemiesRemaining === 0) {
+        if (this.framesTillWave <= 0 || this.remainingEnemies === 0) {
             this.wave++;
             this.framesTillWave = 600;
-            this.spawner.spawnEnemyWave(this.wave);
+            this.remainingEnemies = this.spawner.spawnEnemyWave(this.wave);
         }
             for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
                 let enemy = enemyContainer.children[enemyIndex];
@@ -271,6 +265,10 @@ class MainScene extends Scene{
                     } else {
                         enemy.x += enemy.vx;
                         enemy.y += enemy.vy;
+
+                        if (enemy.x <= 0 || enemy.x + enemy.width >= this.boundaryWidth) {
+                            enemy.xv = -enemy.xv;
+                        }
                     }
                 }
             }
@@ -330,6 +328,9 @@ class MainScene extends Scene{
                         if (enemy.currentHealth <= 0) {
                             this.arcInc.savegame.credits += enemyContainer.children[enemyIndex].credits;
                             document.getElementById('credits').innerText = 'Credits: ' + arcInc.savegame.credits + '$';
+                            if (enemy.wave === this.wave) {
+                                this.remainingEnemies--;
+                            }
                             enemy.visible = false;
                         } else {
                             enemy.updateHealthBar();
@@ -355,7 +356,7 @@ class MainScene extends Scene{
 
     updateGui() {
         this.objectStore.get('fps').text = Math.round(this.pixiApp.ticker.FPS) + ' FPS';
-        this.objectStore.get('wave').text = 'Wave: ' + this.wave;
+        this.objectStore.get('wave').text = 'Wave: ' + this.wave + ' [' + this.remainingEnemies + ' remaining]';
         this.objectStore.get('wave').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('wave').width/2;
 
         let player = this.objectStore.get('player');

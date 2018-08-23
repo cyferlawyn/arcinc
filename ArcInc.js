@@ -1,5 +1,64 @@
 class ArcInc {
     init() {
+        this.backend = new Backend();
+
+        this.authToken = localStorage.getItem('authToken');
+        this.initLogin(this.authToken === null);
+    }
+
+    initLogin(loginRequired) {
+        if (loginRequired) {
+            let loginScreen = document.getElementById('login-screen');
+            loginScreen.classList.remove('d-none');
+
+            let registerButton = document.getElementById('register-button');
+            registerButton.addEventListener('click', function() {
+                let usernameInput = document.getElementById('username-input');
+                let passwordInput = document.getElementById('password-input');
+
+                let sha256 = new jsSHA('SHA-256', 'TEXT');
+                sha256.update(passwordInput.value);
+                let passwordHash = sha256.getHash("HEX");
+
+                arcInc.backend.createUser(usernameInput.value, passwordHash, arcInc.loginSucceeded, arcInc.registerFailed);
+            });
+
+            let loginButton = document.getElementById('login-button');
+            loginButton.addEventListener('click', function() {
+                let usernameInput = document.getElementById('username-input');
+                let passwordInput = document.getElementById('password-input');
+
+                let sha256 = new jsSHA('SHA-256', 'TEXT');
+                sha256.update(passwordInput.value);
+                let passwordHash = sha256.getHash("HEX");
+
+                arcInc.backend.loginUser(usernameInput.value, passwordHash, arcInc.loginSucceeded, arcInc.loginFailed);
+            });
+        } else {
+            this.loggedIn();
+        }
+    }
+
+    loginSucceeded(authToken) {
+        localStorage.setItem('authToken', authToken);
+        arcInc.authToken = authToken;
+        arcInc.loggedIn();
+    }
+
+    registerFailed() {
+        let loginFeedback = document.getElementById('login-feedback');
+        loginFeedback.innerText = "Username already taken";
+    }
+
+    loginFailed() {
+        let loginFeedback = document.getElementById('login-feedback');
+        loginFeedback.innerText = "Password is either wrong or user does not exist";
+    }
+
+    loggedIn() {
+        let loginScreen = document.getElementById('login-screen');
+        loginScreen.classList.add('d-none');
+
         this.initPixiApp();
         this.initSavegame();
         this.initKeyboard();
@@ -7,7 +66,8 @@ class ArcInc {
         this.initStation();
         this.initPage();
 
-        window.setInterval(arcInc.saveSavegame, 5000);
+        window.setInterval(arcInc.saveSavegame, 60000);
+        window.setInterval(this.updateLeaderboard(), 10000);
     }
 
     initPixiApp() {
@@ -49,181 +109,93 @@ class ArcInc {
 
     initChat(parent) {
         let chat = this.initCategoryCard(parent, 'chat', 'Chat');
-        let chatHistory = [
-            {
-                'time': '20:24',
-                'name': 'JohnDoe',
-                'text': 'First! :D'
-            },
-            {
-                'time': '20:25',
-                'name': 'WhinyUser',
-                'text': 'Damn :( I was supposed to be THE ONE. My life has no meaning anymore...'
-            },
-            {
-                'time': '20:26',
-                'name': 'CountVonCount',
-                'text': '1'
-            },
-            {
-                'time': '20:26',
-                'name': 'CountVonCount',
-                'text': '2'
-            },
-            {
-                'time': '20:26',
-                'name': 'CountVonCount',
-                'text': '3'
-            },
-            {
-                'time': '20:26',
-                'name': 'CountVonCount',
-                'text': '4'
-            },
-            {
-                'time': '20:26',
-                'name': 'CountVonCount',
-                'text': '5'
-            },
-            {
-                'time': '20:26',
-                'name': 'CountVonCount',
-                'text': '6'
-            },
-            {
-                'time': '20:26',
-                'name': 'CountVonCount',
-                'text': '7'
-            },
-            {
-                'time': '20:26',
-                'name': 'CountVonCount',
-                'text': '8'
-            }
-        ];
 
-        let chatLog = document.createElement('div');
-        chatLog.style.maxHeight = '200px';
-        chatLog.style.overflow = 'auto';
-        chatLog.style.margin = '5px 0px';
-        chat.appendChild(chatLog);
+        this.chatLog = document.createElement('div');
+        this.chatLog.style.maxHeight = '200px';
+        this.chatLog.style.overflow = 'auto';
+        this.chatLog.style.margin = '5px 0px';
+        chat.appendChild(this.chatLog);
 
         let table = document.createElement('table');
         table.classList.add('table-sm', 'text-light', 'table-dark', 'bg-st-patricks-blue');
-        chatLog.appendChild(table);
+        this.chatLog.appendChild(table);
 
-        let tableBody = document.createElement('tbody');
-        table.appendChild(tableBody);
+        this.chatEntries = document.createElement('tbody');
+        table.appendChild(this.chatEntries);
 
-        for (let i = 0; i < chatHistory.length; i++){
+        arcInc.backend.receiveChat(function(time, name, text) {
             let tableRow = document.createElement('tr');
-            tableBody.appendChild(tableRow);
+            arcInc.chatEntries.appendChild(tableRow);
 
-            let time = document.createElement('td');
-            time.textContent = chatHistory[i].time;
-            tableRow.appendChild(time);
+            let timeTableData = document.createElement('td');
+            timeTableData.textContent = time;
+            tableRow.appendChild(timeTableData);
 
-            let name = document.createElement('td');
-            name.textContent = chatHistory[i].name;
-            tableRow.appendChild(name);
+            let nameTableData = document.createElement('td');
+            nameTableData.textContent = name;
+            tableRow.appendChild(nameTableData);
 
-            let text = document.createElement('td');
-            text.textContent = chatHistory[i].text;
-            tableRow.appendChild(text);
-        }
+            let textTableData = document.createElement('td');
+            textTableData.textContent = text;
+            tableRow.appendChild(textTableData);
+
+            // Scroll into view
+            arcInc.chatLog.scrollTop = chat.scrollHeight;
+        });
 
         let input = document.createElement('input');
         input.classList.add('form-control', 'form-control-sm');
         input.type = 'text';
         input.addEventListener('keypress', function(event) {
-            if (event.keyCode === 13 && event.target.value.length > 0) {
+            let text = event.target.value;
+            if (event.keyCode === 13 && text.length > 0) {
+                arcInc.backend.sendChat(arcInc.authToken, text);
                 event.target.value = '';
             }
         });
         chat.appendChild(input);
-
-        // Scroll into view
-        chatLog.scrollTop = chat.scrollHeight;
     }
 
     initLeaderboard(parent) {
         let leaderboard = this.initCategoryCard(parent, 'leaderboard', 'Leaderboard');
-        let leaderboardData = [
-            {
-                'pos': 1,
-                'name': 'JohnDoe',
-                'wave': 1337
-            },
-            {
-                'pos': 2,
-                'name': 'WhinyUser',
-                'wave': 1336
-            },
-            {
-                'pos': 3,
-                'name': 'CountVonCount',
-                'wave': 1234
-            },
-            {
-                'pos': 4,
-                'name': 'RandomScrub1',
-                'wave': 110
-            },
-            {
-                'pos': 5,
-                'name': 'RandomScrub2',
-                'wave': 105
-            },
-            {
-                'pos': 6,
-                'name': 'RandomScrub3',
-                'wave': 103
-            },
-            {
-                'pos': 7,
-                'name': 'RandomScrub4',
-                'wave': 102
-            },
-            {
-                'pos': 8,
-                'name': 'RandomScrub5',
-                'wave': 100
-            },
-            {
-                'pos': 9,
-                'name': 'RandomScrub6',
-                'wave': 97
-            },
-            {
-                'pos': 10,
-                'name': 'RandomScrub7',
-                'wave': 95
-            },
-        ];
+
+        let scrollBlock = document.createElement('div');
+        scrollBlock.style.maxHeight = '200px';
+        scrollBlock.style.overflow = 'auto';
+        scrollBlock.style.margin = '5px 0px';
+        leaderboard.appendChild(scrollBlock);
 
         let table = document.createElement('table');
         table.classList.add('table-sm', 'text-light', 'table-dark', 'bg-st-patricks-blue');
-        leaderboard.appendChild(table);
+        scrollBlock.appendChild(table);
 
-        let tableBody = document.createElement('tbody');
-        table.appendChild(tableBody);
+        this.leaderboardTableBody = document.createElement('tbody');
+        table.appendChild(this.leaderboardTableBody);
+    }
 
-        for (let i = 0; i < leaderboardData.length; i++){
-            let tableRow = document.createElement('tr');
-            tableBody.appendChild(tableRow);
+    updateLeaderboard() {
+        this.backend.getLeaderboard(function(leaderboardData) {
+            while( arcInc.leaderboardTableBody.hasChildNodes() ){
+                arcInc.leaderboardTableBody.removeChild(arcInc.leaderboardTableBody.lastChild);
+            }
 
-            let pos = document.createElement('td');
-            pos.textContent = '#' + leaderboardData[i].pos;
-            tableRow.appendChild(pos);
+            for (let i = 0; i < leaderboardData.length; i++) {
+                let tableRow = document.createElement('tr');
+                arcInc.leaderboardTableBody.appendChild(tableRow);
 
-            let name = document.createElement('td');
-            name.textContent = leaderboardData[i].name;
-            tableRow.appendChild(name);
+                let pos = document.createElement('td');
+                pos.textContent = '#' + leaderboardData[i].rank;
+                tableRow.appendChild(pos);
 
-            let wave = document.createElement('td');
-            wave.textContent = 'Wave: ' + leaderboardData[i].wave;
-            tableRow.appendChild(wave);
-        }
+                let name = document.createElement('td');
+                name.textContent = leaderboardData[i].name;
+                tableRow.appendChild(name);
+
+                let wave = document.createElement('td');
+                wave.textContent = 'Wave: ' + leaderboardData[i].highestWave;
+                tableRow.appendChild(wave);
+            }
+        })
     }
 
     initStationModules(parent) {
@@ -245,17 +217,17 @@ class ArcInc {
                 key,
                 value.title,
                 'Level ' + this.savegame.modules[key] + ' (' + Math.floor(this.savegame.modules[key] * value.effect) + '$ / s)',
-                'Buy 1 (' + Math.ceil(value.cost * Math.pow(1.05, this.savegame.modules[key])) + '$)',
+                'Buy 1 (' + Math.ceil(value.cost * Math.pow(1.07, this.savegame.modules[key])) + '$)',
                 function (event) {
                     let key = event.currentTarget.name;
-                    let effectiveCost = Math.ceil(value.cost * Math.pow(1.05, arcInc.savegame.modules[key]));
+                    let effectiveCost = Math.ceil(value.cost * Math.pow(1.07, arcInc.savegame.modules[key]));
                     if (arcInc.savegame.credits >= effectiveCost) {
                         arcInc.savegame.credits -= effectiveCost;
                         arcInc.savegame.modules[key]++;
                         arcInc.saveSavegame();
 
                         document.getElementById(key + '-card-text').innerText = 'Level ' + arcInc.savegame.modules[key] + ' (' + Math.floor(arcInc.savegame.modules[key] * value.effect) + '$ / s)';
-                        document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + Math.ceil(value.cost * Math.pow(1.05, arcInc.savegame.modules[key])) + '$)';
+                        document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + Math.ceil(value.cost * Math.pow(1.07, arcInc.savegame.modules[key])) + '$)';
                     }
                 });
         }
@@ -280,10 +252,10 @@ class ArcInc {
                 key,
                 value.title,
                 'Level ' + this.savegame.upgrades[key] + ' (+' + Math.floor(this.savegame.upgrades[key] * value.effect * 100) + '%)',
-                'Buy 1 (' + Math.ceil(value.cost * Math.pow(1.05, this.savegame.upgrades[key])) + '$)',
+                'Buy 1 (' + Math.ceil(value.cost * Math.pow(1.07, this.savegame.upgrades[key])) + '$)',
                 function (event) {
                     let key = event.currentTarget.name;
-                    let effectiveCost = Math.ceil(value.cost * Math.pow(1.05, arcInc.savegame.upgrades[key]));
+                    let effectiveCost = Math.ceil(value.cost * Math.pow(1.07, arcInc.savegame.upgrades[key]));
                     if (arcInc.savegame.credits >= effectiveCost) {
                         arcInc.savegame.credits -= effectiveCost;
                         arcInc.savegame.upgrades[key]++;
@@ -291,7 +263,7 @@ class ArcInc {
                         arcInc.sceneManager.scenes['main'].objectStore.get('player').applyUpgrades();
 
                         document.getElementById(key + '-card-text').innerText = 'Level ' + arcInc.savegame.upgrades[key] + ' (+' + Math.floor(arcInc.savegame.upgrades[key] * value.effect * 100) + '%)';
-                        document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + Math.ceil(value.cost * Math.pow(1.05, arcInc.savegame.upgrades[key])) + '$)';
+                        document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + Math.ceil(value.cost * Math.pow(1.07, arcInc.savegame.upgrades[key])) + '$)';
                     }
                 });
         }
@@ -367,7 +339,6 @@ class ArcInc {
     initScenes() {
         this.sceneManager = new SceneManager(this);
         this.sceneManager.registerScene(new MainScene(this));
-        this.sceneManager.registerScene(new UpgradeScene(this));
         this.sceneManager.loadScene('main');
     }
 
@@ -386,45 +357,15 @@ class ArcInc {
 
     initSavegame() {
         this.savegame = JSON.parse(localStorage.getItem('savegame'));
-        if (this.savegame === null) {
+        if (this.savegame === null || this.savegame.version !== 'v0.5') {
             this.savegame = new Savegame();
             this.saveSavegame();
-        }
-
-        // Fill update-induced gaps
-        if (!this.savegame.upgrades.hasOwnProperty('projectileSpread')) {
-            this.savegame.upgrades['projectileSpread'] = 0;
-        }
-
-        if (!this.savegame.hasOwnProperty('highestWave')) {
-            this.savegame['highestWave'] = 0;
-        }
-
-        if (!this.savegame.hasOwnProperty('modules')) {
-            this.savegame.modules = {
-                'solarPanels': 0,
-                'scienceLab': 0,
-                'factory': 0,
-                'crewQuarters': 0,
-                'waterTreatmentPlant': 0,
-                'teleporter': 0
-            };
-        }
-
-        if (!this.savegame.modules.hasOwnProperty('crewQuarters')) {
-            this.savegame.modules['crewQuarters'] = 0;
-        }
-
-        if (!this.savegame.modules.hasOwnProperty('waterTreatmentPlant')) {
-            this.savegame.modules['waterTreatmentPlant'] = 0;
-        }
-
-        if (!this.savegame.modules.hasOwnProperty('teleporter')) {
-            this.savegame.modules['teleporter'] = 0;
         }
     }
 
     saveSavegame() {
-        localStorage.setItem('savegame', JSON.stringify(arcInc.savegame));
+        let savegameString = JSON.stringify(arcInc.savegame);
+        localStorage.setItem('savegame', savegameString);
+        arcInc.backend.saveUser(arcInc.authToken, savegameString);
     }
 }
