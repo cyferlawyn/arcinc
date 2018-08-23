@@ -66,8 +66,8 @@ class ArcInc {
         this.initStation();
         this.initPage();
 
-        window.setInterval(arcInc.saveSavegame, 60000);
-        window.setInterval(this.updateLeaderboard(), 10000);
+        window.setInterval(arcInc.cloudSave, 60000);
+        window.setInterval(arcInc.updateLeaderboard, 10000);
     }
 
     initPixiApp() {
@@ -364,6 +364,11 @@ class ArcInc {
     }
 
     saveSavegame() {
+        let savegameString = JSON.stringify(arcInc.savegame);
+        localStorage.setItem('savegame', savegameString);
+    }
+
+    cloudSave() {
         let savegameString = JSON.stringify(arcInc.savegame);
         localStorage.setItem('savegame', savegameString);
         arcInc.backend.saveUser(arcInc.authToken, savegameString);

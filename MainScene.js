@@ -251,6 +251,7 @@ class MainScene extends Scene{
 
         if (this.remainingEnemies === 0 && arcInc.savegame.highestWave < this.wave) {
             arcInc.savegame.highestWave = this.wave;
+            arcInc.saveSavegame();
         }
         if (this.framesTillWave <= 0 || this.remainingEnemies === 0) {
             this.wave++;
