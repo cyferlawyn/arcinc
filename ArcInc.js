@@ -112,7 +112,9 @@ class ArcInc {
 
         this.chatLog = document.createElement('div');
         this.chatLog.style.maxHeight = '200px';
-        this.chatLog.style.overflow = 'auto';
+        this.chatLog.style.height = '200px';
+        this.chatLog.style.overflowX = 'none';
+        this.chatLog.style.overflowY = 'auto';
         this.chatLog.style.margin = '5px 0px';
         chat.appendChild(this.chatLog);
 
@@ -149,7 +151,14 @@ class ArcInc {
         input.addEventListener('keypress', function(event) {
             let text = event.target.value;
             if (event.keyCode === 13 && text.length > 0) {
-                arcInc.backend.sendChat(arcInc.authToken, text);
+
+                if (text === '/cls') {
+                    while( arcInc.chatEntries.hasChildNodes() ){
+                        arcInc.chatEntries.removeChild(arcInc.chatEntries.lastChild);
+                    }
+                } else {
+                    arcInc.backend.sendChat(arcInc.authToken, text);
+                }
                 event.target.value = '';
             }
         });
@@ -161,6 +170,7 @@ class ArcInc {
 
         let scrollBlock = document.createElement('div');
         scrollBlock.style.maxHeight = '200px';
+        scrollBlock.style.height = '200px';
         scrollBlock.style.overflow = 'auto';
         scrollBlock.style.margin = '5px 0px';
         leaderboard.appendChild(scrollBlock);

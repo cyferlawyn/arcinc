@@ -16,7 +16,7 @@ class Spawner {
 
     spawnEnemyWave(wave) {
         let amountSpawned = 0;
-        for (let i = 0; i < Math.ceil(0.2 * wave + 10); i++) {
+        for (let i = 0; i < Math.ceil(0.2 * wave + 4); i++) {
             this.spawnRandomEnemy(wave);
             amountSpawned++;
         }
@@ -42,7 +42,7 @@ class Spawner {
         enemy.x = Math.random() * (this.pixiApp.screen.width/this.pixiApp.stage.scale.x - enemy.width);
         enemy.y = Math.random() * -500 - enemy.height;
         enemy.vy = 2;
-        enemy.vx = Math.random() * 0.6 - 0.3;
+        enemy.vx = Math.random() * 2 - 1;
 
         enemy.maxHealth = Math.floor(5 * Math.pow(1.07, wave));
         enemy.currentHealth = enemy.maxHealth;

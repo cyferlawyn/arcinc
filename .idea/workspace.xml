@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fa763ac8-e85a-4bd4-9465-7476785b5cd2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/ArcInc.js" beforeDir="false" afterPath="$PROJECT_DIR$/ArcInc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MainScene.js" beforeDir="false" afterPath="$PROJECT_DIR$/MainScene.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spawner.js" beforeDir="false" afterPath="$PROJECT_DIR$/Spawner.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -47,13 +47,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="html" value="3295" />
-          <entry key="js" value="33080" />
+          <entry key="js" value="33181" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="3295" />
-          <entry key="JavaScript" value="33080" />
+          <entry key="JavaScript" value="33181" />
         </counts>
       </usages-collector>
     </session>
@@ -63,7 +63,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MainScene.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="342">
@@ -84,8 +84,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Spawner.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="69" column="13" lean-forward="true" selection-start-line="69" selection-start-column="13" selection-end-line="69" selection-end-column="13" />
+            <state relative-caret-position="354">
+              <caret line="43" column="21" lean-forward="true" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -122,11 +122,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ArcInc.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
-              <caret line="135" column="48" lean-forward="true" selection-start-line="135" selection-start-column="48" selection-end-line="135" selection-end-column="48" />
+            <state relative-caret-position="285">
+              <caret line="167" column="4" selection-start-line="167" selection-start-column="4" selection-end-line="167" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -152,7 +152,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Wave</find>
       <find>engag</find>
       <find>60</find>
       <find>war</find>
@@ -182,6 +181,7 @@
       <find>cost</find>
       <find>*=</find>
       <find>1.05</find>
+      <find>removech</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -206,14 +206,14 @@
         <option value="$PROJECT_DIR$/Upgrade.js" />
         <option value="$PROJECT_DIR$/Planet.js" />
         <option value="$PROJECT_DIR$/UpgradeScene.js" />
-        <option value="$PROJECT_DIR$/Spawner.js" />
         <option value="$PROJECT_DIR$/Player.js" />
         <option value="$PROJECT_DIR$/Savegame.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/Backend.js" />
         <option value="$PROJECT_DIR$/Station.js" />
-        <option value="$PROJECT_DIR$/ArcInc.js" />
         <option value="$PROJECT_DIR$/MainScene.js" />
+        <option value="$PROJECT_DIR$/Spawner.js" />
+        <option value="$PROJECT_DIR$/ArcInc.js" />
       </list>
     </option>
   </component>
@@ -318,16 +318,15 @@
       <option name="presentableId" value="Default" />
       <updated>1534176771890</updated>
       <workItem from="1534176773100" duration="30551000" />
-      <workItem from="1534228229144" duration="166802000" />
+      <workItem from="1534228229144" duration="169111000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="197353000" />
+    <option name="totallyTimeSpent" value="199662000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5292842" visible="true" weight="0.18123667" />
       <window_info id="Favorites" order="1" sideWeight="0.47071582" side_tool="true" weight="0.18123667" />
@@ -514,20 +513,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ArcInc.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="135" column="48" lean-forward="true" selection-start-line="135" selection-start-column="48" selection-end-line="135" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Spawner.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="69" column="13" lean-forward="true" selection-start-line="69" selection-start-column="13" selection-end-line="69" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Player.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3680">
@@ -539,6 +524,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
           <caret line="273" lean-forward="true" selection-start-line="273" selection-end-line="273" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Spawner.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="354">
+          <caret line="43" column="21" lean-forward="true" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ArcInc.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="167" column="4" selection-start-line="167" selection-start-column="4" selection-end-line="167" selection-end-column="4" />
         </state>
       </provider>
     </entry>
