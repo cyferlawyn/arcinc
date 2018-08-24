@@ -394,10 +394,20 @@ class ArcInc {
 
     initSavegame() {
         this.savegame = JSON.parse(localStorage.getItem('savegame'));
-        if (this.savegame === null || this.savegame.version !== 'v0.5') {
+        if (this.savegame === null) {
             this.savegame = new Savegame();
-            this.saveSavegame();
+        } else {
+            if (this.savegame.version === 'v0.5') {
+                delete this.savegame.upgrades['projectileVelocity'];
+                this.savegame.upgrades['criticalHitChance'] = 0;
+                this.savegame.upgrades['criticalHitDamage'] = 0;
+                this.savegame.upgrades['projectileSpread'] = 0;
+                this.savegame.upgrades['projectilePierceChance'] = 0;
+                this.savegame.version = 'v0.6';
+            }
         }
+
+        this.saveSavegame();
     }
 
     saveSavegame() {

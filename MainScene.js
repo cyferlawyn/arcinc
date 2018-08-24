@@ -321,6 +321,7 @@ class MainScene extends Scene{
     checkForCollisions() {
         let enemyContainer = this.objectStore.get('enemyContainer');
         let playerProjectileContainer = this.objectStore.get('playerProjectileContainer');
+        let player = this.objectStore.get('player');
 
         for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
             for (let projectileIndex = playerProjectileContainer.children.length - 1; projectileIndex >= 0; projectileIndex--) {
@@ -330,7 +331,12 @@ class MainScene extends Scene{
                 if (projectile.visible && enemy.visible) {
                     if (this.intersect(enemy, projectile)) {
                         enemy.currentHealth -= projectile.damage;
-                        projectile.visible = false;
+                        let piercingHit = (Math.random() * 100 > player.projectilePierceChance);
+
+                        if (!piercingHit) {
+                            projectile.visible = false;
+                        }
+
                         if (enemy.currentHealth <= 0) {
                             this.arcInc.savegame.credits += enemyContainer.children[enemyIndex].credits;
                             document.getElementById('credits').innerText = 'Credits: ' + arcInc.savegame.credits + '$';
@@ -346,7 +352,6 @@ class MainScene extends Scene{
             }
         }
 
-        let player = this.objectStore.get('player');
         let enemyProjectileContainer = this.objectStore.get('enemyProjectileContainer');
 
         for (let enemyProjectileIndex = 0; enemyProjectileIndex < enemyProjectileContainer.children.length; enemyProjectileIndex++) {

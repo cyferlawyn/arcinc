@@ -1,6 +1,6 @@
 class Savegame {
     constructor() {
-        this.version = 'v0.5';
+        this.version = 'v0.6';
         this.credits = 0;
         this.highestWave = 0;
         this.upgrades = {
@@ -10,10 +10,12 @@ class Savegame {
             'maxArmor': 0,
             'maxStructure': 0,
             'projectileDamage': 0,
-            'projectileVelocity': 0,
             'projectileAmount': 0,
             'projectileSpread': 0,
-            'rateOfFire': 0
+            'rateOfFire': 0,
+            'criticalHitChance': 0,
+            'criticalHitDamage': 0,
+            'projectilePierceChance': 0
         };
         this.modules = {
             'solarPanels': 0,
