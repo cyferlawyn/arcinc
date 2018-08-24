@@ -267,8 +267,14 @@ class MainScene extends Scene{
                         enemy.x += enemy.vx;
                         enemy.y += enemy.vy;
 
-                        if (enemy.x <= 0 || enemy.x + enemy.width >= this.boundaryWidth) {
-                            enemy.xv = -enemy.xv;
+                        if (enemy.x < 0) {
+                            enemy.x = 0;
+                            enemy.vx *= -1;
+                        }
+
+                        if (enemy.x + enemy.width > this.pixiApp.screen.width/this.pixiApp.stage.scale.x) {
+                            enemy.x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x - enemy.width;
+                            enemy.vx *= -1;
                         }
                     }
                 }

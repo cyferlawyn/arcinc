@@ -140,7 +140,7 @@ class ArcInc {
             tableRow.appendChild(textTableData);
 
             // Scroll into view
-            arcInc.chatLog.scrollTop = chat.scrollHeight;
+            arcInc.chatLog.scrollTo(0,10000000);
         });
 
         let input = document.createElement('input');
@@ -174,7 +174,7 @@ class ArcInc {
     }
 
     updateLeaderboard() {
-        this.backend.getLeaderboard(function(leaderboardData) {
+        arcInc.backend.getLeaderboard(function(leaderboardData) {
             while( arcInc.leaderboardTableBody.hasChildNodes() ){
                 arcInc.leaderboardTableBody.removeChild(arcInc.leaderboardTableBody.lastChild);
             }
