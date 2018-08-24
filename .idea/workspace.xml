@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fa763ac8-e85a-4bd4-9465-7476785b5cd2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ArcInc.js" beforeDir="false" afterPath="$PROJECT_DIR$/ArcInc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MainScene.js" beforeDir="false" afterPath="$PROJECT_DIR$/MainScene.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Player.js" beforeDir="false" afterPath="$PROJECT_DIR$/Player.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Savegame.js" beforeDir="false" afterPath="$PROJECT_DIR$/Savegame.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/sprites/Bullet.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/sprites/Bullet.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -49,14 +45,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="html" value="3539" />
-          <entry key="js" value="34487" />
+          <entry key="html" value="3541" />
+          <entry key="js" value="34508" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="3539" />
-          <entry key="JavaScript" value="34487" />
+          <entry key="HTML" value="3541" />
+          <entry key="JavaScript" value="34508" />
         </counts>
       </usages-collector>
     </session>
@@ -93,11 +89,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="549">
-              <caret line="103" column="67" selection-start-line="103" selection-start-column="55" selection-end-line="103" selection-end-column="67" />
+            <state relative-caret-position="2346">
+              <caret line="102" column="20" selection-start-line="102" selection-start-column="20" selection-end-line="102" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -134,11 +130,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ArcInc.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="428">
-              <caret line="410" column="48" selection-start-line="410" selection-start-column="48" selection-end-line="410" selection-end-column="48" />
+            <state relative-caret-position="382">
+              <caret line="408" lean-forward="true" selection-start-line="408" selection-end-line="408" />
             </state>
           </provider>
         </entry>
@@ -164,7 +160,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>new Pla</find>
       <find>view.width</find>
       <find>view</find>
       <find>view.height</find>
@@ -194,6 +189,7 @@
       <find>shieldRechargeTime</find>
       <find>this.projectiledam</find>
       <find>mousepo</find>
+      <find>0.5</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -221,11 +217,11 @@
         <option value="$PROJECT_DIR$/Backend.js" />
         <option value="$PROJECT_DIR$/Station.js" />
         <option value="$PROJECT_DIR$/Spawner.js" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/Player.js" />
         <option value="$PROJECT_DIR$/Savegame.js" />
         <option value="$PROJECT_DIR$/MainScene.js" />
         <option value="$PROJECT_DIR$/ArcInc.js" />
+        <option value="$PROJECT_DIR$/index.html" />
       </list>
     </option>
   </component>
@@ -330,12 +326,12 @@
       <option name="presentableId" value="Default" />
       <updated>1534176771890</updated>
       <workItem from="1534176773100" duration="30551000" />
-      <workItem from="1534228229144" duration="183930000" />
+      <workItem from="1534228229144" duration="184932000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="214481000" />
+    <option name="totallyTimeSpent" value="215483000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -524,13 +520,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="549">
-          <caret line="103" column="67" selection-start-line="103" selection-start-column="55" selection-end-line="103" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Spawner.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2162">
@@ -568,8 +557,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ArcInc.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="428">
-          <caret line="410" column="48" selection-start-line="410" selection-start-column="48" selection-end-line="410" selection-end-column="48" />
+        <state relative-caret-position="382">
+          <caret line="408" lean-forward="true" selection-start-line="408" selection-end-line="408" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2346">
+          <caret line="102" column="20" selection-start-line="102" selection-start-column="20" selection-end-line="102" selection-end-column="20" />
         </state>
       </provider>
     </entry>
