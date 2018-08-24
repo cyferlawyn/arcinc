@@ -1,5 +1,6 @@
 class ArcInc {
     init() {
+        this.mousedown = false;
         this.backend = new Backend();
 
         this.authToken = localStorage.getItem('authToken');
@@ -74,7 +75,7 @@ class ArcInc {
         this.pixiApp = new PIXI.Application(
             {
                 width: 1024,
-                height: 768
+                height: 738
             }
         );
 
@@ -83,7 +84,7 @@ class ArcInc {
             let ratio = (parent.clientWidth - 30) / 1024;
             arcInc.pixiApp.stage.scale.x = ratio;
             arcInc.pixiApp.stage.scale.y = ratio;
-            arcInc.pixiApp.renderer.resize(Math.ceil(1024 * ratio), Math.ceil(768 * ratio));
+            arcInc.pixiApp.renderer.resize(Math.ceil(1024 * ratio), Math.ceil(738 * ratio));
         };
         window.addEventListener('resize', this.resize);
 
@@ -92,7 +93,37 @@ class ArcInc {
 
         this.pixiApp.stage.interactive = true;
         this.pixiApp.stage.on('touchmove', function(event) {
+            arcInc.sceneManager.scenes['main'].objectStore.get('player').destination = {
+                'x': event.data.global.x / arcInc.pixiApp.stage.scale.x,
+                'y': event.data.global.y / arcInc.pixiApp.stage.scale.y
+            };
+            /*
             arcInc.pixiApp.renderer.plugins.interaction.mouse.global = {
+                'x': event.data.global.x / arcInc.pixiApp.stage.scale.x,
+                'y': event.data.global.y / arcInc.pixiApp.stage.scale.y
+            };
+            */
+        });
+
+        this.pixiApp.stage.on('mousedown', function(event) {
+            arcInc.mousedown = true;
+        });
+
+        this.pixiApp.stage.on('mouseup', function(event) {
+            arcInc.mousedown = false;
+        });
+
+        this.pixiApp.stage.on('mousemove', function(event) {
+            if (arcInc.mousedown) {
+                arcInc.sceneManager.scenes['main'].objectStore.get('player').destination = {
+                    'x': event.data.global.x / arcInc.pixiApp.stage.scale.x,
+                    'y': event.data.global.y / arcInc.pixiApp.stage.scale.y
+                };
+            }
+        });
+
+        this.pixiApp.stage.on('click', function(event) {
+            arcInc.sceneManager.scenes['main'].objectStore.get('player').destination = {
                 'x': event.data.global.x / arcInc.pixiApp.stage.scale.x,
                 'y': event.data.global.y / arcInc.pixiApp.stage.scale.y
             };

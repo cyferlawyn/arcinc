@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fa763ac8-e85a-4bd4-9465-7476785b5cd2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ArcInc.js" beforeDir="false" afterPath="$PROJECT_DIR$/ArcInc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spawner.js" beforeDir="false" afterPath="$PROJECT_DIR$/Spawner.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Player.js" beforeDir="false" afterPath="$PROJECT_DIR$/Player.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -46,14 +48,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="html" value="3295" />
-          <entry key="js" value="33181" />
+          <entry key="html" value="3424" />
+          <entry key="js" value="33516" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="3295" />
-          <entry key="JavaScript" value="33181" />
+          <entry key="HTML" value="3424" />
+          <entry key="JavaScript" value="33516" />
         </counts>
       </usages-collector>
     </session>
@@ -66,8 +68,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MainScene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="273" lean-forward="true" selection-start-line="273" selection-end-line="273" />
+            <state relative-caret-position="275">
+              <caret line="274" column="94" selection-start-line="274" selection-start-column="94" selection-end-line="274" selection-end-column="94" />
             </state>
           </provider>
         </entry>
@@ -75,8 +77,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Player.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3680">
-              <caret line="160" column="61" selection-start-line="160" selection-start-column="61" selection-end-line="160" selection-end-column="61" />
+            <state relative-caret-position="391">
+              <caret line="104" column="17" selection-start-line="104" selection-start-column="17" selection-end-line="104" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -84,7 +86,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Spawner.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="354">
+            <state relative-caret-position="837">
               <caret line="43" column="21" lean-forward="true" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
             </state>
           </provider>
@@ -93,8 +95,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="132" lean-forward="true" selection-start-line="132" selection-end-line="132" />
+            <state relative-caret-position="1334">
+              <caret line="58" column="30" lean-forward="true" selection-start-line="58" selection-start-column="30" selection-end-line="58" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -125,8 +127,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ArcInc.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="167" column="4" selection-start-line="167" selection-start-column="4" selection-end-line="167" selection-end-column="4" />
+            <state relative-caret-position="511">
+              <caret line="121" column="13" lean-forward="true" selection-start-line="121" selection-start-column="13" selection-end-line="121" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -152,10 +154,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>engag</find>
-      <find>60</find>
-      <find>war</find>
-      <find>wave</find>
       <find>emitter</find>
       <find>in</find>
       <find>col-lg</find>
@@ -164,7 +162,6 @@
       <find>view.width</find>
       <find>view</find>
       <find>view.height</find>
-      <find>mouse</find>
       <find>mouseposition</find>
       <find>player.update</find>
       <find>.x</find>
@@ -180,8 +177,13 @@
       <find>remain</find>
       <find>cost</find>
       <find>*=</find>
-      <find>1.05</find>
       <find>removech</find>
+      <find>container-right-inner</find>
+      <find>container-right</find>
+      <find>mouse</find>
+      <find>tap</find>
+      <find>event</find>
+      <find>1.05</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -206,13 +208,13 @@
         <option value="$PROJECT_DIR$/Upgrade.js" />
         <option value="$PROJECT_DIR$/Planet.js" />
         <option value="$PROJECT_DIR$/UpgradeScene.js" />
-        <option value="$PROJECT_DIR$/Player.js" />
         <option value="$PROJECT_DIR$/Savegame.js" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/Backend.js" />
         <option value="$PROJECT_DIR$/Station.js" />
         <option value="$PROJECT_DIR$/MainScene.js" />
         <option value="$PROJECT_DIR$/Spawner.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/Player.js" />
         <option value="$PROJECT_DIR$/ArcInc.js" />
       </list>
     </option>
@@ -318,16 +320,36 @@
       <option name="presentableId" value="Default" />
       <updated>1534176771890</updated>
       <workItem from="1534176773100" duration="30551000" />
-      <workItem from="1534228229144" duration="169111000" />
+      <workItem from="1534228229144" duration="173726000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="199662000" />
+    <option name="totallyTimeSpent" value="204277000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5292842" weight="0.18123667" />
+      <window_info id="Favorites" order="1" sideWeight="0.47071582" side_tool="true" weight="0.18123667" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.329718" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Structure" order="3" sideWeight="0.47071582" side_tool="true" weight="0.17910448" />
+    </layout>
+    <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5292842" visible="true" weight="0.18123667" />
       <window_info id="Favorites" order="1" sideWeight="0.47071582" side_tool="true" weight="0.18123667" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -345,7 +367,7 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info active="true" anchor="right" id="Structure" order="3" sideWeight="0.47071582" side_tool="true" visible="true" weight="0.17910448" />
-    </layout>
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -485,13 +507,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="132" lean-forward="true" selection-start-line="132" selection-end-line="132" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Backend.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="46">
@@ -513,31 +528,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Player.js">
+    <entry file="file://$PROJECT_DIR$/Spawner.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3680">
-          <caret line="160" column="61" selection-start-line="160" selection-start-column="61" selection-end-line="160" selection-end-column="61" />
+        <state relative-caret-position="837">
+          <caret line="43" column="21" lean-forward="true" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1334">
+          <caret line="58" column="30" lean-forward="true" selection-start-line="58" selection-start-column="30" selection-end-line="58" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/MainScene.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="273" lean-forward="true" selection-start-line="273" selection-end-line="273" />
+        <state relative-caret-position="275">
+          <caret line="274" column="94" selection-start-line="274" selection-start-column="94" selection-end-line="274" selection-end-column="94" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Spawner.js">
+    <entry file="file://$PROJECT_DIR$/Player.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="43" column="21" lean-forward="true" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
+        <state relative-caret-position="391">
+          <caret line="104" column="17" selection-start-line="104" selection-start-column="17" selection-end-line="104" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ArcInc.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="167" column="4" selection-start-line="167" selection-start-column="4" selection-end-line="167" selection-end-column="4" />
+        <state relative-caret-position="511">
+          <caret line="121" column="13" lean-forward="true" selection-start-line="121" selection-start-column="13" selection-end-line="121" selection-end-column="13" />
         </state>
       </provider>
     </entry>

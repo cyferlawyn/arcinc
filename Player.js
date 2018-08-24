@@ -6,6 +6,7 @@ class Player extends PIXI.Sprite {
         this.spawner = spawner;
         this.boundaryWidth = boundaryWidth;
         this.boundaryHeight = boundaryHeight;
+        this.destination = null;
 
         this.credits = 0;
 
@@ -101,46 +102,49 @@ class Player extends PIXI.Sprite {
     }
 
     move(mousePosition) {
-        let pX = this.x + this.width/2;
-        let pY = this.y + this.height/2;
+        if (this.destination !== null) {
+            let pX = this.x + this.width / 2;
+            let pY = this.y + this.height / 2;
 
-        // To prevent costly calculations in case the player is already very close to the cursor, start with a check
-        if (Math.abs(pX - mousePosition.x/arcInc.pixiApp.stage.scale.x)  < this.movementSpeed && Math.abs(pY - mousePosition.y/arcInc.pixiApp.stage.scale.y)  < this.movementSpeed) {
-            this.position.set(mousePosition.x/arcInc.pixiApp.stage.scale.x - this.width/2, mousePosition.y/arcInc.pixiApp.stage.scale.y - this.height/2);
-        } else {
+            // To prevent costly calculations in case the player is already very close to the cursor, start with a check
+            if (Math.abs(pX - this.destination.x / arcInc.pixiApp.stage.scale.x) < this.movementSpeed && Math.abs(pY - this.destination.y / arcInc.pixiApp.stage.scale.y) < this.movementSpeed) {
+                this.position.set(this.destination.x / arcInc.pixiApp.stage.scale.x - this.width / 2, this.destination.y / arcInc.pixiApp.stage.scale.y - this.height / 2);
+                this.destination = null;
+            } else {
 
-            let distanceX = mousePosition.x/arcInc.pixiApp.stage.scale.x - pX;
-            let distanceY = mousePosition.y/arcInc.pixiApp.stage.scale.y - pY;
+                let distanceX = this.destination.x / arcInc.pixiApp.stage.scale.x - pX;
+                let distanceY = this.destination.y / arcInc.pixiApp.stage.scale.y - pY;
 
-            // calculate the velocity vector length
-            let distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+                // calculate the velocity vector length
+                let distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-            // normalize velocity vector length
-            this.vx = distanceX / distance;
-            this.vy = distanceY / distance;
+                // normalize velocity vector length
+                this.vx = distanceX / distance;
+                this.vy = distanceY / distance;
 
-            // apply movement speed
-            this.vx = this.vx * this.movementSpeed;
-            this.vy = this.vy * this.movementSpeed;
+                // apply movement speed
+                this.vx = this.vx * this.movementSpeed;
+                this.vy = this.vy * this.movementSpeed;
 
-            this.position.set(this.x + this.vx, this.y + this.vy);
-        }
+                this.position.set(this.x + this.vx, this.y + this.vy);
+            }
 
-        // Enforce boundaries
-        if (this.x + this.width > this.boundaryWidth) {
-            this.x = this.boundaryWidth - this.width;
-        }
+            // Enforce boundaries
+            if (this.x + this.width > this.boundaryWidth) {
+                this.x = this.boundaryWidth - this.width;
+            }
 
-        if (this.y + this.height > this.boundaryHeight) {
-            this.y = this.boundaryHeight - this.height;
-        }
+            if (this.y + this.height > this.boundaryHeight) {
+                this.y = this.boundaryHeight - this.height;
+            }
 
-        if (this.x < 0) {
-            this.x = 0;
-        }
+            if (this.x < 0) {
+                this.x = 0;
+            }
 
-        if (this.y < 0) {
-            this.y = 0;
+            if (this.y < 0) {
+                this.y = 0;
+            }
         }
     }
 

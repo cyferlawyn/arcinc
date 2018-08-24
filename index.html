@@ -43,7 +43,12 @@
         #container-right {
             overflow-x: hidden;
             overflow-y: auto;
-            max-height: 100vh;
+            max-height: calc(100vh - 30px);
+        }
+
+        #nav-bar {
+            height: 30px;
+            max-height: 30px;
         }
 
         .card {
@@ -88,8 +93,12 @@
     <title> ArcInc</title>
 </head>
 
-<body class="bg-cetacean-blue">
-<div class="container-fluid text-light">
+<body class="bg-cetacean-blue text-light">
+<nav class="navbar navbar-default navbar-fixed-top" id="nav-bar">
+    <h5>Arc-Inc v0.5</h5>
+    <h5 id="credits"> </h5>
+</nav>
+<div class="container-fluid">
     <div class="row">
         <div class="col-8" id="container-left">
             <div id="login-screen" class="d-none">
@@ -116,15 +125,6 @@
         </div>
 
         <div class="col-4" id="container-right">
-            <div class="d-flex justify-content-between">
-                <div>
-                    <h5 id="credits"> </h5>
-                </div>
-                <div>
-                    <h5>Arc-Inc v0.5</h5>
-                </div>
-            </div>
-            <div id="container-right-inner"></div>
         </div>
     </div>
 </div>
