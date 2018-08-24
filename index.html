@@ -51,6 +51,10 @@
             max-height: 30px;
         }
 
+        #credits {
+            font-family:monospace;
+        }
+
         .card {
             margin: 5px;
         }
@@ -96,6 +100,9 @@
 <body class="bg-cetacean-blue text-light">
 <nav class="navbar navbar-default navbar-fixed-top" id="nav-bar">
     <h5>Arc-Inc v0.5</h5>
+    <div class="checkbox">
+        <label><input type="checkbox" value="true" id="always-trail">Trail without clicking</label>
+    </div>
     <h5 id="credits"> </h5>
 </nav>
 <div class="container-fluid">

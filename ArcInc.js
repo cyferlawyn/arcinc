@@ -1,6 +1,8 @@
 class ArcInc {
     init() {
         this.mousedown = false;
+        this.alwaysTrailCheckbox = document.getElementById('always-trail');
+
         this.backend = new Backend();
 
         this.authToken = localStorage.getItem('authToken');
@@ -94,15 +96,9 @@ class ArcInc {
         this.pixiApp.stage.interactive = true;
         this.pixiApp.stage.on('touchmove', function(event) {
             arcInc.sceneManager.scenes['main'].objectStore.get('player').destination = {
-                'x': event.data.global.x / arcInc.pixiApp.stage.scale.x,
-                'y': event.data.global.y / arcInc.pixiApp.stage.scale.y
+                'x': event.data.global.x,
+                'y': event.data.global.y
             };
-            /*
-            arcInc.pixiApp.renderer.plugins.interaction.mouse.global = {
-                'x': event.data.global.x / arcInc.pixiApp.stage.scale.x,
-                'y': event.data.global.y / arcInc.pixiApp.stage.scale.y
-            };
-            */
         });
 
         this.pixiApp.stage.on('mousedown', function(event) {
@@ -114,18 +110,18 @@ class ArcInc {
         });
 
         this.pixiApp.stage.on('mousemove', function(event) {
-            if (arcInc.mousedown) {
+            if (arcInc.alwaysTrailCheckbox.checked || arcInc.mousedown) {
                 arcInc.sceneManager.scenes['main'].objectStore.get('player').destination = {
-                    'x': event.data.global.x / arcInc.pixiApp.stage.scale.x,
-                    'y': event.data.global.y / arcInc.pixiApp.stage.scale.y
+                    'x': event.data.global.x,
+                    'y': event.data.global.y
                 };
             }
         });
 
         this.pixiApp.stage.on('click', function(event) {
             arcInc.sceneManager.scenes['main'].objectStore.get('player').destination = {
-                'x': event.data.global.x / arcInc.pixiApp.stage.scale.x,
-                'y': event.data.global.y / arcInc.pixiApp.stage.scale.y
+                'x': event.data.global.x,
+                'y': event.data.global.y
             };
         });
     }

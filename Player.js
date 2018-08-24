@@ -95,13 +95,13 @@ class Player extends PIXI.Sprite {
         this.currentDelay = 0;
     }
 
-    update(frame, mousePosition) {
-        this.move(mousePosition);
+    update(frame) {
+        this.move();
         this.regenerate();
         this.engage();
     }
 
-    move(mousePosition) {
+    move() {
         if (this.destination !== null) {
             let pX = this.x + this.width / 2;
             let pY = this.y + this.height / 2;

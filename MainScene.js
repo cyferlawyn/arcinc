@@ -223,9 +223,8 @@ class MainScene extends Scene{
 
     updatePlayer() {
         let player = this.objectStore.get('player');
-        let mousePosition = this.pixiApp.renderer.plugins.interaction.mouse.global;
 
-        player.update(this.frame, mousePosition);
+        player.update(this.frame);
     }
 
     engageEnemies() {
