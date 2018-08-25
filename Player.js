@@ -96,6 +96,18 @@ class Player extends PIXI.Sprite {
                 'effect': 0.25,
                 'cost': 25000,
             },
+            'armorPlating': {
+                'title': 'Armor Plating',
+                'baseValue': 5,
+                'effect': 0.5,
+                'cost': 25000,
+            },
+            'deescalation': {
+                'title': 'De-escalation',
+                'baseValue': 1,
+                'effect': 0.25,
+                'cost': 10000000,
+            }
         };
 
         this.applyUpgrades();
@@ -118,6 +130,8 @@ class Player extends PIXI.Sprite {
         this.projectilePierceChance = this.upgrades['projectilePierceChance'].baseValue * (1 + this.upgrades['projectilePierceChance'].effect * this.arcInc.savegame.upgrades['projectilePierceChance']);
         this.shieldRechargeAccelerator = this.upgrades['shieldRechargeAccelerator'].baseValue * (1 + this.upgrades['shieldRechargeAccelerator'].effect * this.arcInc.savegame.upgrades['shieldRechargeAccelerator']);
         this.repulsorField = this.upgrades['repulsorField'].baseValue * (1 + this.upgrades['repulsorField'].effect * this.arcInc.savegame.upgrades['repulsorField']);
+        this.armorPlating = this.upgrades['armorPlating'].baseValue * (1 + this.upgrades['armorPlating'].effect * this.arcInc.savegame.upgrades['armorPlating']);
+        this.deescalation = this.upgrades['deescalation'].baseValue * (1 + this.upgrades['deescalation'].effect * this.arcInc.savegame.upgrades['deescalation']);
 
 
         this.rateOfFire = this.upgrades['rateOfFire'].baseValue * (1 + this.upgrades['rateOfFire'].effect * this.arcInc.savegame.upgrades['rateOfFire']);
@@ -232,6 +246,11 @@ class Player extends PIXI.Sprite {
         } else {
             damage -= this.currentShield;
             this.currentShield = 0;
+        }
+
+        damage -= this.armorPlating;
+        if (damage <= 0) {
+            return;
         }
 
         if (this.currentArmor >= damage) {

@@ -411,6 +411,12 @@ class ArcInc {
                 this.savegame.upgrades['repulsorField'] = 0;
                 this.savegame.version = 'v0.7';
             }
+
+            if (this.savegame.version === 'v0.7') {
+                this.savegame.upgrades['armorPlating'] = 0;
+                this.savegame.upgrades['deescalation'] = 0;
+                this.savegame.version = 'v0.8';
+            }
         }
 
         this.saveSavegame();

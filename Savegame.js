@@ -17,7 +17,9 @@ class Savegame {
             'repulsorField': 0,
             'criticalHitChance': 0,
             'criticalHitDamage': 0,
-            'projectilePierceChance': 0
+            'projectilePierceChance': 0,
+            'armorPlating': 0,
+            'deescalation': 0
         };
         this.modules = {
             'solarPanels': 0,

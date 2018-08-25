@@ -26,6 +26,8 @@ class Spawner {
 
     spawnRandomEnemy(wave) {
         let enemyContainer = this.objectStore.get('enemyContainer');
+        let player = this.objectStore.get('player');
+
         let enemy;
         for (let i = 0; i < enemyContainer.children.length; i++) {
             if (!enemyContainer.children[i].visible) {
@@ -44,10 +46,10 @@ class Spawner {
         enemy.vy = 2;
         enemy.vx = Math.random() * 2 - 1;
 
-        enemy.maxHealth = Math.floor(5 * Math.pow(1.07, wave));
+        enemy.maxHealth = Math.floor(5 * Math.pow(1 + 0.07 / player.deescalation, wave));
         enemy.currentHealth = enemy.maxHealth;
         enemy.credits = Math.floor(10 * Math.pow(1.06, wave));
-        enemy.damage = Math.floor(5 * Math.pow(1.05, wave));
+        enemy.damage = Math.floor(5 * Math.pow(1 + 0.05 / player.deescalation, wave));
 
         enemy.tint = this.enemyColors[Math.floor(Math.random()*this.enemyColors.length)];
 
