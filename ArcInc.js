@@ -253,18 +253,19 @@ class ArcInc {
                 cardDeck,
                 key,
                 value.title,
-                'Level ' + this.savegame.modules[key] + ' (' + Math.floor(this.savegame.modules[key] * value.effect) + '$ / s)',
-                'Buy 1 (' + Math.ceil(value.cost * Math.pow(1.07, this.savegame.modules[key])) + '$)',
+                'Level ' + this.savegame.modules[key] + ' (' + arcInc.format(Math.floor(this.savegame.modules[key] * value.effect)) + ' $ / s)',
+                'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(1.07, this.savegame.modules[key]))) + ' $)',
                 function (event) {
                     let key = event.currentTarget.name;
                     let effectiveCost = Math.ceil(value.cost * Math.pow(1.07, arcInc.savegame.modules[key]));
                     if (arcInc.savegame.credits >= effectiveCost) {
                         arcInc.savegame.credits -= effectiveCost;
+                        arcInc.updateCredits();
                         arcInc.savegame.modules[key]++;
                         arcInc.saveSavegame();
 
-                        document.getElementById(key + '-card-text').innerText = 'Level ' + arcInc.savegame.modules[key] + ' (' + Math.floor(arcInc.savegame.modules[key] * value.effect) + '$ / s)';
-                        document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + Math.ceil(value.cost * Math.pow(1.07, arcInc.savegame.modules[key])) + '$)';
+                        document.getElementById(key + '-card-text').innerText = 'Level ' + arcInc.savegame.modules[key] + ' (' + arcInc.format(Math.floor(arcInc.savegame.modules[key] * value.effect)) + ' $ / s)';
+                        document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(1.07, arcInc.savegame.modules[key]))) + ' $)';
                     }
                 });
         }
@@ -288,19 +289,20 @@ class ArcInc {
                 cardDeck,
                 key,
                 value.title,
-                'Level ' + this.savegame.upgrades[key] + ' (+' + Math.floor(this.savegame.upgrades[key] * value.effect * 100) + '%)',
-                'Buy 1 (' + Math.ceil(value.cost * Math.pow(1.07, this.savegame.upgrades[key])) + '$)',
+                'Level ' + this.savegame.upgrades[key] + ' (+' + arcInc.format(Math.floor(this.savegame.upgrades[key] * value.effect * 100)) + ' %)',
+                'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(1.07, this.savegame.upgrades[key]))) + ' $)',
                 function (event) {
                     let key = event.currentTarget.name;
                     let effectiveCost = Math.ceil(value.cost * Math.pow(1.07, arcInc.savegame.upgrades[key]));
                     if (arcInc.savegame.credits >= effectiveCost) {
                         arcInc.savegame.credits -= effectiveCost;
+                        arcInc.updateCredits();
                         arcInc.savegame.upgrades[key]++;
                         arcInc.saveSavegame();
                         arcInc.sceneManager.scenes['main'].objectStore.get('player').applyUpgrades();
 
-                        document.getElementById(key + '-card-text').innerText = 'Level ' + arcInc.savegame.upgrades[key] + ' (+' + Math.floor(arcInc.savegame.upgrades[key] * value.effect * 100) + '%)';
-                        document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + Math.ceil(value.cost * Math.pow(1.07, arcInc.savegame.upgrades[key])) + '$)';
+                        document.getElementById(key + '-card-text').innerText = 'Level ' + arcInc.savegame.upgrades[key] + ' (+' + arcInc.format(Math.floor(arcInc.savegame.upgrades[key] * value.effect * 100)) + ' %)';
+                        document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(1.07, arcInc.savegame.upgrades[key]))) + ' $)';
                     }
                 });
         }
@@ -431,5 +433,24 @@ class ArcInc {
         let savegameString = JSON.stringify(arcInc.savegame);
         localStorage.setItem('savegame', savegameString);
         arcInc.backend.saveUser(arcInc.authToken, savegameString);
+    }
+
+    updateCredits() {
+        document.getElementById('credits').innerText = 'Credits: ' + arcInc.format(arcInc.savegame.credits) + ' $';
+    }
+
+    format(number) {
+        let suffixes = ['K', 'M', 'B', 't', 'q', 'Q', 's', 'S', 'o', 'n'];
+        let suffix = '';
+
+        for (let i = 0; i < suffixes.length; i++) {
+            if (number / 1000 > 1) {
+                suffix = suffixes[i];
+                number /= 1000;
+            } else {
+                break;
+            }
+        }
+        return number.toFixed(2) + suffix;
     }
 }

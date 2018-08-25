@@ -15,8 +15,12 @@ class Spawner {
     }
 
     spawnEnemyWave(wave) {
+        let spawnAmount = Math.ceil(0.2 * wave + 4);
+        if (spawnAmount > 25) {
+            spawnAmount = 25;
+        }
         let amountSpawned = 0;
-        for (let i = 0; i < Math.ceil(0.2 * wave + 4); i++) {
+        for (let i = 0; i < spawnAmount; i++) {
             this.spawnRandomEnemy(wave);
             amountSpawned++;
         }

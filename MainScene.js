@@ -339,7 +339,7 @@ class MainScene extends Scene{
 
                         if (enemy.currentHealth <= 0) {
                             this.arcInc.savegame.credits += enemyContainer.children[enemyIndex].credits;
-                            document.getElementById('credits').innerText = 'Credits: ' + arcInc.savegame.credits + '$';
+                            arcInc.updateCredits();
                             if (enemy.wave === this.wave) {
                                 this.remainingEnemies--;
                             }

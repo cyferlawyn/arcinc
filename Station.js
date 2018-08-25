@@ -41,12 +41,11 @@ class Station {
                 let value = arcInc.station.modules[key];
 
                 arcInc.savegame.credits += value.effect * arcInc.savegame.modules[key];
+                arcInc.updateCredits();
                 arcInc.saveSavegame();
-                document.getElementById('credits').innerText = 'Credits: ' + arcInc.savegame.credits + '$';
             }
         };
 
-        document.getElementById('credits').innerText = 'Credits: ' + arcInc.savegame.credits + '$';
         window.setInterval(this.calculateBuildingProduction, 1000);
     }
 }

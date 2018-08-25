@@ -105,8 +105,8 @@ class Player extends PIXI.Sprite {
             'deescalation': {
                 'title': 'De-escalation',
                 'baseValue': 1,
-                'effect': 0.25,
-                'cost': 10000000,
+                'effect': 0.01,
+                'cost': 1000000000,
             }
         };
 
@@ -130,6 +130,9 @@ class Player extends PIXI.Sprite {
         this.projectilePierceChance = this.upgrades['projectilePierceChance'].baseValue * (1 + this.upgrades['projectilePierceChance'].effect * this.arcInc.savegame.upgrades['projectilePierceChance']);
         this.shieldRechargeAccelerator = this.upgrades['shieldRechargeAccelerator'].baseValue * (1 + this.upgrades['shieldRechargeAccelerator'].effect * this.arcInc.savegame.upgrades['shieldRechargeAccelerator']);
         this.repulsorField = this.upgrades['repulsorField'].baseValue * (1 + this.upgrades['repulsorField'].effect * this.arcInc.savegame.upgrades['repulsorField']);
+        if (this.repulsorField > 99) {
+            this.repulsorField = 99;
+        }
         this.armorPlating = this.upgrades['armorPlating'].baseValue * (1 + this.upgrades['armorPlating'].effect * this.arcInc.savegame.upgrades['armorPlating']);
         this.deescalation = this.upgrades['deescalation'].baseValue * (1 + this.upgrades['deescalation'].effect * this.arcInc.savegame.upgrades['deescalation']);
 
@@ -212,19 +215,28 @@ class Player extends PIXI.Sprite {
 
         if (this.currentDelay >= this.fireDelay) {
             this.currentDelay -= this.fireDelay;
-            for (let i = 1; i <= this.projectileAmount; i++){
+
+            let actualProjectileAmount = this.projectileAmount;
+            let projectileAmountCompensation = 1;
+
+            if (this.projectileAmount > 10) {
+                projectileAmountCompensation = (this.projectileAmount - 10) / 10;
+                actualProjectileAmount = 10;
+            }
+
+            for (let i = 1; i <= actualProjectileAmount; i++){
                 let radius = this.width/2;
-                let angle =  Math.PI/(this.projectileAmount+1) * i + Math.PI;
+                let angle =  Math.PI/(actualProjectileAmount+1) * i + Math.PI;
                 let x = Math.cos(angle) * radius + this.x + this.width/2;
                 let y = Math.sin(angle) * radius + this.y + this.height/2;
 
                 let vx = 0;
-                if (this.projectileAmount > 1) {
-                    vx = this.projectileSpread / (this.projectileAmount - 1) * (i-1) - this.projectileSpread/2;
+                if (actualProjectileAmount > 1) {
+                    vx = this.projectileSpread / (actualProjectileAmount - 1) * (i-1) - this.projectileSpread/2;
                 }
                 let vy = -5;
 
-                let projectileDamage = this.projectileDamage;
+                let projectileDamage = this.projectileDamage * projectileAmountCompensation;
                 let criticalHit = (Math.random() * 100 > this.criticalHitChance);
                 if (criticalHit) {
                     projectileDamage *= this.criticalHitDamage;
