@@ -3,6 +3,8 @@ class ArcInc {
         this.mousedown = false;
         this.alwaysTrailCheckbox = document.getElementById('always-trail');
 
+        this.cps = 0;
+
         this.backend = new Backend();
 
         this.authToken = localStorage.getItem('authToken');
@@ -436,7 +438,7 @@ class ArcInc {
     }
 
     updateCredits() {
-        document.getElementById('credits').innerText = 'Credits: ' + arcInc.format(arcInc.savegame.credits) + ' $';
+        document.getElementById('credits').innerText = 'Credits: ' + arcInc.format(arcInc.savegame.credits) + ' $ (+ ' + arcInc.format(arcInc.cps) + ' $ / s)';
     }
 
     format(number) {

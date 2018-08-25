@@ -36,14 +36,19 @@ class Station {
 
     init() {
         this.calculateBuildingProduction = function() {
+
+            let cps = 0;
             for (let i = 0; i < Object.keys(arcInc.station.modules).length; i++) {
                 let key = Object.keys(arcInc.station.modules)[i];
                 let value = arcInc.station.modules[key];
 
-                arcInc.savegame.credits += value.effect * arcInc.savegame.modules[key];
-                arcInc.updateCredits();
-                arcInc.saveSavegame();
+                cps += value.effect * arcInc.savegame.modules[key];
             }
+
+            arcInc.savegame.credits += cps;
+            arcInc.cps = cps;
+            arcInc.updateCredits();
+            arcInc.saveSavegame();
         };
 
         window.setInterval(this.calculateBuildingProduction, 1000);
