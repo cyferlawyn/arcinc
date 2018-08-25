@@ -13,6 +13,8 @@ class Savegame {
             'projectileAmount': 0,
             'projectileSpread': 0,
             'rateOfFire': 0,
+            'shieldRechargeAccelerator': 0,
+            'repulsorField': 0,
             'criticalHitChance': 0,
             'criticalHitDamage': 0,
             'projectilePierceChance': 0

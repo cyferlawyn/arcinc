@@ -7,6 +7,7 @@ class Player extends PIXI.Sprite {
         this.boundaryWidth = boundaryWidth;
         this.boundaryHeight = boundaryHeight;
         this.destination = null;
+        this.ticksSinceLastHit = 0;
 
         this.credits = 0;
 
@@ -65,6 +66,18 @@ class Player extends PIXI.Sprite {
                 'effect': 1,
                 'cost': 5000,
             },
+            'shieldRechargeAccelerator': {
+                'title': 'Shield Recharge Accelerator',
+                'baseValue': 1,
+                'effect': 0.1,
+                'cost': 5000,
+            },
+            'repulsorField': {
+                'title': 'Repulsor Field',
+                'baseValue': 1,
+                'effect': 0.1,
+                'cost': 5000,
+            },
             'criticalHitChance': {
                 'title': 'Critical Hit Chance',
                 'baseValue': 1,
@@ -103,6 +116,8 @@ class Player extends PIXI.Sprite {
         this.criticalHitChance = this.upgrades['criticalHitChance'].baseValue * (1 + this.upgrades['criticalHitChance'].effect * this.arcInc.savegame.upgrades['criticalHitChance']);
         this.criticalHitDamage = this.upgrades['criticalHitDamage'].baseValue * (1 + this.upgrades['criticalHitDamage'].effect * this.arcInc.savegame.upgrades['criticalHitDamage']);
         this.projectilePierceChance = this.upgrades['projectilePierceChance'].baseValue * (1 + this.upgrades['projectilePierceChance'].effect * this.arcInc.savegame.upgrades['projectilePierceChance']);
+        this.shieldRechargeAccelerator = this.upgrades['shieldRechargeAccelerator'].baseValue * (1 + this.upgrades['shieldRechargeAccelerator'].effect * this.arcInc.savegame.upgrades['shieldRechargeAccelerator']);
+        this.repulsorField = this.upgrades['repulsorField'].baseValue * (1 + this.upgrades['repulsorField'].effect * this.arcInc.savegame.upgrades['repulsorField']);
 
 
         this.rateOfFire = this.upgrades['rateOfFire'].baseValue * (1 + this.upgrades['rateOfFire'].effect * this.arcInc.savegame.upgrades['rateOfFire']);
@@ -111,6 +126,8 @@ class Player extends PIXI.Sprite {
     }
 
     update() {
+        this.ticksSinceLastHit++;
+
         this.move();
         this.regenerate();
         this.engage();
@@ -164,7 +181,13 @@ class Player extends PIXI.Sprite {
     }
 
     regenerate() {
-        this.currentShield += this.maxShield / (this.shieldRechargeTime * 60);
+        let shieldRecharge = this.maxShield / (this.shieldRechargeTime * 60);
+
+        if (this.ticksSinceLastHit > 300) {
+            shieldRecharge *= this.shieldRechargeAccelerator;
+        }
+
+        this.currentShield += shieldRecharge;
         if (this.currentShield > this.maxShield) {
             this.currentShield = this.maxShield;
         }
@@ -198,8 +221,10 @@ class Player extends PIXI.Sprite {
     }
 
     hit(projectile) {
+        this.ticksSinceLastHit = 0;
+
         // first hit shield, then armor, then structure
-        let damage = projectile.damage;
+        let damage = projectile.damage * 1/this.repulsorField;
 
         if (this.currentShield >= damage) {
             this.currentShield -= damage;

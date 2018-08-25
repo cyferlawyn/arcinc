@@ -405,6 +405,12 @@ class ArcInc {
                 this.savegame.upgrades['projectilePierceChance'] = 0;
                 this.savegame.version = 'v0.6';
             }
+
+            if (this.savegame.version === 'v0.6') {
+                this.savegame.upgrades['shieldRechargeAccelerator'] = 0;
+                this.savegame.upgrades['repulsorField'] = 0;
+                this.savegame.version = 'v0.7';
+            }
         }
 
         this.saveSavegame();
