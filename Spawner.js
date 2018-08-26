@@ -50,12 +50,13 @@ class Spawner {
         enemy.vy = 2;
         enemy.vx = Math.random() * 2 - 1;
 
-        enemy.maxHealth = Math.floor(5 * Math.pow(1 + 0.07 / player.deescalation, wave));
+        enemy.maxHealth = Math.floor(10 * Math.pow(arcInc.growth, wave));
         enemy.currentHealth = enemy.maxHealth;
-        enemy.credits = Math.floor(10 * Math.pow(1.06, wave));
-        enemy.damage = Math.floor(5 * Math.pow(1 + 0.05 / player.deescalation, wave));
+        enemy.credits = Math.floor(10 * Math.pow(arcInc.growth, wave));
+        enemy.damage = Math.floor(5 * Math.pow(arcInc.growth, wave));
 
         enemy.tint = this.enemyColors[Math.floor(Math.random()*this.enemyColors.length)];
+        enemy.id = Math.round(Math.random() * 1000000);
 
         enemy.updateHealthBar();
         enemy.wave = wave;
@@ -67,6 +68,7 @@ class Spawner {
         let projectile = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/Bullet.png"].texture);
         projectile.scale.set(0.4);
         projectile.damage = 5;
+        projectile.ignore = [];
 
         playerProjectileContainer.addChild(projectile);
 
@@ -95,6 +97,8 @@ class Spawner {
         projectile.vy = vy;
         projectile.damage = damage;
         projectile.visible = true;
+
+        return projectile;
     }
 
     prepareEnemyProjectile() {

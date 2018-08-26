@@ -61,6 +61,28 @@ class Backend {
         xhr.send(JSON.stringify(requestBody));
     }
 
+    loadUser(authToken, successCallback, failureCallback) {
+        let requestBody = {
+            'authToken': authToken
+        };
+
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState === 4) {
+                if (this.status === 200) {
+                    let response = JSON.parse(this.responseText);
+                    successCallback(response['savegame']);
+                }
+                else {
+                    failureCallback();
+                }
+            }
+        };
+        xhr.open("POST", this.address + '/user/load', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(requestBody));
+    }
+
     sendChat(authToken, text) {
         let requestBody = {
             'authToken': authToken,

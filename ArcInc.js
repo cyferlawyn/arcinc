@@ -1,5 +1,6 @@
 class ArcInc {
     init() {
+        this.growth = 1.03;
         this.mousedown = false;
         this.alwaysTrailCheckbox = document.getElementById('always-trail');
 
@@ -7,7 +8,7 @@ class ArcInc {
 
         this.backend = new Backend();
 
-        this.authToken = localStorage.getItem('authToken');
+        this.authToken = localStorage.getItem('authToken-v0.10');
         this.initLogin(this.authToken === null);
     }
 
@@ -45,7 +46,7 @@ class ArcInc {
     }
 
     loginSucceeded(authToken) {
-        localStorage.setItem('authToken', authToken);
+        localStorage.setItem('authToken-v0.10', authToken);
         arcInc.authToken = authToken;
         arcInc.loggedIn();
     }
@@ -185,6 +186,14 @@ class ArcInc {
                     while( arcInc.chatEntries.hasChildNodes() ){
                         arcInc.chatEntries.removeChild(arcInc.chatEntries.lastChild);
                     }
+                } else if (text === '/load') {
+                    arcInc.backend.loadUser(arcInc.authToken, function(savegame) {
+                        let savegameString = JSON.stringify(savegame);
+                        localStorage.setItem('savegame', savegameString);
+                        location.reload();
+                    }, function() {
+                        alert('Cloud load failed');
+                    })
                 } else {
                     arcInc.backend.sendChat(arcInc.authToken, text);
                 }
@@ -256,10 +265,10 @@ class ArcInc {
                 key,
                 value.title,
                 'Level ' + this.savegame.modules[key] + ' (' + arcInc.format(Math.floor(this.savegame.modules[key] * value.effect)) + ' $ / s)',
-                'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(1.07, this.savegame.modules[key]))) + ' $)',
+                'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(arcInc.growth, this.savegame.modules[key]))) + ' $)',
                 function (event) {
                     let key = event.currentTarget.name;
-                    let effectiveCost = Math.ceil(value.cost * Math.pow(1.07, arcInc.savegame.modules[key]));
+                    let effectiveCost = Math.ceil(value.cost * Math.pow(arcInc.growth, arcInc.savegame.modules[key]));
                     if (arcInc.savegame.credits >= effectiveCost) {
                         arcInc.savegame.credits -= effectiveCost;
                         arcInc.updateCredits();
@@ -267,7 +276,7 @@ class ArcInc {
                         arcInc.saveSavegame();
 
                         document.getElementById(key + '-card-text').innerText = 'Level ' + arcInc.savegame.modules[key] + ' (' + arcInc.format(Math.floor(arcInc.savegame.modules[key] * value.effect)) + ' $ / s)';
-                        document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(1.07, arcInc.savegame.modules[key]))) + ' $)';
+                        document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(arcInc.growth, arcInc.savegame.modules[key]))) + ' $)';
                     }
                 });
         }
@@ -292,10 +301,10 @@ class ArcInc {
                 key,
                 value.title,
                 'Level ' + this.savegame.upgrades[key] + ' (+' + arcInc.format(Math.floor(this.savegame.upgrades[key] * value.effect * 100)) + ' %)',
-                'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(1.07, this.savegame.upgrades[key]))) + ' $)',
+                'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(arcInc.growth, this.savegame.upgrades[key]))) + ' $)',
                 function (event) {
                     let key = event.currentTarget.name;
-                    let effectiveCost = Math.ceil(value.cost * Math.pow(1.07, arcInc.savegame.upgrades[key]));
+                    let effectiveCost = Math.ceil(value.cost * Math.pow(arcInc.growth, arcInc.savegame.upgrades[key]));
                     if (arcInc.savegame.credits >= effectiveCost) {
                         arcInc.savegame.credits -= effectiveCost;
                         arcInc.updateCredits();
@@ -304,7 +313,7 @@ class ArcInc {
                         arcInc.sceneManager.scenes['main'].objectStore.get('player').applyUpgrades();
 
                         document.getElementById(key + '-card-text').innerText = 'Level ' + arcInc.savegame.upgrades[key] + ' (+' + arcInc.format(Math.floor(arcInc.savegame.upgrades[key] * value.effect * 100)) + ' %)';
-                        document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(1.07, arcInc.savegame.upgrades[key]))) + ' $)';
+                        document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(arcInc.growth, arcInc.savegame.upgrades[key]))) + ' $)';
                     }
                 });
         }
@@ -401,29 +410,12 @@ class ArcInc {
         if (this.savegame === null) {
             this.savegame = new Savegame();
         } else {
-            if (this.savegame.version === 'v0.5') {
-                delete this.savegame.upgrades['projectileVelocity'];
-                this.savegame.upgrades['criticalHitChance'] = 0;
-                this.savegame.upgrades['criticalHitDamage'] = 0;
-                this.savegame.upgrades['projectileSpread'] = 0;
-                this.savegame.upgrades['projectilePierceChance'] = 0;
-                this.savegame.version = 'v0.6';
-            }
-
-            if (this.savegame.version === 'v0.6') {
-                this.savegame.upgrades['shieldRechargeAccelerator'] = 0;
-                this.savegame.upgrades['repulsorField'] = 0;
-                this.savegame.version = 'v0.7';
-            }
-
-            if (this.savegame.version === 'v0.7') {
-                this.savegame.upgrades['armorPlating'] = 0;
-                this.savegame.upgrades['deescalation'] = 0;
-                this.savegame.version = 'v0.8';
+            if (this.savegame.version !== 'v0.10b') {
+                this.savegame = new Savegame();
             }
         }
 
-        this.saveSavegame();
+        arcInc.saveSavegame();
     }
 
     saveSavegame() {
@@ -453,6 +445,7 @@ class ArcInc {
                 break;
             }
         }
-        return number.toFixed(2) + suffix;
+
+        return Number(number.toFixed(3)) + suffix;
     }
 }

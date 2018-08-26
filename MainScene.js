@@ -328,14 +328,26 @@ class MainScene extends Scene{
                 let projectile = playerProjectileContainer.children[projectileIndex];
                 let enemy = enemyContainer.children[enemyIndex];
 
-                if (projectile.visible && enemy.visible) {
+                if (projectile.visible && enemy.visible && !projectile.ignore.includes(enemy.id)) {
                     if (this.intersect(enemy, projectile)) {
-                        enemy.currentHealth -= projectile.damage;
-                        let piercingHit = (Math.random() * 100 > player.projectilePierceChance);
 
+                        let forkingHit = (player.projectileForkChance > Math.random() * 100);
+                        if (forkingHit) {
+                            let newProjectileOne = this.spawner.spawnPlayerProjectile(projectile.x, projectile.y, projectile.vy / 4, projectile.vy, projectile.damage);
+                            let newProjectileTwo = this.spawner.spawnPlayerProjectile(projectile.x, projectile.y, -projectile.vy / 4, projectile.vy, projectile.damage);
+                            newProjectileOne.ignore.push(enemy.id);
+                            newProjectileTwo.ignore.push(enemy.id);
+                            projectile.ignore.push(enemy.id);
+                        }
+
+                        let piercingHit = (player.projectilePierceChance > Math.random() * 100);
                         if (!piercingHit) {
                             projectile.visible = false;
+                        } else {
+                            projectile.ignore.push(enemy.id);
                         }
+
+                        enemy.currentHealth -= projectile.damage;
 
                         if (enemy.currentHealth <= 0) {
                             this.arcInc.savegame.credits += enemyContainer.children[enemyIndex].credits;
