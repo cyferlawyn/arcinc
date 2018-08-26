@@ -333,11 +333,11 @@ class MainScene extends Scene{
 
                         let forkingHit = (player.projectileForkChance > Math.random() * 100);
                         if (forkingHit) {
+                            projectile.ignore.push(enemy.id);
                             let newProjectileOne = this.spawner.spawnPlayerProjectile(projectile.x, projectile.y, projectile.vy / 4, projectile.vy, projectile.damage);
                             let newProjectileTwo = this.spawner.spawnPlayerProjectile(projectile.x, projectile.y, -projectile.vy / 4, projectile.vy, projectile.damage);
-                            newProjectileOne.ignore.push(enemy.id);
-                            newProjectileTwo.ignore.push(enemy.id);
-                            projectile.ignore.push(enemy.id);
+                            newProjectileOne.ignore = projectile.ignore.slice();
+                            newProjectileTwo.ignore = projectile.ignore.slice();
                         }
 
                         let piercingHit = (player.projectilePierceChance > Math.random() * 100);
@@ -345,6 +345,12 @@ class MainScene extends Scene{
                             projectile.visible = false;
                         } else {
                             projectile.ignore.push(enemy.id);
+                        }
+
+                        let freezingHit = (player.freezeChance > Math.random() * 100);
+                        if (freezingHit) {
+                            enemy.vx = enemy.vx * 0.98;
+                            enemy.vy = enemy.vy * 0.98;
                         }
 
                         enemy.currentHealth -= projectile.damage;

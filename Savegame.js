@@ -19,7 +19,9 @@ class Savegame {
             'criticalHitDamage': 0,
             'projectilePierceChance': 0,
             'projectileForkChance': 0,
-            'armorPlating': 0
+            'armorPlating': 0,
+            'freezeChance': 0,
+            'overshieldChance': 0
         };
         this.modules = {
             'solarPanels': 0,

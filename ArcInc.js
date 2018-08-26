@@ -112,6 +112,14 @@ class ArcInc {
             arcInc.mousedown = false;
         });
 
+        this.pixiApp.stage.on('mouseout', function(event) {
+            arcInc.mousedown = false;
+        });
+
+        document.addEventListener('dragstart', function(event) {
+            event.preventDefault();
+        });
+
         this.pixiApp.stage.on('mousemove', function(event) {
             if (arcInc.alwaysTrailCheckbox.checked || arcInc.mousedown) {
                 arcInc.sceneManager.scenes['main'].objectStore.get('player').destination = {
@@ -410,8 +418,15 @@ class ArcInc {
         if (this.savegame === null) {
             this.savegame = new Savegame();
         } else {
-            if (this.savegame.version !== 'v0.10b') {
-                this.savegame = new Savegame();
+            if (this.savegame.version === 'v0.10' || this.savegame.version === 'v0.10b') {
+                this.savegame.upgrades['overshieldChance'] = 0;
+                this.savegame.upgrades['freezeChance'] = 0;
+                this.savegame.version = 'v0.11';
+
+            } else {
+                if (this.savegame.version !== 'v0.11') {
+                    this.savegame = new Savegame();
+                }
             }
         }
 
