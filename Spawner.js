@@ -55,6 +55,8 @@ class Spawner {
         enemy.credits = Math.floor(10 * Math.pow(arcInc.growth, wave));
         enemy.damage = Math.floor(5 * Math.pow(arcInc.growth, wave));
 
+        enemy.burnDamage = 0;
+
         enemy.tint = this.enemyColors[Math.floor(Math.random()*this.enemyColors.length)];
         enemy.id = Math.round(Math.random() * 1000000);
 
@@ -96,6 +98,7 @@ class Spawner {
         projectile.vx = vx;
         projectile.vy = vy;
         projectile.damage = damage;
+        projectile.ignore = [];
         projectile.visible = true;
 
         return projectile;

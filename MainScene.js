@@ -260,6 +260,8 @@ class MainScene extends Scene{
             for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
                 let enemy = enemyContainer.children[enemyIndex];
                 if (enemy.visible) {
+                    enemy.currentHealth -= enemy.burnDamage;
+                    enemy.checkForDestruction();
                     if (enemy.y > this.pixiApp.screen.height/this.pixiApp.stage.scale.y) {
                         enemy.visible = false;
                     } else {
@@ -353,18 +355,14 @@ class MainScene extends Scene{
                             enemy.vy = enemy.vy * 0.98;
                         }
 
+                        let burningHit = (player.burnChance > Math.random() * 100);
+                        if (burningHit) {
+                            enemy.burnDamage += projectile.damage * 0.01;
+                        }
+
                         enemy.currentHealth -= projectile.damage;
 
-                        if (enemy.currentHealth <= 0) {
-                            this.arcInc.savegame.credits += enemyContainer.children[enemyIndex].credits;
-                            arcInc.updateCredits();
-                            if (enemy.wave === this.wave) {
-                                this.remainingEnemies--;
-                            }
-                            enemy.visible = false;
-                        } else {
-                            enemy.updateHealthBar();
-                        }
+                        enemy.checkForDestruction();
                     }
                 }
             }

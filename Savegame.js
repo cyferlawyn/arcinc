@@ -7,21 +7,25 @@ class Savegame {
             'movementSpeed': 0,
             'maxShield': 0,
             'shieldRechargeTime': 0,
+            'shieldRechargeAccelerator': 0,
+            'overshieldChance': 0,
+            'plasmaField': 0,
             'maxArmor': 0,
+            'armorPlating': 0,
+            'titaniumAlloy': 0,
             'maxStructure': 0,
+            'repulsorField': 0,
+            'rateOfFire': 0,
             'projectileDamage': 0,
+            'clusterAmmunition': 0,
             'projectileAmount': 0,
             'projectileSpread': 0,
-            'rateOfFire': 0,
-            'shieldRechargeAccelerator': 0,
-            'repulsorField': 0,
             'criticalHitChance': 0,
             'criticalHitDamage': 0,
             'projectilePierceChance': 0,
             'projectileForkChance': 0,
-            'armorPlating': 0,
             'freezeChance': 0,
-            'overshieldChance': 0
+            'burnChance': 0,
         };
         this.modules = {
             'solarPanels': 0,
@@ -29,7 +33,11 @@ class Savegame {
             'factory': 0,
             'crewQuarters': 0,
             'waterTreatmentPlant': 0,
-            'teleporter': 0
+            'teleporter': 0,
+            'droneBay': 0,
+            'hangar': 0,
+            'antimatterSiphon': 0,
+            'warpDrive': 0
         }
     }
 }

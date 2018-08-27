@@ -391,6 +391,16 @@ class ArcInc {
         cardAnchor.style.cursor = 'pointer';
         cardAnchor.style.textDecoration = 'underline';
         cardAnchor.addEventListener('click', callback);
+        cardAnchor.interval = null;
+        cardAnchor.intervalHandler = function() {
+            cardAnchor.click();
+        };
+        cardAnchor.addEventListener('mousedown', function(event) {
+            cardAnchor.interval = setInterval(cardAnchor.intervalHandler, 75);
+        });
+        cardAnchor.addEventListener('mouseup', function(event) {
+            clearInterval(cardAnchor.interval);
+        });
         cardBody.appendChild(cardAnchor);
     }
 
@@ -422,11 +432,22 @@ class ArcInc {
                 this.savegame.upgrades['overshieldChance'] = 0;
                 this.savegame.upgrades['freezeChance'] = 0;
                 this.savegame.version = 'v0.11';
+            }
 
-            } else {
-                if (this.savegame.version !== 'v0.11') {
-                    this.savegame = new Savegame();
-                }
+            if (this.savegame.version === 'v0.11') {
+                this.savegame.upgrades['plasmaField'] = 0;
+                this.savegame.upgrades['titaniumAlloy'] = 0;
+                this.savegame.upgrades['clusterAmmunition'] = 0;
+                this.savegame.upgrades['burnChance'] = 0;
+                this.savegame.modules['droneBay'] = 0;
+                this.savegame.modules['hangar'] = 0;
+                this.savegame.modules['antimatterSiphon'] = 0;
+                this.savegame.modules['warpDrive'] = 0;
+                this.savegame.version = 'v0.12';
+            }
+
+            if (this.savegame.version !== 'v0.12') {
+                this.savegame = new Savegame();
             }
         }
 
