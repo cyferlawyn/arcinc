@@ -233,10 +233,11 @@ class MainScene extends Scene{
             for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
                 let enemy = enemyContainer.children[enemyIndex];
                 if (enemy.visible) {
-                    this.spawner.spawnEnemyProjectile(enemy.x + enemy.width / 2,
+                    this.spawner.spawnEnemyProjectile(
+                        enemy.x + enemy.width / 2,
                         enemy.y + enemy.height/2,
-                        enemy.vx * 2,
-                        enemy.vy * 2,
+                        enemy.vxBase * 2,
+                        enemy.vyBase * 2,
                         enemy.tint,
                         enemy.damage);
                 }

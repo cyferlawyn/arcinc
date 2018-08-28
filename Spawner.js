@@ -8,6 +8,7 @@ class Spawner {
     prepareEnemy() {
         let enemyContainer = this.objectStore.get('enemyContainer');
         let enemy = new Enemy(PIXI.Loader.shared.resources["assets/sprites/A1.png"].texture, 10);
+        enemy.baseMovementSpeed = 2;
         enemy.scale.set(0.5);
 
         enemyContainer.addChild(enemy);
@@ -30,7 +31,6 @@ class Spawner {
 
     spawnRandomEnemy(wave) {
         let enemyContainer = this.objectStore.get('enemyContainer');
-        let player = this.objectStore.get('player');
 
         let enemy;
         for (let i = 0; i < enemyContainer.children.length; i++) {
@@ -45,11 +45,25 @@ class Spawner {
             enemy = this.prepareEnemy();
         }
 
+        // Randomize positioning
         enemy.x = Math.random() * (this.pixiApp.screen.width/this.pixiApp.stage.scale.x - enemy.width);
         enemy.y = Math.random() * -500 - enemy.height;
-        enemy.vy = 2;
-        enemy.vx = Math.random() * 2 - 1;
+        enemy.position.set(enemy.x, enemy.y);
 
+        // Randomize movement vector
+        let vx = Math.random() - 0.5;
+        let vy = 1;
+
+        // calculate the velocity vector length
+        let distance = Math.sqrt( vx*vx + vy*vy);
+
+        vx /= distance;
+        vy /= distance;
+
+        enemy.vxBase = enemy.vx = vx * enemy.baseMovementSpeed;
+        enemy.vyBase = enemy.vy = vy * enemy.baseMovementSpeed;
+
+        // Initialize stats
         enemy.maxHealth = Math.floor(10 * Math.pow(arcInc.growth, wave));
         enemy.currentHealth = enemy.maxHealth;
         enemy.credits = Math.floor(10 * Math.pow(arcInc.growth, wave));
