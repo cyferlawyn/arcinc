@@ -17,132 +17,192 @@ class Player extends PIXI.Sprite {
                 'baseValue': 5,
                 'effect': 0.05,
                 'cost': 10,
+                'description': 'Increases the Movement Speed<br/><br/>' +
+                    'Value: 1 + 0.05 * level<br/><br/>' +
+                    'Movement Speed: 5 * [Movement Speed]'
             },
             'maxShield': {
                 'title': 'Shield Amount',
                 'baseValue': 100,
                 'effect': 0.1,
                 'cost': 25,
+                'description': 'Increases the Maximum Shield<br/><br/>' +
+                    'Value: 1 + 0.1 * level<br/><br/>' +
+                    'Maximum Shield: 100 * [Shield Amount] * [Plasma Field]'
             },
             'plasmaField': {
                 'title': 'Plasma Field',
                 'baseValue': 1,
                 'effect': 1,
                 'cost': 500000,
+                'description': 'Increases the Maximum Shield<br/><br/>' +
+                    'Value: 1 + level<br/><br/>' +
+                    'Maximum Shield: 100 * [Shield Amount] * [Plasma Field]'
             },
             'shieldRechargeTime': {
                 'title': 'Shield Recharge',
                 'baseValue': 600,
                 'effect': 0.05,
                 'cost': 25,
+                'description': 'Decreases the Shield Recharge Time (<i>Aka increases the shield regeneration per frame</i>)<br/><br/>' +
+                    'Value: 1 + 0.05 * level<br/><br/>' +
+                    'Shield Recharge Time: 600 / [Shield Recharge] * [Shield Recharge Accelerator]'
             },
             'shieldRechargeAccelerator': {
                 'title': 'Shield Recharge Accelerator',
                 'baseValue': 1,
                 'effect': 0.1,
                 'cost': 5000,
+                'description': 'When not being hit for 300 frames, decreases the Shield Recharge Time substantially (<i>Aka increases the shield regeneration per frame</i>)<br/><br/>' +
+                    'Value: 1 + 0.1 * level<br/><br/>' +
+                    'Shield Recharge Time: 600 / [Shield Recharge] * [Shield Recharge Accelerator]'
             },
             'overshieldChance': {
                 'title': 'Overshield Chance',
                 'baseValue': 1,
                 'effect': 0.25,
                 'cost': 100000,
+                'description': 'Chance that a hit is fully absorbed by the shield without affecting armor or structure. Requires full shield to trigger and will deplete the whole shield bar<br/><br/>' +
+                    'Value: 0.25 * level<br/><br/>'
             },
             'maxArmor': {
                 'title': 'Armor Amount',
                 'baseValue': 250,
                 'effect': 0.1,
                 'cost': 25,
+                'description': 'Increases the Maximum Armor<br/><br/>' +
+                    'Value: 1 + 0.1 * level<br/><br/>' +
+                    'Maximum Armor: 100 * [Armor Amount] * [Titanium Alloy]'
             },
             'armorPlating': {
                 'title': 'Armor Plating',
                 'baseValue': 100,
                 'effect': 0.5,
                 'cost': 25000,
+                'description': 'Reduces armor and structure damage taken by an absolute value<br/><br/>' +
+                    'Value: 100 + 0.5 * level<br/><br/>' +
+                    'Damage taken: (Damage / [Repulsor Field]) - [Current Shield] - ([Armor Plating] * [Titanium Alloy]) - [Current Armor] - [Current Structure])'
             },
             'titaniumAlloy': {
                 'title': 'Titanium Alloy',
                 'baseValue': 1,
                 'effect': 1,
                 'cost': 500000,
+                'description': 'Increases the Maximum Armor<br/><br/>' +
+                    'Value: 1 + level<br/><br/>' +
+                    'Maximum Armor: 100 * [Armor Amount] * [Titanium Alloy]'
             },
             'maxStructure': {
                 'title': 'Structure Amount',
                 'baseValue': 500,
                 'effect': 0.1,
                 'cost': 25,
+                'description': 'Increases the Maximum Structure<br/><br/>' +
+                    'Value: 1 + 0.1 * level<br/><br/>' +
+                    'Maximum Structure: 500 * [Structure Amount]'
             },
             'repulsorField': {
                 'title': 'Repulsor Field',
                 'baseValue': 1,
                 'effect': 0.1,
                 'cost': 5000,
+                'description': 'Reduces all incoming damage by a relative amount<br/><br/>' +
+                    'Value: 1 + 0.1 * level<br/><br/>' +
+                    'Damage taken: (Damage / [Repulsor Field]) - [Current Shield] - ([Armor Plating] * [Titanium Alloy]) - [Current Armor] - [Current Structure])'
             },
             'rateOfFire': {
                 'title': 'Rate of Fire',
                 'baseValue': 1,
                 'effect': 0.025,
                 'cost': 50,
+                'description': 'Increases the projectile fire rate<br/><br/>' +
+                    'Value: 1 + 0.025 * level<br/><br/>' +
+                    'Frames per projectile: 60 / [Rate of Fire]'
             },
             'projectileDamage': {
                 'title': 'Projectile Damage',
                 'baseValue': 10,
                 'effect': 0.05,
                 'cost': 50,
+                'description': 'Increases the projectile damage<br/><br/>' +
+                    'Value: 1 + 0.05 * level<br/><br/>' +
+                    'Projectile Damage: 10 * [Projectile Damage] * [Cluster Ammunition] * [Critical Hit Damage] * (([Projectile Amount] - 10) / 10)'
             },
             'clusterAmmunition': {
                 'title': 'Cluster Ammunition',
                 'baseValue': 1,
                 'effect': 0.1,
                 'cost': 500000,
+                'description': 'Increases the projectile damage<br/><br/>' +
+                    'Value: 1 + 0.1 * level<br/><br/>' +
+                    'Projectile Damage: 10 * [Projectile Damage] * [Cluster Ammunition] * [Critical Hit Damage] * (([Projectile Amount] - 10) / 10)'
             },
             'projectileAmount': {
                 'title': 'Projectile Amount',
                 'baseValue': 1,
                 'effect': 1,
                 'cost': 5000,
+                'description': 'Increases the amount of projectiles to up to 10. Subsequent levels instead increase the projectile damage further<br/><br/>' +
+                'Value: 1 + 0.05 * level<br/><br/>' +
+                    'Projectile Damage: 10 * [Projectile Damage] * [Cluster Ammunition] * [Critical Hit Damage] * (([Projectile Amount] - 10) / 10)'
             },
             'projectileSpread': {
                 'title': 'Projectile Spread',
                 'baseValue': 1,
                 'effect': 0.005,
                 'cost': 5000,
+                'description': 'Increases the spread in case more than 1 projectile is fired at once<br/><br/>' +
+                    'Value: 1 + 0.005 * level<br/><br/>' +
+                    'Maximum Horizontal Velocity: [Projectile Spread] / ([Projectile Amount] - 1) * 9 - [Projectile Spread] / 2;'
             },
             'criticalHitChance': {
                 'title': 'Critical Hit Chance',
                 'baseValue': 1,
                 'effect': 0.25,
                 'cost': 10000,
+                'description': 'Chance to perform a critical hit<br/><br/>' +
+                    'Value: 0.25 * level<br/><br/>'
             },
             'criticalHitDamage': {
                 'title': 'Critical Hit Damage',
                 'baseValue': 1,
                 'effect': 0.1,
                 'cost': 10000,
+                'description': 'Increases the damage dealt when performing a critical hit<br/><br/>' +
+                    'Value: 1 + 0.1 * level<br/><br/>' +
+                    'Projectile Damage: 10 * [Projectile Damage] * [Cluster Ammunition] * [Critical Hit Damage] * (([Projectile Amount] - 10) / 10)'
             },
             'projectilePierceChance': {
                 'title': 'Projectile Pierce Chance',
                 'baseValue': 1,
                 'effect': 0.25,
                 'cost': 25000,
+                'description': 'Chance that the projectile is not consumed upon impact. Can not hit the same enemy multiple times<br/><br/>' +
+                    'Value: 0.25 * level<br/><br/>'
             },
             'projectileForkChance': {
                 'title': 'Projectile Fork Chance',
                 'baseValue': 1,
                 'effect': 0.25,
                 'cost': 25000,
+                'description': 'Chance that the projectile is split into 3 upon impact. Can not hit the same enemy multiple times<br/><br/>' +
+                    'Value: 0.25 * level<br/><br/>'
             },
             'freezeChance': {
                 'title': 'Freeze Chance',
                 'baseValue': 1,
                 'effect': 0.25,
                 'cost': 100000,
+                'description': 'Chance that the enemy is frozen, which reduces his movement speed by 2% per hit. Stacks multiplicative<br/><br/>' +
+                    'Value: 0.25 * level<br/><br/>'
             },
             'burnChance': {
                 'title': 'Burn Chance',
                 'baseValue': 1,
                 'effect': 0.25,
                 'cost': 500000,
+                'description': 'Chance that the enemy catches fire upon impact, dealing 1% of [Projectile Damage] each tick. Stacks additive<br/><br/>' +
+                    'Value: 0.25 * level<br/><br/>'
             }
         };
 

@@ -272,6 +272,7 @@ class ArcInc {
                 cardDeck,
                 key,
                 value.title,
+                value.description,
                 'Level ' + this.savegame.modules[key] + ' (' + arcInc.format(Math.floor(this.savegame.modules[key] * value.effect)) + ' $ / s)',
                 'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(arcInc.growth, this.savegame.modules[key]))) + ' $)',
                 function (event) {
@@ -308,6 +309,7 @@ class ArcInc {
                 cardDeck,
                 key,
                 value.title,
+                value.description,
                 'Level ' + this.savegame.upgrades[key] + ' (+' + arcInc.format(Math.floor(this.savegame.upgrades[key] * value.effect * 100)) + ' %)',
                 'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(arcInc.growth, this.savegame.upgrades[key]))) + ' $)',
                 function (event) {
@@ -374,22 +376,45 @@ class ArcInc {
         return cardBody;
     }
 
-    initCard(parent, name, headerText, bodyText, anchorText, callback) {
+    initCard(parent, name, headerText, description, bodyText, anchorText, callback) {
         let card = document.createElement('div');
         card.id = name + '-card';
         card.classList.add('card', 'bg-st-patricks-blue');
         parent.appendChild(card);
 
-        let cardHeader = document.createElement('h5');
+        let cardHeader = document.createElement('div');
         cardHeader.id = name + '-card-header';
-        cardHeader.classList.add('card-header', 'bg-st-patricks-blue');
-        cardHeader.innerText = headerText;
+        cardHeader.classList.add('card-header', 'bg-st-patricks-blue', 'd-flex', 'justify-content-between');
         card.appendChild(cardHeader);
+
+        let cardHeaderParagraph = document.createElement('h5');
+        cardHeaderParagraph.innerText = headerText;
+        cardHeader.appendChild(cardHeaderParagraph);
+
+        let infoImg = document.createElement('img');
+        infoImg.src = 'assets/icons/glyphicons-196-info-sign.png';
+        infoImg.width = 16;
+        infoImg.height = 16;
+        infoImg.style.cursor = 'pointer';
+        cardHeader.appendChild(infoImg);
 
         let cardBody = document.createElement('div');
         cardBody.id = name + '-card-body';
         cardBody.classList.add('card-body');
         card.appendChild(cardBody);
+
+        let cardDescription = document.createElement('p');
+        cardDescription.innerHTML = description;
+        cardDescription.classList.add('d-none');
+        cardBody.appendChild(cardDescription);
+
+        infoImg.addEventListener('click', function() {
+            if (cardDescription.classList.contains('d-none')) {
+                cardDescription.classList.remove('d-none');
+            } else {
+                cardDescription.classList.add('d-none');
+            }
+        });
 
         let cardText = document.createElement('p');
         cardText.id = name + '-card-text';
@@ -408,10 +433,13 @@ class ArcInc {
         cardAnchor.intervalHandler = function() {
             cardAnchor.click();
         };
-        cardAnchor.addEventListener('mousedown', function(event) {
+        cardAnchor.addEventListener('mousedown', function() {
             cardAnchor.interval = setInterval(cardAnchor.intervalHandler, 75);
         });
-        cardAnchor.addEventListener('mouseup', function(event) {
+        cardAnchor.addEventListener('mouseup', function() {
+            clearInterval(cardAnchor.interval);
+        });
+        cardAnchor.addEventListener('mouseout', function() {
             clearInterval(cardAnchor.interval);
         });
         cardBody.appendChild(cardAnchor);
