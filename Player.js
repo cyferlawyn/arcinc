@@ -301,9 +301,7 @@ class Player extends PIXI.Sprite {
         this.ticksSinceLastHit = 0;
 
         // first hit shield, then armor, then structure
-        console.log(projectile.damage);
         let damage = projectile.damage * 1/this.repulsorField;
-        console.log(damage);
         if (this.currentShield >= damage) {
             this.currentShield -= damage;
             return;
