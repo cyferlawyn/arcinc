@@ -2,7 +2,7 @@ class Spawner {
     constructor (pixiApp, objectStore) {
         this.pixiApp = pixiApp;
         this.objectStore = objectStore;
-        this.enemyColors = ["0xCB3301", "0xFF0066", "0xFF6666", "0xFEFF99", "0xFFFF67", "0xCCFF66", "0x99FE00", "0xEC8EED", "0xFF99CB", "0xFE349A", "0xCC99FE", "0x6599FF", "0x03CDFF"];
+        this.enemyColors = ["0xCB3301", "0xFF0066", "0xFF6666", "0xFEFF99", "0xFFFF67", "0xCCFF66", "0x99FE00", "0xEC8EED", "0xFF99CB", "0xFE349A", "0xCC99FE", "0x6599FF", "0x03CDFF", "0xFF0000", "0xFFFF00", "0x00FF00", "0x00FFFF", "0x0000FF", "0xFF00FF"];
     }
 
     prepareEnemy() {
@@ -147,6 +147,21 @@ class Spawner {
         projectile.y = y;
         projectile.vx = vx;
         projectile.vy = vy;
+
+        let rotateRight = vx > 0;
+
+        let angle = Math.atan2(vy, vx);   //radians
+        if (angle < 0) {
+            angle += 360
+        }
+        let degrees = 180 * angle / Math.PI;  //degrees
+        console.log('vx:' + vx + ' vy:' + vy + ' rad:' + angle + ' degree' + degrees);
+        if (rotateRight) {
+            projectile.rotation = angle;
+        } else {
+            projectile.rotation = -angle;
+        }
+
         projectile.tint = tint;
         projectile.damage = damage;
 
