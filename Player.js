@@ -80,7 +80,7 @@ class Player extends PIXI.Sprite {
                 'effect': 0.5,
                 'cost': 25000,
                 'description': 'Reduces armor and structure damage taken by an absolute value<br/><br/>' +
-                    'Value: 100 + 0.5 * level<br/><br/>' +
+                    'Value: 50 * level<br/><br/>' +
                     'Damage taken: (Damage / [Repulsor Field]) - [Current Shield] - ([Armor Plating] * [Titanium Alloy]) - [Current Armor] - [Current Structure])'
             },
             'titaniumAlloy': {
@@ -224,7 +224,7 @@ class Player extends PIXI.Sprite {
 
         this.titaniumAlloy = this.upgrades['titaniumAlloy'].baseValue * (1 + this.upgrades['titaniumAlloy'].effect * this.arcInc.savegame.upgrades['titaniumAlloy']);
         this.maxArmor = this.upgrades['maxArmor'].baseValue * (1 + this.upgrades['maxArmor'].effect * this.arcInc.savegame.upgrades['maxArmor'] * this.titaniumAlloy);
-        this.armorPlating = this.upgrades['armorPlating'].baseValue * (1 + this.upgrades['armorPlating'].effect * this.arcInc.savegame.upgrades['armorPlating'] * this.titaniumAlloy);
+        this.armorPlating = this.upgrades['armorPlating'].baseValue * (this.upgrades['armorPlating'].effect * this.arcInc.savegame.upgrades['armorPlating'] * this.titaniumAlloy);
 
         this.maxStructure = this.upgrades['maxStructure'].baseValue * (1 + this.upgrades['maxStructure'].effect * this.arcInc.savegame.upgrades['maxStructure']);
         this.repulsorField = this.upgrades['repulsorField'].baseValue * (1 + this.upgrades['repulsorField'].effect * this.arcInc.savegame.upgrades['repulsorField']);
