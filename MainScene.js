@@ -261,24 +261,7 @@ class MainScene extends Scene{
             for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
                 let enemy = enemyContainer.children[enemyIndex];
                 if (enemy.visible) {
-                    enemy.currentHealth -= enemy.burnDamage;
-                    enemy.checkForDestruction();
-                    if (enemy.y > this.pixiApp.screen.height/this.pixiApp.stage.scale.y) {
-                        enemy.visible = false;
-                    } else {
-                        enemy.x += enemy.vx;
-                        enemy.y += enemy.vy;
-
-                        if (enemy.x < 0) {
-                            enemy.x = 0;
-                            enemy.vx *= -1;
-                        }
-
-                        if (enemy.x + enemy.width > this.pixiApp.screen.width/this.pixiApp.stage.scale.x) {
-                            enemy.x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x - enemy.width;
-                            enemy.vx *= -1;
-                        }
-                    }
+                    enemy.update();
                 }
             }
     }

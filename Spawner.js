@@ -82,7 +82,7 @@ class Spawner {
     preparePlayerProjectile() {
         let playerProjectileContainer = this.objectStore.get('playerProjectileContainer');
         let projectile = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/Bullet.png"].texture);
-        projectile.scale.set(0.4);
+        projectile.scale.set(0.7);
         projectile.damage = 5;
         projectile.ignore = [];
 
@@ -121,7 +121,7 @@ class Spawner {
     prepareEnemyProjectile() {
         let enemyProjectileContainer = this.objectStore.get('enemyProjectileContainer');
         let projectile = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/Bullet2.png"].texture);
-        projectile.scale.set(0.4);
+        projectile.scale.set(0.7);
         enemyProjectileContainer.addChild(projectile);
 
         return projectile;

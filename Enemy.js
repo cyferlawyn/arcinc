@@ -19,6 +19,27 @@ class Enemy extends PIXI.Sprite {
         this.addChild(healthBar);
     }
 
+    update() {
+        this.currentHealth -= this.burnDamage;
+        this.checkForDestruction();
+        if (this.y > arcInc.pixiApp.screen.height/arcInc.pixiApp.stage.scale.y) {
+            this.visible = false;
+        } else {
+            this.x += this.vx;
+            this.y += this.vy;
+
+            if (this.x < 0) {
+                this.x = 0;
+                this.vx *= -1;
+            }
+
+            if (this.x + this.width > arcInc.pixiApp.screen.width/arcInc.pixiApp.stage.scale.x) {
+                this.x = arcInc.pixiApp.screen.width/arcInc.pixiApp.stage.scale.x - this.width;
+                this.vx *= -1;
+            }
+        }
+    }
+
     checkForDestruction() {
         if (this.currentHealth <= 0) {
             arcInc.savegame.credits += this.credits;
