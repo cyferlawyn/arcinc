@@ -9,7 +9,7 @@ class Spawner {
         let enemyContainer = this.objectStore.get('enemyContainer');
         let enemy = new Enemy(PIXI.Loader.shared.resources["assets/sprites/A1.png"].texture, 10);
         enemy.baseMovementSpeed = 2;
-        enemy.scale.set(0.5);
+        enemy.scale.set(0.4);
 
         enemyContainer.addChild(enemy);
         return enemy;
@@ -62,7 +62,7 @@ class Spawner {
 
         enemy.vxBase = enemy.vx = vx * enemy.baseMovementSpeed;
         enemy.vyBase = enemy.vy = vy * enemy.baseMovementSpeed;
-
+        enemy.rotation = Math.atan2(vy, vx) - Math.PI/2;
         // Initialize stats
         enemy.maxHealth = Math.floor(10 * Math.pow(arcInc.growth, wave));
         enemy.currentHealth = enemy.maxHealth;
@@ -111,6 +111,10 @@ class Spawner {
         projectile.y = y;
         projectile.vx = vx;
         projectile.vy = vy;
+
+        projectile.anchor.set(0.5, 0.5);
+        projectile.rotation = Math.atan2(vy, vx) + Math.PI/2;
+
         projectile.damage = damage;
         projectile.ignore = [];
         projectile.visible = true;
@@ -148,19 +152,8 @@ class Spawner {
         projectile.vx = vx;
         projectile.vy = vy;
 
-        let rotateRight = vx > 0;
-
-        let angle = Math.atan2(vy, vx);   //radians
-        if (angle < 0) {
-            angle += 360
-        }
-        let degrees = 180 * angle / Math.PI;  //degrees
-        console.log('vx:' + vx + ' vy:' + vy + ' rad:' + angle + ' degree' + degrees);
-        if (rotateRight) {
-            projectile.rotation = angle;
-        } else {
-            projectile.rotation = -angle;
-        }
+        projectile.anchor.set(0.5, 0.5);
+        projectile.rotation = Math.atan2(vy, vx) - Math.PI/2;
 
         projectile.tint = tint;
         projectile.damage = damage;
