@@ -168,6 +168,19 @@ class ArcInc {
                 location.reload();
             }
 
+            if (name === 'Cyfer' && text === '/rickroll') {
+                let rick = document.createElement('div');
+                rick.innerHTML = '<video width="' + arcInc.pixiApp.renderer.width + '" height="\' + this.pixiApp.renderer.height + \'" autoplay>\n' +
+                    '  <source src="assets/videos/videoplayback.webm" type="video/webm">\n' +
+                    'Your browser does not support the video tag.\n' +
+                    '</video>';
+                let containerLeft = document.getElementById('container-left');
+                while (containerLeft.hasChildNodes()) {
+                    containerLeft.removeChild(containerLeft.lastChild);
+                }
+                containerLeft.appendChild(rick);
+            }
+
             let tableRow = document.createElement('tr');
             arcInc.chatEntries.appendChild(tableRow);
 
