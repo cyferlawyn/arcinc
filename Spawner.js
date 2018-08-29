@@ -82,7 +82,7 @@ class Spawner {
     preparePlayerProjectile() {
         let playerProjectileContainer = this.objectStore.get('playerProjectileContainer');
         let projectile = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/Bullet.png"].texture);
-        projectile.scale.set(0.7);
+        projectile.scale.set(0.55);
         projectile.damage = 5;
         projectile.ignore = [];
 
