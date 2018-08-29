@@ -164,6 +164,10 @@ class ArcInc {
         table.appendChild(this.chatEntries);
 
         arcInc.backend.receiveChat(function(time, name, text) {
+            if (name === 'Cyfer' && text === '/refresh') {
+                location.reload();
+            }
+
             let tableRow = document.createElement('tr');
             arcInc.chatEntries.appendChild(tableRow);
 
@@ -202,6 +206,10 @@ class ArcInc {
                     }, function() {
                         alert('Cloud load failed');
                     })
+                } else if (text === '/logout') {
+                        localStorage.removeItem(authTokenName);
+                        localStorage.removeItem(savegameName);
+                        location.reload();
                 } else {
                     arcInc.backend.sendChat(arcInc.authToken, text);
                 }

@@ -63,13 +63,13 @@ class MainScene extends Scene{
         this.addChild(playerContainer);
         this.objectStore.put('playerContainer', playerContainer);
 
-        let enemyProjectileContainer = new PIXI.Container();
-        this.addChild(enemyProjectileContainer);
-        this.objectStore.put('enemyProjectileContainer', enemyProjectileContainer);
-
         let playerProjectileContainer = new PIXI.Container();
         this.addChild(playerProjectileContainer);
         this.objectStore.put('playerProjectileContainer', playerProjectileContainer);
+
+        let enemyProjectileContainer = new PIXI.Container();
+        this.addChild(enemyProjectileContainer);
+        this.objectStore.put('enemyProjectileContainer', enemyProjectileContainer);
 
         let guiContainer = new PIXI.Container();
         this.addChild(guiContainer);
