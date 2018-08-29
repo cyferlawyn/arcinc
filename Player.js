@@ -113,7 +113,7 @@ class Player extends PIXI.Sprite {
             'rateOfFire': {
                 'title': 'Rate of Fire',
                 'baseValue': 1,
-                'effect': 0.025,
+                'effect': 0.035,
                 'cost': 50,
                 'description': 'Increases the projectile fire rate<br/><br/>' +
                     'Value: 1 + 0.025 * level<br/><br/>' +
@@ -247,7 +247,7 @@ class Player extends PIXI.Sprite {
         this.freezeChance = this.upgrades['freezeChance'].baseValue * (1 + this.upgrades['freezeChance'].effect * this.arcInc.savegame.upgrades['freezeChance']) - 1;
         this.burnChance = this.upgrades['burnChance'].baseValue * (1 + this.upgrades['burnChance'].effect * this.arcInc.savegame.upgrades['burnChance']) - 1;
 
-        this.rateOfFire = this.upgrades['rateOfFire'].baseValue * (1 + this.upgrades['rateOfFire'].effect * this.arcInc.savegame.upgrades['rateOfFire']);
+        this.rateOfFire = 1 + 3 * (1 - Math.pow(0.995, this.arcInc.savegame.upgrades['rateOfFire']));
         this.fireDelay = 60 / this.rateOfFire;
         this.currentDelay = 0;
     }
@@ -329,9 +329,9 @@ class Player extends PIXI.Sprite {
             let actualProjectileAmount = this.projectileAmount;
             let projectileAmountCompensation = 0;
 
-            if (this.projectileAmount > 10) {
-                projectileAmountCompensation = (this.projectileAmount - 10) / 10;
-                actualProjectileAmount = 10;
+            if (this.projectileAmount > 5) {
+                projectileAmountCompensation = (this.projectileAmount - 5) / 5;
+                actualProjectileAmount = 5;
             }
 
             for (let i = 1; i <= actualProjectileAmount; i++){
