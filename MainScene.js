@@ -55,14 +55,6 @@ class MainScene extends Scene{
         this.addChild(backgroundContainer);
         this.objectStore.put('backgroundContainer', backgroundContainer);
 
-        let enemyContainer = new PIXI.Container();
-        this.addChild(enemyContainer);
-        this.objectStore.put('enemyContainer', enemyContainer);
-
-        let playerContainer = new PIXI.Container();
-        this.addChild(playerContainer);
-        this.objectStore.put('playerContainer', playerContainer);
-
         let playerProjectileContainer = new PIXI.Container();
         this.addChild(playerProjectileContainer);
         this.objectStore.put('playerProjectileContainer', playerProjectileContainer);
@@ -70,6 +62,14 @@ class MainScene extends Scene{
         let enemyProjectileContainer = new PIXI.Container();
         this.addChild(enemyProjectileContainer);
         this.objectStore.put('enemyProjectileContainer', enemyProjectileContainer);
+
+        let enemyContainer = new PIXI.Container();
+        this.addChild(enemyContainer);
+        this.objectStore.put('enemyContainer', enemyContainer);
+
+        let playerContainer = new PIXI.Container();
+        this.addChild(playerContainer);
+        this.objectStore.put('playerContainer', playerContainer);
 
         let guiContainer = new PIXI.Container();
         this.addChild(guiContainer);
@@ -297,11 +297,33 @@ class MainScene extends Scene{
         }
     }
 
-    intersect(a, b) {
-        return !(b.x + b.width > a.x + a.width||
-            b.x + b.width < a.x ||
-            b.y > a.y + a.height ||
-            b.y + b.height < a.y);
+    intersect(r1, r2) {
+        let hit, combinedHalfWidths, combinedHalfHeights, vx, vy;
+
+        //A variable to determine whether there's a collision
+        hit = false;
+
+        //Calculate the distance vector
+        vx = (r1.x + Math.abs(r1.width/2) - (r1.width * r1.anchor.x)) - (r2.x + Math.abs(r2.width/2) - (r2.width * r2.anchor.x));
+        vy = (r1.y + Math.abs(r1.height/2) - (r1.height * r1.anchor.y)) - (r2.y + Math.abs(r2.height/2) - (r2.height * r2.anchor.y));
+
+        //Figure out the combined half-widths and half-heights
+        combinedHalfWidths = Math.abs(r1.width/2) + Math.abs(r2.width/2);
+        combinedHalfHeights = Math.abs(r1.height/2) + Math.abs(r2.height/2);
+
+        //Check for a collision on the x axis
+        if (Math.abs(vx) < combinedHalfWidths) {
+
+            //A collision might be occuring. Check for a collision on the y axis
+            hit = Math.abs(vy) < combinedHalfHeights;
+        } else {
+
+            //There's no collision on the x axis
+            hit = false;
+        }
+
+        //`hit` will be either `true` or `false`
+        return hit;
     }
 
     checkForCollisions() {

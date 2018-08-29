@@ -126,7 +126,7 @@ class Player extends PIXI.Sprite {
                 'cost': 50,
                 'description': 'Increases the projectile damage<br/><br/>' +
                     'Value: 1 + 0.05 * level<br/><br/>' +
-                    'Projectile Damage: 10 * [Projectile Damage] * [Cluster Ammunition] * [Critical Hit Damage] * (([Projectile Amount] - 10) / 10)'
+                    'Projectile Damage: 10 * [Projectile Damage] * [Cluster Ammunition] * [Critical Hit Damage] * (([Projectile Amount] - 5) / 5)'
             },
             'clusterAmmunition': {
                 'title': 'Cluster Ammunition',
@@ -135,16 +135,16 @@ class Player extends PIXI.Sprite {
                 'cost': 500000,
                 'description': 'Increases the projectile damage<br/><br/>' +
                     'Value: 1 + 0.1 * level<br/><br/>' +
-                    'Projectile Damage: 10 * [Projectile Damage] * [Cluster Ammunition] * [Critical Hit Damage] * (([Projectile Amount] - 10) / 10)'
+                    'Projectile Damage: 10 * [Projectile Damage] * [Cluster Ammunition] * [Critical Hit Damage] * (([Projectile Amount] - 5) / 5)'
             },
             'projectileAmount': {
                 'title': 'Projectile Amount',
                 'baseValue': 1,
                 'effect': 1,
                 'cost': 5000,
-                'description': 'Increases the amount of projectiles to up to 10. Subsequent levels instead increase the projectile damage further<br/><br/>' +
+                'description': 'Increases the amount of projectiles to up to 5. Subsequent levels instead increase the projectile damage further<br/><br/>' +
                 'Value: 1 + 0.05 * level<br/><br/>' +
-                    'Projectile Damage: 10 * [Projectile Damage] * [Cluster Ammunition] * [Critical Hit Damage] * (([Projectile Amount] - 10) / 10)'
+                    'Projectile Damage: 10 * [Projectile Damage] * [Cluster Ammunition] * [Critical Hit Damage] * (([Projectile Amount] - 5) / 5)'
             },
             'projectileSpread': {
                 'title': 'Projectile Spread',
@@ -170,7 +170,7 @@ class Player extends PIXI.Sprite {
                 'cost': 10000,
                 'description': 'Increases the damage dealt when performing a critical hit<br/><br/>' +
                     'Value: 1 + 0.1 * level<br/><br/>' +
-                    'Projectile Damage: 10 * [Projectile Damage] * [Cluster Ammunition] * [Critical Hit Damage] * (([Projectile Amount] - 10) / 10)'
+                    'Projectile Damage: 10 * [Projectile Damage] * [Cluster Ammunition] * [Critical Hit Damage] * (([Projectile Amount] - 5) / 5)'
             },
             'projectilePierceChance': {
                 'title': 'Projectile Pierce Chance',

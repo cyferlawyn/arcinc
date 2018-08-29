@@ -104,15 +104,15 @@ class ArcInc {
             };
         });
 
-        this.pixiApp.stage.on('mousedown', function(event) {
+        this.pixiApp.stage.on('mousedown', function() {
             arcInc.mousedown = true;
         });
 
-        this.pixiApp.stage.on('mouseup', function(event) {
+        this.pixiApp.stage.on('mouseup', function() {
             arcInc.mousedown = false;
         });
 
-        this.pixiApp.stage.on('mouseout', function(event) {
+        this.pixiApp.stage.on('mouseout', function() {
             arcInc.mousedown = false;
         });
 
@@ -414,8 +414,8 @@ class ArcInc {
 
         let infoImg = document.createElement('img');
         infoImg.src = 'assets/icons/glyphicons-196-info-sign.png';
-        infoImg.width = 16;
-        infoImg.height = 16;
+        infoImg.width = 22;
+        infoImg.height = 22;
         infoImg.style.cursor = 'pointer';
         cardHeader.appendChild(infoImg);
 
