@@ -394,15 +394,15 @@ class MainScene extends Scene{
 
         let player = this.objectStore.get('player');
         this.objectStore.get('shieldBar').width = 200 * player.currentShield / player.maxShield;
-        this.objectStore.get('shield').text = '' + Math.floor(player.currentShield)  + ' / ' + Math.floor(player.maxShield);
+        this.objectStore.get('shield').text = '' + arcInc.format(Math.floor(player.currentShield), 3)  + ' / ' + arcInc.format(Math.floor(player.maxShield), 3);
         this.objectStore.get('shield').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('shield').width/2;
 
         this.objectStore.get('armorBar').width = 200 * player.currentArmor / player.maxArmor;
-        this.objectStore.get('armor').text = '' + Math.floor(player.currentArmor)  + ' / ' + Math.floor(player.maxArmor);
+        this.objectStore.get('armor').text = '' + arcInc.format(Math.floor(player.currentArmor), 3)  + ' / ' + arcInc.format(Math.floor(player.maxArmor), 3);
         this.objectStore.get('armor').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('armor').width/2;
 
         this.objectStore.get('structureBar').width = 200 * player.currentStructure / player.maxStructure;
-        this.objectStore.get('structure').text = '' + Math.floor(player.currentStructure)  + ' / ' + Math.floor(player.maxStructure);
+        this.objectStore.get('structure').text = '' + arcInc.format(Math.floor(player.currentStructure), 3)  + ' / ' + arcInc.format(Math.floor(player.maxStructure), 3);
         this.objectStore.get('structure').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('structure').width/2;
     }
 }

@@ -104,7 +104,7 @@ class Player extends PIXI.Sprite {
             'repulsorField': {
                 'title': 'Repulsor Field',
                 'baseValue': 1,
-                'effect': 0.1,
+                'effect': 0.99,
                 'cost': 5000,
                 'description': 'Reduces all incoming damage by a relative amount<br/><br/>' +
                     'Value: 1 + 0.1 * level<br/><br/>' +
@@ -213,24 +213,24 @@ class Player extends PIXI.Sprite {
     }
 
     applyUpgrades() {
+        this.factoryMultiplier = Math.max(1, (arcInc.savegame.modules['factory'] - 50) * 0.25 );
+
         this.movementSpeed = this.upgrades['movementSpeed'].baseValue * (1 + this.upgrades['movementSpeed'].effect * this.arcInc.savegame.upgrades['movementSpeed']);
 
         this.plasmaField = this.upgrades['plasmaField'].baseValue * (1 + this.upgrades['plasmaField'].effect * this.arcInc.savegame.upgrades['plasmaField']);
-        this.maxShield = this.upgrades['maxShield'].baseValue * (1 + this.upgrades['maxShield'].effect * this.arcInc.savegame.upgrades['maxShield'] * this.plasmaField);
+        this.maxShield = this.upgrades['maxShield'].baseValue * (1 + this.upgrades['maxShield'].effect * this.arcInc.savegame.upgrades['maxShield'] * this.plasmaField * this.factoryMultiplier);
 
         this.shieldRechargeTime = this.upgrades['shieldRechargeTime'].baseValue / (1 + this.upgrades['shieldRechargeTime'].effect * this.arcInc.savegame.upgrades['shieldRechargeTime']);
         this.shieldRechargeAccelerator = this.upgrades['shieldRechargeAccelerator'].baseValue * (1 + this.upgrades['shieldRechargeAccelerator'].effect * this.arcInc.savegame.upgrades['shieldRechargeAccelerator']);
         this.overshieldChance = this.upgrades['overshieldChance'].baseValue * (1 + this.upgrades['overshieldChance'].effect * this.arcInc.savegame.upgrades['overshieldChance']) - 1;
 
         this.titaniumAlloy = this.upgrades['titaniumAlloy'].baseValue * (1 + this.upgrades['titaniumAlloy'].effect * this.arcInc.savegame.upgrades['titaniumAlloy']);
-        this.maxArmor = this.upgrades['maxArmor'].baseValue * (1 + this.upgrades['maxArmor'].effect * this.arcInc.savegame.upgrades['maxArmor'] * this.titaniumAlloy);
+        this.maxArmor = this.upgrades['maxArmor'].baseValue * (1 + this.upgrades['maxArmor'].effect * this.arcInc.savegame.upgrades['maxArmor'] * this.titaniumAlloy * this.factoryMultiplier);
+
         this.armorPlating = this.upgrades['armorPlating'].baseValue * (this.upgrades['armorPlating'].effect * this.arcInc.savegame.upgrades['armorPlating'] * this.titaniumAlloy);
 
-        this.maxStructure = this.upgrades['maxStructure'].baseValue * (1 + this.upgrades['maxStructure'].effect * this.arcInc.savegame.upgrades['maxStructure']);
-        this.repulsorField = this.upgrades['repulsorField'].baseValue * (1 + this.upgrades['repulsorField'].effect * this.arcInc.savegame.upgrades['repulsorField']);
-        if (this.repulsorField > 99) {
-            this.repulsorField = 99;
-        }
+        this.maxStructure = this.upgrades['maxStructure'].baseValue * (1 + this.upgrades['maxStructure'].effect * this.arcInc.savegame.upgrades['maxStructure']  * this.factoryMultiplier * this.factoryMultiplier);
+        this.repulsorField = this.upgrades['repulsorField'].baseValue - 0.999 * (1 - this.upgrades['repulsorField'].effect**this.arcInc.savegame.upgrades['repulsorField']);
 
         this.clusterAmmunition = this.upgrades['clusterAmmunition'].baseValue * (1 + this.upgrades['clusterAmmunition'].effect * this.arcInc.savegame.upgrades['clusterAmmunition']);
         this.projectileDamage = this.upgrades['projectileDamage'].baseValue * (1 + this.upgrades['projectileDamage'].effect * this.arcInc.savegame.upgrades['projectileDamage'] * this.clusterAmmunition);
@@ -242,7 +242,7 @@ class Player extends PIXI.Sprite {
         this.projectileForkChance = this.upgrades['projectileForkChance'].baseValue * (1 + this.upgrades['projectileForkChance'].effect * this.arcInc.savegame.upgrades['projectileForkChance']);
 
         this.criticalHitChance = this.upgrades['criticalHitChance'].baseValue * (1 + this.upgrades['criticalHitChance'].effect * this.arcInc.savegame.upgrades['criticalHitChance']) - 1;
-        this.criticalHitDamage = this.upgrades['criticalHitDamage'].baseValue * (1 + this.upgrades['criticalHitDamage'].effect * this.arcInc.savegame.upgrades['criticalHitDamage']) - 1;
+        this.criticalHitDamage = this.upgrades['criticalHitDamage'].baseValue * (1 + this.upgrades['criticalHitDamage'].effect * this.arcInc.savegame.upgrades['criticalHitDamage'] * this.factoryMultiplier**0.75);
 
         this.freezeChance = this.upgrades['freezeChance'].baseValue * (1 + this.upgrades['freezeChance'].effect * this.arcInc.savegame.upgrades['freezeChance']) - 1;
         this.burnChance = this.upgrades['burnChance'].baseValue * (1 + this.upgrades['burnChance'].effect * this.arcInc.savegame.upgrades['burnChance']) - 1;
@@ -361,7 +361,7 @@ class Player extends PIXI.Sprite {
         this.ticksSinceLastHit = 0;
 
         // first hit shield, then armor, then structure
-        let damage = projectile.damage * 1/this.repulsorField;
+        let damage = projectile.damage * this.repulsorField;
         if (this.currentShield >= damage) {
             this.currentShield -= damage;
             return;

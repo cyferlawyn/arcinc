@@ -528,22 +528,19 @@ class ArcInc {
     }
 
     updateCredits() {
-        document.getElementById('credits').innerText = 'Credits: ' + arcInc.format(arcInc.savegame.credits) + ' $ (+ ' + arcInc.format(arcInc.cps) + ' $ / s)';
+        document.getElementById('credits').innerText = 'Credits: ' + arcInc.format(arcInc.savegame.credits, 2) + ' $ (+ ' + arcInc.format(arcInc.cps) + ' $ / s)';
     }
 
-    format(number) {
-        let suffixes = ['K', 'M', 'B', 't', 'q', 'Q', 's', 'S', 'o', 'n'];
-        let suffix = '';
+    format(number, decPlaces) {
+        if (number === 0) {
+            return 0;
+        }
+        let suffixes = ['', 'K', 'M', 'B', 't', 'q', 'Q', 's', 'S', 'o', 'n'];
 
-        for (let i = 0; i < suffixes.length; i++) {
-            if (number / 1000 > 1) {
-                suffix = suffixes[i];
-                number /= 1000;
-            } else {
-                break;
-            }
+        if (decPlaces === undefined) {
+            decPlaces = 3;
         }
 
-        return Number(number.toFixed(3)) + suffix;
+        return (10 ** (Math.log10(number) % 3)).toFixed(decPlaces) + suffixes[Math.floor(Math.log10(number) / 3)];
     }
 }
