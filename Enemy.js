@@ -25,21 +25,17 @@ class Enemy extends PIXI.Sprite {
         if (this.y > arcInc.pixiApp.screen.height/arcInc.pixiApp.stage.scale.y) {
             this.visible = false;
         } else {
+            this.vx = Math.sin(this.y/75);
+            this.rotation = Math.atan2(this.vy, this.vx) - Math.PI/2;
             this.x += this.vx;
             this.y += this.vy;
 
             if (this.x < 0) {
                 this.x = 0;
-                this.vx *= -1;
-                this.vxBase *= -1;
-                this.rotation = Math.atan2(this.vy, this.vx) - Math.PI/2;
             }
 
             if (this.x + this.width > arcInc.pixiApp.screen.width/arcInc.pixiApp.stage.scale.x) {
                 this.x = arcInc.pixiApp.screen.width/arcInc.pixiApp.stage.scale.x - this.width;
-                this.vx *= -1;
-                this.vxBase *= -1;
-                this.rotation = Math.atan2(this.vy, this.vx) - Math.PI/2;
             }
         }
     }
