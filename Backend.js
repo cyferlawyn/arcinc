@@ -1,8 +1,4 @@
 class Backend {
-    constructor() {
-        this.address = 'http://195.253.17.2:8081';
-    }
-
     createUser(name, passwordHash, successCallback, failureCallback) {
         let requestBody = {
             'name': name,
@@ -21,7 +17,7 @@ class Backend {
                 }
             }
         };
-        xhr.open("POST", this.address + '/user/create', true);
+        xhr.open("POST", backendAddress + '/user/create', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(requestBody));
     }
@@ -44,7 +40,7 @@ class Backend {
                 }
             }
         };
-        xhr.open("POST", this.address + '/user/login', true);
+        xhr.open("POST", backendAddress + '/user/login', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(requestBody));
     }
@@ -56,7 +52,7 @@ class Backend {
         };
 
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", this.address + '/user/save', true);
+        xhr.open("POST", backendAddress + '/user/save', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(requestBody));
     }
@@ -78,7 +74,7 @@ class Backend {
                 }
             }
         };
-        xhr.open("POST", this.address + '/user/load', true);
+        xhr.open("POST", backendAddress + '/user/load', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(requestBody));
     }
@@ -90,13 +86,13 @@ class Backend {
         };
 
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", this.address + '/chat/send', true);
+        xhr.open("POST", backendAddress + '/chat/send', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(requestBody));
     }
 
     receiveChat(callback) {
-        let eventSource = new EventSource(this.address + '/chat/receive');
+        let eventSource = new EventSource(backendAddress + '/chat/receive');
 
         eventSource.onmessage = event => {
             let chatEntry = JSON.parse(event.data);
@@ -116,7 +112,7 @@ class Backend {
             }
         };
 
-        xhr.open('GET', this.address + '/user/leaderboard', true);
+        xhr.open('GET', backendAddress + '/user/leaderboard', true);
         xhr.send();
     }
 }

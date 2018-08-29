@@ -8,7 +8,7 @@ class ArcInc {
 
         this.backend = new Backend();
 
-        this.authToken = localStorage.getItem('authToken-v0.10');
+        this.authToken = localStorage.getItem(authTokenName);
         this.initLogin(this.authToken === null);
     }
 
@@ -46,7 +46,7 @@ class ArcInc {
     }
 
     loginSucceeded(authToken) {
-        localStorage.setItem('authToken-v0.10', authToken);
+        localStorage.setItem(authTokenName, authToken);
         arcInc.authToken = authToken;
         arcInc.loggedIn();
     }
@@ -197,7 +197,7 @@ class ArcInc {
                 } else if (text === '/load') {
                     arcInc.backend.loadUser(arcInc.authToken, function(savegame) {
                         let savegameString = JSON.stringify(savegame);
-                        localStorage.setItem('savegame', savegameString);
+                        localStorage.setItem(savegameName, savegameString);
                         location.reload();
                     }, function() {
                         alert('Cloud load failed');
@@ -465,7 +465,7 @@ class ArcInc {
     }
 
     initSavegame() {
-        this.savegame = JSON.parse(localStorage.getItem('savegame'));
+        this.savegame = JSON.parse(localStorage.getItem(savegameName));
         if (this.savegame === null) {
             this.savegame = new Savegame();
         } else {
@@ -497,12 +497,12 @@ class ArcInc {
 
     saveSavegame() {
         let savegameString = JSON.stringify(arcInc.savegame);
-        localStorage.setItem('savegame', savegameString);
+        localStorage.setItem(savegameName, savegameString);
     }
 
     cloudSave() {
         let savegameString = JSON.stringify(arcInc.savegame);
-        localStorage.setItem('savegame', savegameString);
+        localStorage.setItem(savegameName, savegameString);
         arcInc.backend.saveUser(arcInc.authToken, savegameString);
     }
 
