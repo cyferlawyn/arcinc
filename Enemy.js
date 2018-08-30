@@ -54,6 +54,6 @@ class Enemy extends PIXI.Sprite {
     }
 
     updateHealthBar() {
-        this.children[1].width = this.width * 2 * this.currentHealth / this.maxHealth;
+        this.children[1].width = this.width / this.scale.x * this.currentHealth / this.maxHealth;
     }
 }
