@@ -304,6 +304,7 @@ class ArcInc {
                         arcInc.updateCredits();
                         arcInc.savegame.modules[key]++;
                         arcInc.saveSavegame();
+                        arcInc.sceneManager.scenes['main'].objectStore.get('player').applyUpgrades();
 
                         document.getElementById(key + '-card-text').innerText = 'Level ' + arcInc.savegame.modules[key] + ' (' + arcInc.format(Math.floor(arcInc.savegame.modules[key] * value.effect)) + ' $ / s)';
                         document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(arcInc.growth, arcInc.savegame.modules[key]))) + ' $)';

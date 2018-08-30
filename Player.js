@@ -8,6 +8,7 @@ class Player extends PIXI.Sprite {
         this.boundaryHeight = boundaryHeight;
         this.destination = null;
         this.ticksSinceLastHit = 0;
+        this.currentDelay = 0;
 
         this.credits = 0;
 
@@ -249,7 +250,6 @@ class Player extends PIXI.Sprite {
 
         this.rateOfFire = 1 + 3 * (1 - Math.pow(0.995, this.arcInc.savegame.upgrades['rateOfFire']));
         this.fireDelay = 60 / this.rateOfFire;
-        this.currentDelay = 0;
     }
 
     update() {

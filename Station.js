@@ -77,7 +77,6 @@ class Station {
 
             arcInc.savegame.credits += cps;
             arcInc.cps = cps;
-            arcInc.sceneManager.scenes['main'].objectStore.get('player').applyUpgrades();
             arcInc.updateCredits();
             arcInc.saveSavegame();
         };
