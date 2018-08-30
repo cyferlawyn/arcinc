@@ -542,6 +542,8 @@ class ArcInc {
             decPlaces = 3;
         }
 
-        return (10 ** (Math.log10(number) % 3)).toFixed(decPlaces) + suffixes[Math.floor(Math.log10(number) / 3)];
+        return number < 1000 ?
+            Math.floor(number) :
+            (10 ** (Math.log10(number) % 3)).toFixed(decPlaces) + suffixes[Math.floor(Math.log10(number) / 3)];
     }
 }
