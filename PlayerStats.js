@@ -22,7 +22,7 @@ class PlayerStats {
         this.shieldRechargeAccelerator = 1 + 0.1 * this.ul('shieldRechargeAccelerator');
 
         this.projectileDamage = 1 + 0.05 * this.ul('projectileDamage');
-        this.clusterAmmunition = 1 + 0.5 * this.ul('clusterAmmunition');
+        this.clusterAmmunition = 1 + 0.1 * this.ul('clusterAmmunition');
 
         this.projectileAmount = (1 + this.ul('projectileAmount'));
         this.projectileSpread = (1 + 0.005 * this.ul('projectileSpread'));
