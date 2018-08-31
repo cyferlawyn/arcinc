@@ -253,6 +253,7 @@ class MainScene extends Scene{
         }
         if (this.framesTillWave <= 0 || this.remainingEnemies === 0) {
             this.wave++;
+            arcInc.updateStatsAndFormulas();
             this.framesTillWave = 600;
             this.remainingEnemies = this.spawner.spawnEnemyWave(this.wave);
         }

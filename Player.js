@@ -163,6 +163,7 @@ class Player extends PIXI.Sprite {
 
     applyUpgrades() {
         this.stats.calculate();
+        arcInc.updateStatsAndFormulas();
     }
 
     update() {

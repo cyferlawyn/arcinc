@@ -143,6 +143,7 @@ class ArcInc {
         this.initLeaderboard(parent);
         this.initStationModules(parent);
         this.initShipUpgrades(parent);
+        this.initStatsAndFormulas(parent);
     }
 
     initChat(parent) {
@@ -362,6 +363,42 @@ class ArcInc {
         }
     }
 
+    evStat(name) {
+        let stats = arcInc.sceneManager.scenes['main'].objectStore.get('player').stats;
+        return arcInc.format(stats[name]);
+    }
+
+    initStatsAndFormulasCard(parent,  headerText, ...bodyText) {
+        let card = document.createElement('div');
+        card.classList.add('card', 'bg-st-patricks-blue');
+        parent.appendChild(card);
+
+        let cardHeader = document.createElement('div');
+        cardHeader.classList.add('card-header', 'bg-st-patricks-blue', 'd-flex', 'justify-content-between');
+        card.appendChild(cardHeader);
+
+        let cardHeaderParagraph = document.createElement('h5');
+        cardHeaderParagraph.innerText = headerText;
+        cardHeader.appendChild(cardHeaderParagraph);
+
+
+        let cardBody = document.createElement('div');
+        cardBody.classList.add('card-body');
+        card.appendChild(cardBody);
+
+        for (let i = 0; i < bodyText.length; i++)
+        {
+            let cardText = document.createElement('p');
+            cardText.classList.add('card-text');
+            cardText.innerText = bodyText[i];
+            cardBody.appendChild(cardText);
+        }
+    }
+
+    initStatsAndFormulas(parent) {
+        this.initCategoryCard(parent, 'stats-and-formulas', 'Stats & Formulas');
+    }
+
     initCategoryCard(parent, name, headerText) {
         let toggleCategoryFunction = function(event) {
             let image = event.target;
@@ -527,6 +564,107 @@ class ArcInc {
         }
 
         arcInc.saveSavegame();
+    }
+
+    updateStatsAndFormulas() {
+        let categoryCardBody = document.getElementById('stats-and-formulas-category-card-body');
+        if (categoryCardBody === null) {
+            return;
+        }
+        while (categoryCardBody.hasChildNodes()) {
+            let cardBodyChild = categoryCardBody.lastChild;
+            categoryCardBody.removeChild(cardBodyChild);
+        }
+
+        // Enemy
+        this.initStatsAndFormulasCard(
+            categoryCardBody,
+            'Current Wave Enemy Health',
+            '-> 10 * [Growth Factor] ^ [Wave]',
+            '-> 10 * [' + arcInc.growth + '] ^ [' + arcInc.sceneManager.scenes['main'].wave + ']',
+            '-> ' + arcInc.format(10 * arcInc.growth ** arcInc.sceneManager.scenes['main'].wave ));
+
+        this.initStatsAndFormulasCard(
+            categoryCardBody,
+            'Current Wave Enemy Damage',
+            '-> 5 * [Growth Factor] ^ [Wave]',
+            '-> 5 * [' + arcInc.growth + '] ^ [' + arcInc.sceneManager.scenes['main'].wave + ']',
+            '-> ' + arcInc.format(5 * arcInc.growth ** arcInc.sceneManager.scenes['main'].wave ));
+
+        this.initStatsAndFormulasCard(
+            categoryCardBody,
+            'Current Wave Enemy Credits',
+            '-> 10 * [Growth Factor] ^ [Wave]',
+            '-> 10 * [' + arcInc.growth + '] ^ [' + arcInc.sceneManager.scenes['main'].wave + ']',
+            '-> ' + arcInc.format(10 * arcInc.growth ** arcInc.sceneManager.scenes['main'].wave ));
+
+        // Offense
+        this.initStatsAndFormulasCard(
+            categoryCardBody,
+            'Effective Projectile Damage',
+            '-> 10 * [Projectile Damage] * [Cluster Ammunition] * [Effective Projectile Amount Compensation]',
+            '-> 10 * [' + this.evStat('projectileDamage') + '] * [' + this.evStat('clusterAmmunition') + '] * [' + this.evStat('effectiveProjectileAmountCompensation') + ']',
+            '-> ' + this.evStat('effectiveProjectileDamage'));
+
+        this.initStatsAndFormulasCard(
+            categoryCardBody,
+            'Effective Critical Hit Damage Multiplier',
+            '-> [Critical Hit Damage] * [FactoryScaling] ^ 0.75',
+            '-> [' + this.evStat('criticalHitDamage') + '] * [' + this.evStat('factoryScaling') + '] ^ 0.75',
+            '-> ' + this.evStat('effectiveCriticalHitDamageMultiplier'));
+
+        this.initStatsAndFormulasCard(
+            categoryCardBody,
+            'Effective Critical Projectile Damage',
+            '-> [Effective Projectile Damage] * [Effective Critical Hit Damage Multiplier]',
+            '-> [' + this.evStat('effectiveProjectileDamage') + '] * [' + this.evStat('effectiveCriticalHitDamageMultiplier') + ']',
+            '-> ' + arcInc.format(
+            arcInc.sceneManager.scenes['main'].objectStore.get('player').stats['effectiveProjectileDamage'] *
+            arcInc.sceneManager.scenes['main'].objectStore.get('player').stats['effectiveCriticalHitDamageMultiplier']));
+
+        // Defense
+        this.initStatsAndFormulasCard(
+            categoryCardBody,
+            'Effective Shield Recharge / Tick (In Combat)',
+            '-> [Effective Max Shield] / (600 / ([Shield Recharge Time]) * 60)',
+            '-> [' + this.evStat('effectiveMaxShield') + '] / (600 / [' + this.evStat('shieldRechargeTime') + ']) * 60)',
+            '-> ' + this.evStat('effectiveShieldRechargePerTickInCombat'));
+
+        this.initStatsAndFormulasCard(
+            categoryCardBody,
+            'Effective Shield Recharge / tick (Out of Combat for 5 sec)',
+            '-> [Effective Shield Recharge Per Tick In Combat] * [Shield Recharge Accelerator]',
+            '-> [' + this.evStat('effectiveShieldRechargePerTickInCombat') + '] * [' + this.evStat('shieldRechargeAccelerator') + ']',
+            '-> ' + this.evStat('effectiveShieldRechargePerTickOutOfCombat'));
+
+        this.initStatsAndFormulasCard(
+            categoryCardBody,
+            'Effective Max Shield',
+            '-> 100 * [Max Shield] * [Plasma Field] * [Factory Scaling]',
+            '-> 100 * [' + this.evStat('maxShield') + '] * [' + this.evStat('plasmaField') + '] * [' + this.evStat('factoryScaling') +  ']',
+            '-> ' + this.evStat('effectiveMaxShield'));
+
+        this.initStatsAndFormulasCard(
+            categoryCardBody,
+            'Effective Max Armor',
+            '-> 250 * [Max Armor] * [Titanium Alloy] * [Factory Scaling]',
+            '-> 250 * [' + this.evStat('maxArmor') + '] * [' + this.evStat('titaniumAlloy') + '] * [' + this.evStat('factoryScaling') +  ']',
+            '-> ' + this.evStat('effectiveMaxArmor'));
+
+        this.initStatsAndFormulasCard(
+            categoryCardBody,
+            'Effective Max Structure',
+            '-> 500 * [Max Structure] * [Factory Scaling] ^ 2',
+            '-> 500 * [' + this.evStat('maxStructure') + '] * [' + this.evStat('factoryScaling') +  '] ^ 2',
+            '-> ' + this.evStat('effectiveMaxStructure'));
+
+        // Utility
+        this.initStatsAndFormulasCard(
+            categoryCardBody,
+            'Effective Movement Speed',
+            '-> 5 * [Movement Speed]',
+            '-> 5 * [' + this.evStat('movementSpeed') + ']',
+            '-> ' + this.evStat('effectiveMovementSpeed'));
     }
 
     saveSavegame() {

@@ -14,7 +14,7 @@ class PlayerStats {
 
         this.maxStructure = 1 + 0.1 * this.ul('maxStructure');
 
-        this.repulsorField = 0.999 * (1 - 0.99 ** this.ul('repulsorField'));
+        this.repulsorField = Math.max(0.01, 0.995 ** this.ul('repulsorField'));
 
         this.armorPlating = -100 * (0.5 * this.ul('armorPlating') * this.titaniumAlloy);
 
@@ -48,7 +48,7 @@ class PlayerStats {
         this.effectiveShieldRechargePerTickInCombat = this.effectiveMaxShield / (600 / (this.shieldRechargeTime) * 60);
         this.effectiveShieldRechargePerTickOutOfCombat = this.effectiveShieldRechargePerTickInCombat * this.shieldRechargeAccelerator;
 
-        this.effectiveRelativeIncomingDamageMultiplier = 1 - this.repulsorField;
+        this.effectiveRelativeIncomingDamageMultiplier = this.repulsorField;
         this.effectiveAbsoluteIncomingShieldDamageAddition = 0;
         this.effectiveAbsoluteIncomingArmorDamageAddition = this.armorPlating;
         this.effectiveAbsoluteIncomingStructureDamageAddition = 0;
