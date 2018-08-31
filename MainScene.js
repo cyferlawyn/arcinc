@@ -10,7 +10,7 @@ class MainScene extends Scene{
         this.spawner = new Spawner(this.pixiApp, this.objectStore);
         this.now = Date.now();
         this.elapsed = Date.now();
-        this.wave = arcInc.savegame.highestWave - 11;
+        this.wave = arcInc.savegame.highestWave - 1;
         if (this.wave < 0) {
             this.wave = 0;
         }
@@ -43,7 +43,7 @@ class MainScene extends Scene{
         player.currentArmor = player.stats.effectiveMaxArmor;
         player.currentStructure = player.stats.effectiveMaxStructure;
 
-        this.wave = Math.floor(arcInc.savegame.highestWave - 10);
+        this.wave = Math.floor(arcInc.savegame.highestWave - 1);
         if (this.wave < 0) {
             this.wave = 0;
         }
@@ -78,23 +78,35 @@ class MainScene extends Scene{
     initBackground() {
         let backgroundContainer = this.objectStore.get('backgroundContainer');
 
-        let backgroundFarLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/NebulaBlue.png'].texture, 1024, 1024);
+        let backgroundFarLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/bg-far.png'].texture, 1024, 1024);
         backgroundFarLayer.position.x = 0;
         backgroundFarLayer.position.y = 0;
         backgroundContainer.addChild(backgroundFarLayer);
         this.objectStore.put('backgroundFarLayer', backgroundFarLayer);
 
-        let backgroundMidLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/StarsSmall_1.png'].texture, 1024, 1024);
+        let backgroundMidLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/bg-mid.png'].texture, 1024, 1024);
         backgroundMidLayer.position.x = 0;
         backgroundMidLayer.position.y = 0;
         backgroundContainer.addChild(backgroundMidLayer);
         this.objectStore.put('backgroundMidLayer', backgroundMidLayer);
 
-        let backgroundNearLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/StarsSmall_2.png'].texture, 1024, 1024);
+        let backgroundMidNearLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/bg-mid-near.png'].texture, 1024, 1024);
+        backgroundMidNearLayer.position.x = 0;
+        backgroundMidNearLayer.position.y = 0;
+        backgroundContainer.addChild(backgroundMidNearLayer);
+        this.objectStore.put('backgroundMidNearLayer', backgroundMidNearLayer);
+
+        let backgroundNearLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/bg-near.png'].texture, 1024, 1024);
         backgroundNearLayer.position.x = 0;
         backgroundNearLayer.position.y = 0;
         backgroundContainer.addChild(backgroundNearLayer);
         this.objectStore.put('backgroundNearLayer', backgroundNearLayer);
+
+        let backgroundVeryNearLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/bg-very-near.png'].texture, 1024, 1024);
+        backgroundVeryNearLayer.position.x = 0;
+        backgroundVeryNearLayer.position.y = 0;
+        backgroundVeryNearLayer.addChild(backgroundVeryNearLayer);
+        this.objectStore.put('backgroundVeryNearLayer', backgroundVeryNearLayer);
     }
 
     initGui() {
@@ -206,7 +218,6 @@ class MainScene extends Scene{
         this.updateBackground();
         this.updatePlayer();
         this.updateEnemies();
-        this.engageEnemies();
         this.updateProjectiles();
         this.checkForCollisions();
         this.updateGui();
@@ -216,7 +227,9 @@ class MainScene extends Scene{
     updateBackground() {
         this.objectStore.get('backgroundFarLayer').tilePosition.y += 0.05;
         this.objectStore.get('backgroundMidLayer').tilePosition.y += 0.2;
-        this.objectStore.get('backgroundNearLayer').tilePosition.y += 0.4;
+        this.objectStore.get('backgroundMidNearLayer').tilePosition.y += 0.25;
+        this.objectStore.get('backgroundNearLayer').tilePosition.y += 0.3;
+        this.objectStore.get('backgroundVeryNearLayer').tilePosition.y += 0.4;
     }
 
     updatePlayer() {
@@ -225,32 +238,10 @@ class MainScene extends Scene{
         player.update(this.frame);
     }
 
-    engageEnemies() {
-        if (this.frame%120 === 0) {
-            let enemyContainer = this.objectStore.get('enemyContainer');
-            for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
-                let enemy = enemyContainer.children[enemyIndex];
-                if (enemy.visible) {
-                    this.spawner.spawnEnemyProjectile(
-                        enemy.x + enemy.width / 2,
-                        enemy.y + enemy.height/2,
-                        enemy.vxBase * 2,
-                        enemy.vyBase * 2,
-                        enemy.tint,
-                        enemy.damage);
-                }
-            }
-        }
-    }
-
     updateEnemies() {
         this.framesTillWave--;
         let enemyContainer = this.objectStore.get('enemyContainer');
 
-        if (this.remainingEnemies === 0 && arcInc.savegame.highestWave < this.wave) {
-            arcInc.savegame.highestWave = this.wave;
-            arcInc.saveSavegame();
-        }
         if (this.framesTillWave <= 0 || this.remainingEnemies === 0) {
             this.wave++;
             arcInc.updateStatsAndFormulas();
@@ -261,6 +252,7 @@ class MainScene extends Scene{
                 let enemy = enemyContainer.children[enemyIndex];
                 if (enemy.visible) {
                     enemy.update();
+                    enemy.engage();
                 }
             }
     }

@@ -10,20 +10,34 @@ class Spawner {
         let enemy = new Enemy(PIXI.Loader.shared.resources["assets/sprites/A1.png"].texture, 10);
         enemy.baseMovementSpeed = 2;
         enemy.scale.set(0.4);
+        enemy.isBoss = false;
 
         enemyContainer.addChild(enemy);
         return enemy;
     }
 
     spawnEnemyWave(wave) {
-        let spawnAmount = Math.ceil(0.2 * wave + 4);
-        if (spawnAmount > 25) {
-            spawnAmount = 25;
-        }
         let amountSpawned = 0;
-        for (let i = 0; i < spawnAmount; i++) {
-            this.spawnRandomEnemy(wave);
+
+        if (wave % 1000 === 0) {
+            this.spawnBoss(wave, 10000);
             amountSpawned++;
+        } else if (wave % 100 === 0) {
+            this.spawnBoss(wave, 1000);
+            amountSpawned++;
+        }else if (wave % 10 === 0) {
+            this.spawnBoss(wave, 100);
+            amountSpawned++;
+        } else {
+            let spawnAmount = Math.ceil(0.2 * wave + 4);
+            if (spawnAmount > 25) {
+                spawnAmount = 25;
+            }
+            amountSpawned = 0;
+            for (let i = 0; i < spawnAmount; i++) {
+                this.spawnRandomEnemy(wave);
+                amountSpawned++;
+            }
         }
 
         return amountSpawned;
@@ -34,7 +48,7 @@ class Spawner {
 
         let enemy;
         for (let i = 0; i < enemyContainer.children.length; i++) {
-            if (!enemyContainer.children[i].visible) {
+            if (!enemyContainer.children[i].visible && !enemyContainer.children[i].isBoss) {
                 enemy = enemyContainer.children[i];
                 break;
             }
@@ -79,6 +93,47 @@ class Spawner {
         enemy.visible = true;
     }
 
+    spawnBoss(wave, scalingFactor) {
+        let enemyContainer = this.objectStore.get('enemyContainer');
+        let enemy;
+        for (let i = 0; i < enemyContainer.children.length; i++) {
+            if (!enemyContainer.children[i].visible && enemyContainer.children[i].isBoss) {
+                enemy = enemyContainer.children[i];
+                break;
+            }
+        }
+
+        if (enemy === undefined) {
+            enemy = new Enemy(PIXI.Loader.shared.resources["assets/sprites/boss.png"].texture, 10 * scalingFactor);
+            enemy.isBoss = true;
+        }
+
+        enemy.baseMovementSpeed = 2;
+        enemy.scale.set(0.8);
+
+        enemyContainer.addChild(enemy);
+
+        // Initialize stats
+        enemy.maxHealth = Math.floor(10 * Math.pow(arcInc.growth, wave) * scalingFactor);
+        enemy.currentHealth = enemy.maxHealth;
+        enemy.credits = Math.floor(50 * Math.pow(arcInc.growth, wave) * scalingFactor);
+        enemy.damage = Math.floor(5 * Math.pow(arcInc.growth, wave));
+
+        enemy.x = (arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - enemy.width) / 2;
+        enemy.y = -enemy.height;
+
+        enemy.vx = 0;
+        enemy.vy = 1;
+
+        enemy.burnDamage = 0;
+
+        enemy.id = Math.round(Math.random() * 1000000);
+
+        enemy.updateHealthBar();
+        enemy.wave = wave;
+        enemy.visible = true;
+    }
+
     preparePlayerProjectile() {
         let playerProjectileContainer = this.objectStore.get('playerProjectileContainer');
         let projectile = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/Bullet.png"].texture);
@@ -91,7 +146,7 @@ class Spawner {
         return projectile;
     }
 
-    spawnPlayerProjectile(x, y, vx, vy, damage) {
+    spawnPlayerProjectile(x, y, vx, vy, damage, spriteId) {
         let playerProjectileContainer = this.objectStore.get('playerProjectileContainer');
 
         let projectile;
@@ -122,21 +177,34 @@ class Spawner {
         return projectile;
     }
 
-    prepareEnemyProjectile() {
+    prepareEnemyProjectile(spriteId) {
         let enemyProjectileContainer = this.objectStore.get('enemyProjectileContainer');
-        let projectile = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/Bullet2.png"].texture);
-        projectile.scale.set(0.7);
+        let projectile;
+        switch(spriteId) {
+            case 3:
+                projectile = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/Bullet3.png"].texture);
+                projectile.spriteId = 3;
+                break;
+            default:
+                projectile = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/Bullet2.png"].texture);
+                projectile.spriteId = 2;
+        }
+
+        projectile.scale.set(0.3);
         enemyProjectileContainer.addChild(projectile);
 
         return projectile;
     }
 
-    spawnEnemyProjectile(x, y, vx, vy, tint, damage) {
+    spawnEnemyProjectile(x, y, vx, vy, tint, damage, spriteId) {
+        if (spriteId === undefined) {
+            spriteId = 2;
+        }
         let enemyProjectileContainer = this.objectStore.get('enemyProjectileContainer');
 
         let projectile;
         for (let i = 0; i < enemyProjectileContainer.children.length; i++) {
-            if (!enemyProjectileContainer.children[i].visible) {
+            if (!enemyProjectileContainer.children[i].visible && enemyProjectileContainer.children[i].spriteId === spriteId) {
                 projectile = enemyProjectileContainer.children[i];
                 break;
             }
@@ -144,7 +212,7 @@ class Spawner {
 
         // if no enemy projectile is available in the enemy projectile container, create another
         if (projectile === undefined) {
-            projectile = this.prepareEnemyProjectile();
+            projectile = this.prepareEnemyProjectile(spriteId);
         }
 
         projectile.x = x;
@@ -159,5 +227,7 @@ class Spawner {
         projectile.damage = damage;
 
         projectile.visible = true;
+
+        return projectile;
     }
 }

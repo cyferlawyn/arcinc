@@ -284,8 +284,10 @@ class Player extends PIXI.Sprite {
         if (enemy.currentHealth > damage) {
             // test freeze
             if (this.stats.chanceHappened('freezeChance')) {
-                enemy.vx = enemy.vx * 0.98;
-                enemy.vy = enemy.vy * 0.98;
+                if (!enemy.isBoss) {
+                    enemy.vx = enemy.vx * 0.98;
+                    enemy.vy = enemy.vy * 0.98;
+                }
             }
 
             // test burn

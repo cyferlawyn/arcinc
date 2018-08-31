@@ -22,20 +22,99 @@ class Enemy extends PIXI.Sprite {
     update() {
         this.currentHealth -= this.burnDamage;
         this.checkForDestruction();
-        if (this.y > arcInc.pixiApp.screen.height/arcInc.pixiApp.stage.scale.y) {
+
+        if (this.y > arcInc.pixiApp.screen.height / arcInc.pixiApp.stage.scale.y) {
             this.visible = false;
         } else {
-            this.vx = Math.sin(this.y/75);
-            this.rotation = Math.atan2(this.vy, this.vx) - Math.PI/2;
-            this.x += this.vx;
-            this.y += this.vy;
+            if (!this.isBoss) {
+                this.vx = Math.sin(this.y / 75);
+                this.rotation = Math.atan2(this.vy, this.vx) - Math.PI / 2;
 
-            if (this.x < 0) {
-                this.x = 0;
+                if (this.x < 0) {
+                    this.x = 0;
+                }
+
+                if (this.x + this.width > arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x) {
+                    this.x = arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - this.width;
+                }
+            } else {
+                arcInc.sceneManager.scenes['main'].framesTillWave = 600;
+
+                if (this.y > 40) {
+                    this.y = 40;
+                    this.vy = 0;
+                    this.vx = 1;
+                }
+
+                if (this.x < 0) {
+                    this.x = 0;
+                    this.vx *= -1;
+                }
+
+                if (this.x + this.width > arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x) {
+                    this.x = arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - this.width;
+                    this.vx *= -1;
+                }
             }
 
-            if (this.x + this.width > arcInc.pixiApp.screen.width/arcInc.pixiApp.stage.scale.x) {
-                this.x = arcInc.pixiApp.screen.width/arcInc.pixiApp.stage.scale.x - this.width;
+            this.x += this.vx;
+            this.y += this.vy;
+        }
+    }
+
+    engage() {
+        if (!this.isBoss) {
+            if (arcInc.sceneManager.scenes['main'].frame % 120 === 0) {
+                arcInc.sceneManager.scenes['main'].spawner.spawnEnemyProjectile(
+                    this.x + this.width / 2,
+                    this.y + this.height / 2,
+                    this.vxBase * 2,
+                    this.vyBase * 2,
+                    this.tint,
+                    this.damage);
+            }
+        } else {
+            let player = arcInc.sceneManager.scenes['main'].objectStore.get('player');
+
+
+            if (arcInc.sceneManager.scenes['main'].frame % 5 === 0) {
+                arcInc.sceneManager.scenes['main'].spawner.spawnEnemyProjectile(
+                    this.x + this.width / 2,
+                    this.y + this.height / 2,
+                    5 * Math.sin(arcInc.sceneManager.scenes['main'].frame / 10),
+                    7,
+                    "0x66DD66",
+                    this.damage,
+                    3);
+            }
+
+            if (arcInc.sceneManager.scenes['main'].frame % 10 === 0) {
+                let angle = 0.05 * arcInc.sceneManager.scenes['main'].frame % 360;
+                let x = 5 * (1 + angle) * Math.cos(angle) + ((arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x) / 2);
+                let y = 5 * (1 + angle) * Math.sin(angle) + 200;
+
+                let distanceX = player.x - x;
+                let distanceY = player.y - y;
+
+                // calculate the velocity vector length
+                let distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+                // normalize velocity vector length
+                let vx = distanceX / distance;
+                let vy = distanceY / distance;
+
+                // apply movement speed
+                vx = vx * 5;
+                vy = vy * 5;
+
+                arcInc.sceneManager.scenes['main'].spawner.spawnEnemyProjectile(
+                    x,
+                    y,
+                    vx,
+                    vy,
+                    "0x66DD66",
+                    this.damage,
+                    2);
             }
         }
     }
@@ -46,6 +125,11 @@ class Enemy extends PIXI.Sprite {
             arcInc.updateCredits();
             if (this.wave === arcInc.sceneManager.scenes['main'].wave) {
                 arcInc.sceneManager.scenes['main'].remainingEnemies--;
+
+                if (this.isBoss) {
+                    arcInc.savegame.highestWave = this.wave + 1;
+                    arcInc.saveSavegame();
+                }
             }
             this.visible = false;
         } else {
