@@ -332,7 +332,7 @@ class ArcInc {
                 key,
                 value.title,
                 value.description,
-                'Level ' + this.savegame.upgrades[key] + ' (+' + arcInc.format(Math.floor(this.savegame.upgrades[key] * value.effect * 100)) + ' %)',
+                'Level ' + this.savegame.upgrades[key] + ' (' + value.valueTemplate.replace('VALUE', this.format(arcInc.sceneManager.scenes['main'].objectStore.get('player').stats[key])) + ')',
                 'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(arcInc.growth, this.savegame.upgrades[key]))) + ' $)',
                 function (event) {
                     let key = event.currentTarget.name;
@@ -344,10 +344,21 @@ class ArcInc {
                         arcInc.saveSavegame();
                         arcInc.sceneManager.scenes['main'].objectStore.get('player').applyUpgrades();
 
-                        document.getElementById(key + '-card-text').innerText = 'Level ' + arcInc.savegame.upgrades[key] + ' (+' + arcInc.format(Math.floor(arcInc.savegame.upgrades[key] * value.effect * 100)) + ' %)';
-                        document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(arcInc.growth, arcInc.savegame.upgrades[key]))) + ' $)';
+                        document.getElementById(key + '-card-text').innerText = 'Level ' + arcInc.savegame.upgrades[key] + ' (' + value.valueTemplate.replace('VALUE', arcInc.format(arcInc.sceneManager.scenes['main'].objectStore.get('player').stats[key])) + ')';
+
+                        if (value.cap === undefined || arcInc.savegame.upgrades[key] < value.cap) {
+                            document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + arcInc.format(Math.ceil(value.cost * Math.pow(arcInc.growth, arcInc.savegame.upgrades[key]))) + ' $)';
+                        } else {
+                            let cardAnchor = document.getElementById(key + '-card-anchor');
+                            cardAnchor.style.visibility = 'hidden';
+                        }
                     }
                 });
+
+            if (value.cap !== undefined && arcInc.savegame.upgrades[key] >= value.cap) {
+                let cardAnchor = document.getElementById(key + '-card-anchor');
+                cardAnchor.style.visibility = 'hidden';
+            }
         }
     }
 
@@ -450,13 +461,14 @@ class ArcInc {
         cardAnchor.name = name;
         cardAnchor.style.cursor = 'pointer';
         cardAnchor.style.textDecoration = 'underline';
+
         cardAnchor.addEventListener('click', callback);
         cardAnchor.interval = null;
         cardAnchor.intervalHandler = function() {
             cardAnchor.click();
         };
         cardAnchor.addEventListener('mousedown', function() {
-            cardAnchor.interval = setInterval(cardAnchor.intervalHandler, 75);
+            cardAnchor.interval = setInterval(cardAnchor.intervalHandler, 100);
         });
         cardAnchor.addEventListener('mouseup', function() {
             clearInterval(cardAnchor.interval);
@@ -536,14 +548,26 @@ class ArcInc {
         if (number === 0) {
             return 0;
         }
+
+        let prefix = '';
+        if (number < 0) {
+            prefix = '-';
+            number = Math.abs(number);
+        }
+
         let suffixes = ['', 'K', 'M', 'B', 't', 'q', 'Q', 's', 'S', 'o', 'n'];
 
         if (decPlaces === undefined) {
             decPlaces = 3;
         }
 
-        return number < 1000 ?
-            Math.floor(number) :
-            (10 ** (Math.log10(number) % 3)).toFixed(decPlaces) + suffixes[Math.floor(Math.log10(number) / 3)];
+        if (number >= 1) {
+            let suffix = suffixes[Math.floor(Math.log10(number) / 3)];
+            number = +(Math.pow(10, (Math.log10(number) % 3))).toFixed(decPlaces);
+
+            return prefix + number + suffix;
+        } else {
+            return prefix + number.toFixed(decPlaces);
+        }
     }
 }
