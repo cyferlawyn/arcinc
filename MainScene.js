@@ -1,7 +1,6 @@
 class MainScene extends Scene{
     constructor(arcInc) {
         super('main', arcInc.pixiApp);
-        this.arcInc = arcInc;
         this.pixiApp = arcInc.pixiApp;
         this.init();
     }
@@ -40,9 +39,9 @@ class MainScene extends Scene{
         }
 
         let player = this.objectStore.get('player');
-        player.currentShield = player.maxShield;
-        player.currentArmor = player.maxArmor;
-        player.currentStructure = player.maxStructure;
+        player.currentShield = player.stats.effectiveMaxShield;
+        player.currentArmor = player.stats.effectiveMaxArmor;
+        player.currentStructure = player.stats.effectiveMaxStructure;
 
         this.wave = Math.floor(arcInc.savegame.highestWave - 10);
         if (this.wave < 0) {
@@ -192,7 +191,6 @@ class MainScene extends Scene{
         let playerContainer = this.objectStore.get('playerContainer');
         let player = new Player(
             PIXI.Loader.shared.resources["assets/sprites/A5.png"].texture,
-            this.arcInc,
             this.spawner,
             this.pixiApp.screen.width/this.pixiApp.stage.scale.x,
             this.pixiApp.screen.height/this.pixiApp.stage.scale.y);
@@ -338,37 +336,7 @@ class MainScene extends Scene{
 
                 if (projectile.visible && enemy.visible && !projectile.ignore.includes(enemy.id)) {
                     if (this.intersect(enemy, projectile)) {
-
-                        let forkingHit = (player.projectileForkChance > Math.random() * 100);
-                        if (forkingHit) {
-                            projectile.ignore.push(enemy.id);
-                            let newProjectileOne = this.spawner.spawnPlayerProjectile(projectile.x, projectile.y, projectile.vy / 4, projectile.vy, projectile.damage);
-                            let newProjectileTwo = this.spawner.spawnPlayerProjectile(projectile.x, projectile.y, -projectile.vy / 4, projectile.vy, projectile.damage);
-                            newProjectileOne.ignore = projectile.ignore.slice();
-                            newProjectileTwo.ignore = projectile.ignore.slice();
-                        }
-
-                        let piercingHit = (player.projectilePierceChance > Math.random() * 100);
-                        if (!piercingHit) {
-                            projectile.visible = false;
-                        } else {
-                            projectile.ignore.push(enemy.id);
-                        }
-
-                        let freezingHit = (player.freezeChance > Math.random() * 100);
-                        if (freezingHit) {
-                            enemy.vx = enemy.vx * 0.98;
-                            enemy.vy = enemy.vy * 0.98;
-                        }
-
-                        let burningHit = (player.burnChance > Math.random() * 100);
-                        if (burningHit) {
-                            enemy.burnDamage += projectile.damage * 0.01;
-                        }
-
-                        enemy.currentHealth -= projectile.damage;
-
-                        enemy.checkForDestruction();
+                        player.hits(enemy, projectile);
                     }
                 }
             }
@@ -380,8 +348,8 @@ class MainScene extends Scene{
             let enemyProjectile = enemyProjectileContainer.children[enemyProjectileIndex];
             if (enemyProjectile.visible) {
                 if (this.intersect(player, enemyProjectile)) {
-                    player.hit(enemyProjectile);
-                    enemyProjectile.visible = false;
+                    player.isHit(enemyProjectile);
+
                 }
             }
         }
@@ -393,16 +361,16 @@ class MainScene extends Scene{
         this.objectStore.get('wave').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('wave').width/2;
 
         let player = this.objectStore.get('player');
-        this.objectStore.get('shieldBar').width = 200 * player.currentShield / player.maxShield;
-        this.objectStore.get('shield').text = '' + arcInc.format(Math.floor(player.currentShield), 3)  + ' / ' + arcInc.format(Math.floor(player.maxShield), 3);
+        this.objectStore.get('shieldBar').width = 200 * player.currentShield / player.stats.effectiveMaxShield;
+        this.objectStore.get('shield').text = '' + arcInc.format(Math.floor(player.currentShield), 3)  + ' / ' + arcInc.format(Math.floor(player.stats.effectiveMaxShield), 3);
         this.objectStore.get('shield').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('shield').width/2;
 
-        this.objectStore.get('armorBar').width = 200 * player.currentArmor / player.maxArmor;
-        this.objectStore.get('armor').text = '' + arcInc.format(Math.floor(player.currentArmor), 3)  + ' / ' + arcInc.format(Math.floor(player.maxArmor), 3);
+        this.objectStore.get('armorBar').width = 200 * player.currentArmor / player.stats.effectiveMaxArmor;
+        this.objectStore.get('armor').text = '' + arcInc.format(Math.floor(player.currentArmor), 3)  + ' / ' + arcInc.format(Math.floor(player.stats.effectiveMaxArmor), 3);
         this.objectStore.get('armor').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('armor').width/2;
 
-        this.objectStore.get('structureBar').width = 200 * player.currentStructure / player.maxStructure;
-        this.objectStore.get('structure').text = '' + arcInc.format(Math.floor(player.currentStructure), 3)  + ' / ' + arcInc.format(Math.floor(player.maxStructure), 3);
+        this.objectStore.get('structureBar').width = 200 * player.currentStructure / player.stats.effectiveMaxStructure;
+        this.objectStore.get('structure').text = '' + arcInc.format(Math.floor(player.currentStructure), 3)  + ' / ' + arcInc.format(Math.floor(player.stats.effectiveMaxStructure), 3);
         this.objectStore.get('structure').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('structure').width/2;
     }
 }

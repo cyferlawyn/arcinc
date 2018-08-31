@@ -1,16 +1,6 @@
 class Player extends PIXI.Sprite {
-    constructor(texture, arcInc, spawner, boundaryWidth, boundaryHeight) {
+    constructor(texture, spawner, boundaryWidth, boundaryHeight) {
         super(texture);
-
-        this.arcInc = arcInc;
-        this.spawner = spawner;
-        this.boundaryWidth = boundaryWidth;
-        this.boundaryHeight = boundaryHeight;
-        this.destination = null;
-        this.ticksSinceLastHit = 0;
-        this.currentDelay = 0;
-
-        this.credits = 0;
 
         this.upgrades = {
             'movementSpeed': {
@@ -144,7 +134,7 @@ class Player extends PIXI.Sprite {
                 'effect': 1,
                 'cost': 5000,
                 'description': 'Increases the amount of projectiles to up to 5. Subsequent levels instead increase the projectile damage further<br/><br/>' +
-                'Value: 1 + 0.05 * level<br/><br/>' +
+                    'Value: 1 + 0.05 * level<br/><br/>' +
                     'Projectile Damage: 10 * [Projectile Damage] * [Cluster Ammunition] * [Critical Hit Damage] * (([Projectile Amount] - 5) / 5)'
             },
             'projectileSpread': {
@@ -207,49 +197,25 @@ class Player extends PIXI.Sprite {
             }
         };
 
+        this.spawner = spawner;
+        this.boundaryWidth = boundaryWidth;
+        this.boundaryHeight = boundaryHeight;
+
+        this.stats = new PlayerStats();
+
+        this.destination = null;
+
         this.applyUpgrades();
-        this.currentShield = this.maxShield;
-        this.currentArmor = this.maxArmor;
-        this.currentStructure = this.maxStructure;
+
+        this.currentDelay = 0;
+        this.ticksSinceLastHit = 0;
+        this.currentShield = this.stats.effectiveMaxShield;
+        this.currentArmor = this.stats.effectiveMaxArmor;
+        this.currentStructure = this.stats.effectiveMaxStructure;
     }
 
     applyUpgrades() {
-        this.factoryMultiplier = Math.max(1, (arcInc.savegame.modules['factory'] - 50) * 0.25 );
-
-        this.movementSpeed = this.upgrades['movementSpeed'].baseValue * (1 + this.upgrades['movementSpeed'].effect * this.arcInc.savegame.upgrades['movementSpeed']);
-
-        this.plasmaField = this.upgrades['plasmaField'].baseValue * (1 + this.upgrades['plasmaField'].effect * this.arcInc.savegame.upgrades['plasmaField']);
-        this.maxShield = this.upgrades['maxShield'].baseValue * (1 + this.upgrades['maxShield'].effect * this.arcInc.savegame.upgrades['maxShield'] * this.plasmaField * this.factoryMultiplier);
-
-        this.shieldRechargeTime = this.upgrades['shieldRechargeTime'].baseValue / (1 + this.upgrades['shieldRechargeTime'].effect * this.arcInc.savegame.upgrades['shieldRechargeTime']);
-        this.shieldRechargeAccelerator = this.upgrades['shieldRechargeAccelerator'].baseValue * (1 + this.upgrades['shieldRechargeAccelerator'].effect * this.arcInc.savegame.upgrades['shieldRechargeAccelerator']);
-        this.overshieldChance = this.upgrades['overshieldChance'].baseValue * (1 + this.upgrades['overshieldChance'].effect * this.arcInc.savegame.upgrades['overshieldChance']) - 1;
-
-        this.titaniumAlloy = this.upgrades['titaniumAlloy'].baseValue * (1 + this.upgrades['titaniumAlloy'].effect * this.arcInc.savegame.upgrades['titaniumAlloy']);
-        this.maxArmor = this.upgrades['maxArmor'].baseValue * (1 + this.upgrades['maxArmor'].effect * this.arcInc.savegame.upgrades['maxArmor'] * this.titaniumAlloy * this.factoryMultiplier);
-
-        this.armorPlating = this.upgrades['armorPlating'].baseValue * (this.upgrades['armorPlating'].effect * this.arcInc.savegame.upgrades['armorPlating'] * this.titaniumAlloy);
-
-        this.maxStructure = this.upgrades['maxStructure'].baseValue * (1 + this.upgrades['maxStructure'].effect * this.arcInc.savegame.upgrades['maxStructure']  * this.factoryMultiplier * this.factoryMultiplier);
-        this.repulsorField = this.upgrades['repulsorField'].baseValue - 0.999 * (1 - this.upgrades['repulsorField'].effect**this.arcInc.savegame.upgrades['repulsorField']);
-
-        this.clusterAmmunition = this.upgrades['clusterAmmunition'].baseValue * (1 + this.upgrades['clusterAmmunition'].effect * this.arcInc.savegame.upgrades['clusterAmmunition']);
-        this.projectileDamage = this.upgrades['projectileDamage'].baseValue * (1 + this.upgrades['projectileDamage'].effect * this.arcInc.savegame.upgrades['projectileDamage'] * this.clusterAmmunition);
-
-        this.projectileAmount = this.upgrades['projectileAmount'].baseValue * (1 + this.upgrades['projectileAmount'].effect * this.arcInc.savegame.upgrades['projectileAmount']);
-        this.projectileSpread = this.upgrades['projectileSpread'].baseValue * (1 + this.upgrades['projectileSpread'].effect * this.arcInc.savegame.upgrades['projectileSpread']);
-
-        this.projectilePierceChance = this.upgrades['projectilePierceChance'].baseValue * (1 + this.upgrades['projectilePierceChance'].effect * this.arcInc.savegame.upgrades['projectilePierceChance']) - 1;
-        this.projectileForkChance = this.upgrades['projectileForkChance'].baseValue * (1 + this.upgrades['projectileForkChance'].effect * this.arcInc.savegame.upgrades['projectileForkChance']) - 1;
-
-        this.criticalHitChance = this.upgrades['criticalHitChance'].baseValue * (1 + this.upgrades['criticalHitChance'].effect * this.arcInc.savegame.upgrades['criticalHitChance']) - 1;
-        this.criticalHitDamage = this.upgrades['criticalHitDamage'].baseValue * (1 + this.upgrades['criticalHitDamage'].effect * this.arcInc.savegame.upgrades['criticalHitDamage'] * this.factoryMultiplier**0.75);
-
-        this.freezeChance = this.upgrades['freezeChance'].baseValue * (1 + this.upgrades['freezeChance'].effect * this.arcInc.savegame.upgrades['freezeChance']) - 1;
-        this.burnChance = this.upgrades['burnChance'].baseValue * (1 + this.upgrades['burnChance'].effect * this.arcInc.savegame.upgrades['burnChance']) - 1;
-
-        this.rateOfFire = 1 + 3 * (1 - Math.pow(0.995, this.arcInc.savegame.upgrades['rateOfFire']));
-        this.fireDelay = 60 / this.rateOfFire;
+        this.stats.calculate();
     }
 
     update() {
@@ -266,7 +232,7 @@ class Player extends PIXI.Sprite {
             let pY = this.y + this.height / 2;
 
             // To prevent costly calculations in case the player is already very close to the cursor, start with a check
-            if (Math.abs(pX - this.destination.x / arcInc.pixiApp.stage.scale.x) < this.movementSpeed && Math.abs(pY - this.destination.y / arcInc.pixiApp.stage.scale.y) < this.movementSpeed) {
+            if (Math.abs(pX - this.destination.x / arcInc.pixiApp.stage.scale.x) < this.stats.effectiveMovementSpeed && Math.abs(pY - this.destination.y / arcInc.pixiApp.stage.scale.y) < this.stats.effectiveMovementSpeed) {
                 this.position.set(this.destination.x / arcInc.pixiApp.stage.scale.x - this.width / 2, this.destination.y / arcInc.pixiApp.stage.scale.y - this.height / 2);
                 this.destination = null;
             } else {
@@ -282,8 +248,8 @@ class Player extends PIXI.Sprite {
                 this.vy = distanceY / distance;
 
                 // apply movement speed
-                this.vx = this.vx * this.movementSpeed;
-                this.vy = this.vy * this.movementSpeed;
+                this.vx = this.vx * this.stats.effectiveMovementSpeed;
+                this.vy = this.vy * this.stats.effectiveMovementSpeed;
 
                 this.position.set(this.x + this.vx, this.y + this.vy);
             }
@@ -308,68 +274,105 @@ class Player extends PIXI.Sprite {
     }
 
     regenerate() {
-        let shieldRecharge = this.maxShield / (this.shieldRechargeTime * 60);
-
         if (this.ticksSinceLastHit > 300) {
-            shieldRecharge *= this.shieldRechargeAccelerator;
+            this.currentShield += this.stats.effectiveShieldRechargePerTickOutOfCombat;
+        } else {
+            this.currentShield += this.stats.effectiveShieldRechargePerTickInCombat;
         }
 
-        this.currentShield += shieldRecharge;
-        if (this.currentShield > this.maxShield) {
-            this.currentShield = this.maxShield;
-        }
+        // clamp current shield
+        this.currentShield = Math.min(this.stats.effectiveMaxShield, this.currentShield);
     }
 
     engage() {
         this.currentDelay += 1;
 
-        if (this.currentDelay >= this.fireDelay) {
-            this.currentDelay -= this.fireDelay;
+        if (this.currentDelay >= this.stats.effectiveFireDelayInTicks) {
+            this.currentDelay -= this.stats.effectiveFireDelayInTicks;
 
-            let actualProjectileAmount = this.projectileAmount;
-            let projectileAmountCompensation = 0;
-
-            if (this.projectileAmount > 5) {
-                projectileAmountCompensation = (this.projectileAmount - 5) / 5;
-                actualProjectileAmount = 5;
-            }
-
-            for (let i = 1; i <= actualProjectileAmount; i++){
+            for (let i = 1; i <= this.stats.effectiveProjectileAmount; i++){
                 let radius = this.width/2;
-                let angle =  Math.PI/(actualProjectileAmount+1) * i + Math.PI;
+                let angle =  Math.PI/(this.stats.effectiveProjectileAmount+1) * i + Math.PI;
                 let x = Math.cos(angle) * radius + this.x + this.width/2;
                 let y = Math.sin(angle) * radius + this.y + this.height/2;
 
                 let vx = 0;
-                if (actualProjectileAmount > 1) {
-                    vx = this.projectileSpread / (actualProjectileAmount - 1) * (i-1) - this.projectileSpread/2;
+                if (this.stats.effectiveProjectileAmount > 1) {
+                    vx = this.stats.effectiveProjectileSpread / (this.stats.effectiveProjectileAmount - 1) * (i-1) - this.stats.effectiveProjectileSpread/2;
                 }
                 let vy = -5;
 
-                let projectileDamage = this.projectileDamage + this.projectileDamage * projectileAmountCompensation;
-                let criticalHit = (this.criticalHitChance > Math.random() * 100);
-                if (criticalHit) {
-                    projectileDamage *= this.criticalHitDamage;
-                }
+                let projectileDamage = this.stats.effectiveProjectileDamage;
                 this.spawner.spawnPlayerProjectile(x, y, vx, vy, projectileDamage);
             }
         }
     }
 
-    hit(projectile) {
+    hits(enemy, projectile) {
+        let damage = projectile.damage;
 
+        // test critical hit
+        if (this.stats.chanceHappened('criticalHitChance')) {
+            damage *= this.stats.effectiveCriticalHitDamageMultiplier;
+        }
+
+        // test projectile fork
+        if (this.stats.chanceHappened('projectileForkChance')) {
+            projectile.ignore.push(enemy.id);
+            let newProjectileOne = arcInc.sceneManager.scenes['main'].spawner.spawnPlayerProjectile(projectile.x, projectile.y, projectile.vy / 4, projectile.vy, projectile.damage);
+            let newProjectileTwo = arcInc.sceneManager.scenes['main'].spawner.spawnPlayerProjectile(projectile.x, projectile.y, -projectile.vy / 4, projectile.vy, projectile.damage);
+            newProjectileOne.ignore = projectile.ignore.slice();
+            newProjectileTwo.ignore = projectile.ignore.slice();
+        }
+
+        // test projectile pierce
+        if (this.stats.chanceHappened('projectilePierceChance')) {
+            projectile.ignore.push(enemy.id);
+        } else {
+            projectile.visible = false;
+        }
+
+        // Skip ailment calculations for direct kills
+        if (enemy.currentHealth > damage) {
+            // test freeze
+            if (this.stats.chanceHappened('freezeChance')) {
+                enemy.vx = enemy.vx * 0.98;
+                enemy.vy = enemy.vy * 0.98;
+            }
+
+            // test burn
+            if (this.stats.chanceHappened('burnChance')) {
+                enemy.burnDamage += damage * 0.01;
+            }
+        }
+
+        // Apply final damage application
+        enemy.currentHealth -= damage;
+        enemy.checkForDestruction();
+    }
+
+    isHit(projectile) {
+        // Reset out of combat timer
         this.ticksSinceLastHit = 0;
 
-        // first hit shield, then armor, then structure
-        let damage = projectile.damage * this.repulsorField;
+        // Take the unmodified projectile damage
+        let damage = projectile.damage;
+
+        // free projectile again
+        projectile.visible = false;
+
+        // Apply relative multiplier
+        damage *=  this.stats.effectiveRelativeIncomingDamageMultiplier;
+
+        // first hit shield
+        damage += this.stats.effectiveAbsoluteIncomingShieldDamageAddition;
         if (this.currentShield >= damage) {
             this.currentShield -= damage;
             return;
         } else {
             // Check for overshield
-            if (this.currentShield === this.maxShield) {
-                let overshield = (this.overshieldChance > Math.random() * 100);
-                if (overshield) {
+            if (this.currentShield === this.stats.effectiveMaxShield) {
+                if (this.stats.chanceHappened('overshieldChance')) {
                     this.currentShield = 0;
                     return;
                 }
@@ -378,7 +381,8 @@ class Player extends PIXI.Sprite {
             this.currentShield = 0;
         }
 
-        damage -= this.armorPlating;
+        // second hit armor
+        damage += this.stats.effectiveAbsoluteIncomingArmorDamageAddition;
         if (damage <= 0) {
             return;
         }
@@ -391,6 +395,8 @@ class Player extends PIXI.Sprite {
             this.currentArmor = 0;
         }
 
+        // lastly hit structure
+        damage += this.stats.effectiveAbsoluteIncomingStructureDamageAddition;
         if (damage < this.currentStructure) {
             this.currentStructure -= damage;
         } else {
