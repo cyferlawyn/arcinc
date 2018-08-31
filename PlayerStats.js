@@ -45,7 +45,7 @@ class PlayerStats {
         this.effectiveMaxArmor = 250 * this.maxArmor * this.titaniumAlloy * this.factoryScaling;
         this.effectiveMaxStructure = 500 * this.maxStructure  * this.factoryScaling**2;
 
-        this.effectiveShieldRechargePerTickInCombat = this.effectiveMaxShield / (600 / (this.shieldRechargeTime * 60));
+        this.effectiveShieldRechargePerTickInCombat = this.effectiveMaxShield / (600 / (this.shieldRechargeTime) * 60);
         this.effectiveShieldRechargePerTickOutOfCombat = this.effectiveShieldRechargePerTickInCombat * this.shieldRechargeAccelerator;
 
         this.effectiveRelativeIncomingDamageMultiplier = 1 - this.repulsorField;
