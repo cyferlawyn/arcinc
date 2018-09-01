@@ -69,7 +69,8 @@ class Player extends PIXI.Sprite {
                 'title': 'Repulsor Field',
                 'cost': 5000,
                 'description': 'Reduces all incoming damage by a relative amount',
-                'valueTemplate': 'VALUEx multiplier'
+                'valueTemplate': 'VALUEx multiplier',
+                'cap': 1000
             },
             'rateOfFire': {
                 'title': 'Rate of Fire',

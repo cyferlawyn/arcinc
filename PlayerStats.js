@@ -14,14 +14,14 @@ class PlayerStats {
 
         this.maxStructure = 1 + 0.1 * this.ul('maxStructure');
 
-        this.repulsorField = Math.max(0.01, 0.995 ** this.ul('repulsorField'));
+        this.repulsorField = Math.max(0.001, 0.993115 ** this.ul('repulsorField'));
 
         this.armorPlating = -100 * (0.5 * this.ul('armorPlating') * this.titaniumAlloy);
 
         this.shieldRechargeTime = 1 + 0.05 * this.ul('shieldRechargeTime');
         this.shieldRechargeAccelerator = 1 + 0.1 * this.ul('shieldRechargeAccelerator');
 
-        this.projectileDamage = 1 + 0.05 * this.ul('projectileDamage');
+        this.projectileDamage = 1 + 0.075 * this.ul('projectileDamage');
         this.clusterAmmunition = 1 + 0.1 * this.ul('clusterAmmunition');
 
         this.projectileAmount = (1 + this.ul('projectileAmount'));
