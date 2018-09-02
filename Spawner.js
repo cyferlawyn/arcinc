@@ -20,13 +20,13 @@ class Spawner {
         let amountSpawned = 0;
 
         if (wave % 1000 === 0) {
-            this.spawnBoss(wave, 10000);
+            this.spawnBoss(wave, 1250);
             amountSpawned++;
         } else if (wave % 100 === 0) {
-            this.spawnBoss(wave, 1000);
+            this.spawnBoss(wave, 250);
             amountSpawned++;
         }else if (wave % 10 === 0) {
-            this.spawnBoss(wave, 100);
+            this.spawnBoss(wave, 50);
             amountSpawned++;
         } else {
             let spawnAmount = Math.ceil(0.2 * wave + 4);
@@ -110,6 +110,7 @@ class Spawner {
 
         enemy.baseMovementSpeed = 2;
         enemy.scale.set(0.8);
+        enemy.cascadeAngle = 0;
 
         enemyContainer.addChild(enemy);
 
@@ -117,7 +118,7 @@ class Spawner {
         enemy.maxHealth = Math.floor(10 * Math.pow(arcInc.growth, wave) * scalingFactor);
         enemy.currentHealth = enemy.maxHealth;
         enemy.credits = Math.floor(50 * Math.pow(arcInc.growth, wave) * scalingFactor);
-        enemy.damage = Math.floor(5 * Math.pow(arcInc.growth, wave));
+        enemy.damage = Math.floor(Math.pow(arcInc.growth, wave));
 
         enemy.x = (arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - enemy.width) / 2;
         enemy.y = -enemy.height;

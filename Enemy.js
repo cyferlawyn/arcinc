@@ -21,13 +21,14 @@ class Enemy extends PIXI.Sprite {
 
     update() {
         this.currentHealth -= this.burnDamage;
+        this.burnDamage *= 0.99;
         this.checkForDestruction();
 
         if (this.y > arcInc.pixiApp.screen.height / arcInc.pixiApp.stage.scale.y) {
             this.visible = false;
         } else {
             if (!this.isBoss) {
-                this.vx = Math.sin(this.y / 75);
+                this.vx = Math.sin(this.y / 75) * this.vy;
                 this.rotation = Math.atan2(this.vy, this.vx) - Math.PI / 2;
 
                 if (this.x < 0) {
@@ -88,13 +89,14 @@ class Enemy extends PIXI.Sprite {
                     3);
             }
 
-            if (arcInc.sceneManager.scenes['main'].frame % 10 === 0) {
-                let angle = 0.05 * arcInc.sceneManager.scenes['main'].frame % 360;
-                let x = 5 * (1 + angle) * Math.cos(angle) + ((arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x) / 2);
-                let y = 5 * (1 + angle) * Math.sin(angle) + 200;
+            if (arcInc.sceneManager.scenes['main'].frame % 3 === 0) {
+                this.cascadeAngle += 15;
+                let x = this.x + this.width/2;
+                let y = this.y + this.height/2;
 
-                let distanceX = player.x - x;
-                let distanceY = player.y - y;
+                let angle = this.cascadeAngle * Math.PI/180; //degress converted to radians
+                let distanceX = Math.cos(angle);
+                let distanceY = Math.sin(angle);
 
                 // calculate the velocity vector length
                 let distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
@@ -112,7 +114,7 @@ class Enemy extends PIXI.Sprite {
                     y,
                     vx,
                     vy,
-                    "0x66DD66",
+                    "0xEEEE66",
                     this.damage,
                     2);
             }
@@ -120,8 +122,9 @@ class Enemy extends PIXI.Sprite {
     }
 
     checkForDestruction() {
+        let player = arcInc.sceneManager.scenes['main'].objectStore.get('player');
         if (this.currentHealth <= 0) {
-            arcInc.savegame.credits += this.credits;
+            arcInc.savegame.credits += this.credits * player.stats.effectiveKillCreditMultiplier;
             arcInc.updateCredits();
             if (this.wave === arcInc.sceneManager.scenes['main'].wave) {
                 arcInc.sceneManager.scenes['main'].remainingEnemies--;

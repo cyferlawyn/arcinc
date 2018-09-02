@@ -105,7 +105,7 @@ class MainScene extends Scene{
         let backgroundVeryNearLayer = new PIXI.TilingSprite(PIXI.Loader.shared.resources['assets/textures/bg-very-near.png'].texture, 1024, 1024);
         backgroundVeryNearLayer.position.x = 0;
         backgroundVeryNearLayer.position.y = 0;
-        backgroundVeryNearLayer.addChild(backgroundVeryNearLayer);
+        backgroundContainer.addChild(backgroundVeryNearLayer);
         this.objectStore.put('backgroundVeryNearLayer', backgroundVeryNearLayer);
     }
 

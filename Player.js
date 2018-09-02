@@ -11,13 +11,13 @@ class Player extends PIXI.Sprite {
             },
             'maxShield': {
                 'title': 'Shield Amount',
-                'cost': 25,
+                'cost': 50000,
                 'description': 'Increases the Maximum Shield',
                 'valueTemplate': 'VALUEx multiplier'
             },
             'plasmaField': {
                 'title': 'Plasma Field',
-                'cost': 500000,
+                'cost': 1000000000,
                 'description': 'Increases the Maximum Shield',
                 'valueTemplate': 'VALUEx multiplier'
             },
@@ -43,34 +43,34 @@ class Player extends PIXI.Sprite {
             },
             'maxArmor': {
                 'title': 'Armor Amount',
-                'cost': 25,
+                'cost': 50000,
                 'description': 'Increases the Maximum Armor',
                 'valueTemplate': 'VALUEx multiplier'
             },
             'armorPlating': {
                 'title': 'Armor Plating',
-                'cost': 25000,
+                'cost': 100000,
                 'description': 'Reduces armor and structure damage taken by an absolute value',
                 'valueTemplate': 'VALUE abs. reduction'
             },
             'titaniumAlloy': {
                 'title': 'Titanium Alloy',
-                'cost': 500000,
+                'cost': 1000000000,
                 'description': 'Increases the Maximum Armor',
                 'valueTemplate': 'VALUEx multiplier'
             },
             'maxStructure': {
                 'title': 'Structure Amount',
-                'cost': 25,
+                'cost': 50000,
                 'description': 'Increases the Maximum Structure',
                 'valueTemplate': 'VALUEx multiplier'
             },
             'repulsorField': {
                 'title': 'Repulsor Field',
-                'cost': 5000,
+                'cost': 50000000000,
                 'description': 'Reduces all incoming damage by a relative amount',
                 'valueTemplate': 'VALUEx multiplier',
-                'cap': 1000
+                'cap': 520
             },
             'rateOfFire': {
                 'title': 'Rate of Fire',
@@ -142,6 +142,12 @@ class Player extends PIXI.Sprite {
                 'description': 'Chance that the enemy catches fire upon impact, dealing 1% of [Projectile Damage] each tick. Stacks additive',
                 'valueTemplate': 'VALUE% chance',
                 'cap': 400
+            },
+            'salvager': {
+                'title': 'Salvager',
+                'cost': 50000000000,
+                'description': 'Increases the credits gained for killing enemies by salvaging the wreckage',
+                'valueTemplate': 'VALUEx multiplier'
             }
         };
 
@@ -287,7 +293,13 @@ class Player extends PIXI.Sprite {
             if (this.stats.chanceHappened('freezeChance')) {
                 if (!enemy.isBoss) {
                     enemy.vx = enemy.vx * 0.98;
+                    if (enemy.vx < 0.5) {
+                        enemy.vx = 0.5;
+                    }
                     enemy.vy = enemy.vy * 0.98;
+                    if (enemy.vy < 0.5) {
+                        enemy.vy = 0.5;
+                    }
                 }
             }
 

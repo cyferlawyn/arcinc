@@ -540,25 +540,7 @@ class ArcInc {
         if (this.savegame === null) {
             this.savegame = new Savegame();
         } else {
-            if (this.savegame.version === 'v0.10' || this.savegame.version === 'v0.10b') {
-                this.savegame.upgrades['overshieldChance'] = 0;
-                this.savegame.upgrades['freezeChance'] = 0;
-                this.savegame.version = 'v0.11';
-            }
-
-            if (this.savegame.version === 'v0.11') {
-                this.savegame.upgrades['plasmaField'] = 0;
-                this.savegame.upgrades['titaniumAlloy'] = 0;
-                this.savegame.upgrades['clusterAmmunition'] = 0;
-                this.savegame.upgrades['burnChance'] = 0;
-                this.savegame.modules['droneBay'] = 0;
-                this.savegame.modules['hangar'] = 0;
-                this.savegame.modules['antimatterSiphon'] = 0;
-                this.savegame.modules['warpDrive'] = 0;
-                this.savegame.version = 'v0.12';
-            }
-
-            if (this.savegame.version !== 'v0.12') {
+            if (this.savegame.version !== 'v0.15') {
                 this.savegame = new Savegame();
             }
         }

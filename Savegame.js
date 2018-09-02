@@ -1,6 +1,6 @@
 class Savegame {
     constructor() {
-        this.version = 'v0.10b';
+        this.version = 'v0.15';
         this.credits = 0;
         this.highestWave = 0;
         this.upgrades = {
@@ -26,6 +26,7 @@ class Savegame {
             'projectileForkChance': 0,
             'freezeChance': 0,
             'burnChance': 0,
+            'salvager': 0
         };
         this.modules = {
             'solarPanels': 0,
