@@ -100,7 +100,8 @@ class AbilityBar extends PIXI.Container {
                     this.objectStore.put('abilityController' + i, ability.abilityController);
 
                     document.addEventListener('keypress', function (event) {
-                        if (String.fromCharCode(event.keyCode) === keyBinding.hotkey) {
+                        let charCode = (typeof event.which === "number") ? event.which : event.keyCode;
+                        if (String.fromCharCode(charCode) === keyBinding.hotkey) {
                             if (document.activeElement.id !== 'chatInput') {
                                 ability.abilityController.toggle();
                             }

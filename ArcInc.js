@@ -207,7 +207,8 @@ class ArcInc {
         input.type = 'text';
         input.addEventListener('keypress', function(event) {
             let text = event.target.value;
-            if (event.keyCode === 13 && text.length > 0) {
+            let charCode = (typeof event.which === "number") ? event.which : event.keyCode;
+            if (charCode === 13 && text.length > 0) {
 
                 if (text === '/cls') {
                     while( arcInc.chatEntries.hasChildNodes() ){
