@@ -502,17 +502,28 @@ class ArcInc {
 
         cardAnchor.addEventListener('click', callback);
         cardAnchor.interval = null;
+        cardAnchor.intervalDelay = 250;
         cardAnchor.intervalHandler = function() {
-            cardAnchor.click();
+            if (cardAnchor.style.visibility === 'hidden') {
+                clearInterval(cardAnchor.interval);
+                cardAnchor.intervalDelay = 250;
+            } else {
+                cardAnchor.click();
+                cardAnchor.intervalDelay = Math.max(10, cardAnchor.intervalDelay - 10);
+                clearInterval(cardAnchor.interval);
+                cardAnchor.interval = setInterval(cardAnchor.intervalHandler, cardAnchor.intervalDelay);
+            }
         };
         cardAnchor.addEventListener('mousedown', function() {
-            cardAnchor.interval = setInterval(cardAnchor.intervalHandler, 100);
+            cardAnchor.interval = setInterval(cardAnchor.intervalHandler, cardAnchor.intervalDelay);
         });
         cardAnchor.addEventListener('mouseup', function() {
             clearInterval(cardAnchor.interval);
+            cardAnchor.intervalDelay = 250;
         });
         cardAnchor.addEventListener('mouseout', function() {
             clearInterval(cardAnchor.interval);
+            cardAnchor.intervalDelay = 250;
         });
         cardBody.appendChild(cardAnchor);
     }
