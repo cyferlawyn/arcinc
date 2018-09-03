@@ -12,6 +12,9 @@ class ArmorRepairer extends Ability{
                 if (player.currentArmor < player.stats.effectiveMaxArmor) {
                     player.currentEnergy -= this.energyConsumption;
                     player.currentArmor += player.stats.effectiveMaxArmor / 250;
+                    if (player.currentArmor > player.stats.effectiveMaxArmor) {
+                        player.currentArmor = player.stats.effectiveMaxArmor;
+                    }
                 }
             }
         }
