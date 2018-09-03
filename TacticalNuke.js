@@ -5,8 +5,8 @@ class TacticalNuke extends Ability {
         this.tacticalNukes = [];
     }
 
-    update() {
-        this.updateTacticalNukes();
+    update(frameDelta) {
+        this.updateTacticalNukes(frameDelta);
 
         if (this.active) {
             let player = arcInc.sceneManager.scenes['main'].objectStore.get('player');
@@ -31,12 +31,12 @@ class TacticalNuke extends Ability {
 
     }
 
-    updateTacticalNukes() {
+    updateTacticalNukes(frameDelta) {
         let enemyContainer = arcInc.sceneManager.scenes['main'].objectStore.get('enemyContainer');
 
         for (let i = this.tacticalNukes.length - 1; i >= 0; i--) {
             let tacticalNuke = this.tacticalNukes[i];
-            tacticalNuke.y -= 4;
+            tacticalNuke.y -= 4 * frameDelta;
 
             if (tacticalNuke.y < -100) {
                 tacticalNuke.destroy();

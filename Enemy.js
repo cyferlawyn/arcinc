@@ -17,9 +17,13 @@ class Enemy extends PIXI.Sprite {
         healthBar.width = this.width;
         healthBar.height = 10;
         this.addChild(healthBar);
+
+        this.defaultShotDelay = 0;
+        this.bossShot1Delay = 0;
+        this.bossShot2Delay = 0;
     }
 
-    update() {
+    update(frameDelta) {
         this.currentHealth -= this.burnDamage;
         this.burnDamage *= 0.99;
         this.checkForDestruction();
@@ -58,14 +62,16 @@ class Enemy extends PIXI.Sprite {
                 }
             }
 
-            this.x += this.vx;
-            this.y += this.vy;
+            this.x += this.vx * frameDelta;
+            this.y += this.vy * frameDelta;
         }
     }
 
-    engage() {
+    engage(frameDelta) {
         if (!this.isBoss) {
-            if (arcInc.sceneManager.scenes['main'].frame % 120 === 0) {
+            this.defaultShotDelay += frameDelta;
+            if (this.defaultShotDelay > 120) {
+                this.defaultShotDelay -= 120;
                 arcInc.sceneManager.scenes['main'].spawner.spawnEnemyProjectile(
                     this.x + this.width / 2,
                     this.y + this.height / 2,
@@ -75,10 +81,9 @@ class Enemy extends PIXI.Sprite {
                     this.damage);
             }
         } else {
-            let player = arcInc.sceneManager.scenes['main'].objectStore.get('player');
-
-
-            if (arcInc.sceneManager.scenes['main'].frame % 5 === 0) {
+            this.bossShot1Delay += frameDelta;
+            if (this.bossShot1Delay > 5) {
+                this.bossShot1Delay -= 5;
                 arcInc.sceneManager.scenes['main'].spawner.spawnEnemyProjectile(
                     this.x + this.width / 2,
                     this.y + this.height / 2,
@@ -89,12 +94,14 @@ class Enemy extends PIXI.Sprite {
                     3);
             }
 
-            if (arcInc.sceneManager.scenes['main'].frame % 3 === 0) {
+            this.bossShot2Delay += frameDelta;
+            if (this.bossShot2Delay > 3) {
+                this.bossShot2Delay -= 3;
                 this.cascadeAngle += 15;
                 let x = this.x + this.width/2;
                 let y = this.y + this.height/2;
 
-                let angle = this.cascadeAngle * Math.PI/180; //degress converted to radians
+                let angle = this.cascadeAngle * Math.PI/180; //degrees converted to radians
                 let distanceX = Math.cos(angle);
                 let distanceY = Math.sin(angle);
 
@@ -106,8 +113,8 @@ class Enemy extends PIXI.Sprite {
                 let vy = distanceY / distance;
 
                 // apply movement speed
-                vx = vx * 5;
-                vy = vy * 5;
+                vx = vx * 5 * frameDelta;
+                vy = vy * 5 * frameDelta;
 
                 arcInc.sceneManager.scenes['main'].spawner.spawnEnemyProjectile(
                     x,

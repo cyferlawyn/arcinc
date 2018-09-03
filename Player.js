@@ -167,15 +167,15 @@ class Player extends PIXI.Sprite {
         arcInc.updateStatsAndFormulas();
     }
 
-    update() {
-        this.ticksSinceLastHit++;
+    update(frameDelta) {
+        this.ticksSinceLastHit+= frameDelta;
 
-        this.move();
-        this.regenerate();
-        this.engage();
+        this.move(frameDelta);
+        this.regenerate(frameDelta);
+        this.engage(frameDelta);
     }
 
-    move() {
+    move(frameDelta) {
         if (this.destination !== null) {
             let pX = this.x + this.width / 2;
             let pY = this.y + this.height / 2;
@@ -197,8 +197,8 @@ class Player extends PIXI.Sprite {
                 this.vy = distanceY / distance;
 
                 // apply movement speed
-                this.vx = this.vx * this.stats.effectiveMovementSpeed;
-                this.vy = this.vy * this.stats.effectiveMovementSpeed;
+                this.vx = this.vx * this.stats.effectiveMovementSpeed * frameDelta;
+                this.vy = this.vy * this.stats.effectiveMovementSpeed * frameDelta;
 
                 this.position.set(this.x + this.vx, this.y + this.vy);
             }
@@ -222,24 +222,24 @@ class Player extends PIXI.Sprite {
         }
     }
 
-    regenerate() {
-        this.currentEnergy += this.stats.effectiveEnergyRegenerationPerTick;
+    regenerate(frameDelta) {
+        this.currentEnergy += this.stats.effectiveEnergyRegenerationPerTick * frameDelta;
         if (this.currentEnergy > this.stats.effectiveMaxEnergy) {
             this.currentEnergy = this.stats.effectiveMaxEnergy;
         }
 
         if (this.ticksSinceLastHit > 300) {
-            this.currentShield += this.stats.effectiveShieldRechargePerTickOutOfCombat;
+            this.currentShield += this.stats.effectiveShieldRechargePerTickOutOfCombat * frameDelta;
         } else {
-            this.currentShield += this.stats.effectiveShieldRechargePerTickInCombat;
+            this.currentShield += this.stats.effectiveShieldRechargePerTickInCombat * frameDelta;
         }
 
         // clamp current shield
         this.currentShield = Math.min(this.stats.effectiveMaxShield, this.currentShield);
     }
 
-    engage() {
-        this.currentDelay += 1;
+    engage(frameDelta) {
+        this.currentDelay += frameDelta;
 
         if (this.currentDelay >= this.stats.effectiveFireDelayInTicks) {
             this.currentDelay -= this.stats.effectiveFireDelayInTicks;

@@ -3,6 +3,7 @@ class MainScene extends Scene{
         super('main', arcInc.pixiApp);
         this.pixiApp = arcInc.pixiApp;
         this.init();
+        this.frame = 0;
     }
 
     init() {
@@ -214,34 +215,35 @@ class MainScene extends Scene{
         this.objectStore.put('player', player);
     }
 
-    update() {
-        this.now = Date.now();
-        this.updateBackground();
-        this.updatePlayer();
-        this.updateEnemies();
-        this.updateProjectiles();
+    update(frameDelta) {
+        this.frame += frameDelta;
+
+        this.updateBackground(frameDelta);
+        this.updatePlayer(frameDelta);
+        this.updateEnemies(frameDelta);
+        this.updateProjectiles(frameDelta);
         this.checkForCollisions();
         this.updateGui();
-        this.objectStore.get('abilityBar').update();
-        this.elapsed = this.now;
+        this.objectStore.get('abilityBar').update(frameDelta);
     }
 
-    updateBackground() {
-        this.objectStore.get('backgroundFarLayer').tilePosition.y += 0.05;
-        this.objectStore.get('backgroundMidLayer').tilePosition.y += 0.2;
-        this.objectStore.get('backgroundMidNearLayer').tilePosition.y += 0.25;
-        this.objectStore.get('backgroundNearLayer').tilePosition.y += 0.3;
-        this.objectStore.get('backgroundVeryNearLayer').tilePosition.y += 0.4;
+    updateBackground(frameDelta) {
+
+        this.objectStore.get('backgroundFarLayer').tilePosition.y += 0.05 * frameDelta;
+        this.objectStore.get('backgroundMidLayer').tilePosition.y += 0.2 * frameDelta;
+        this.objectStore.get('backgroundMidNearLayer').tilePosition.y += 0.25 * frameDelta;
+        this.objectStore.get('backgroundNearLayer').tilePosition.y += 0.3 * frameDelta;
+        this.objectStore.get('backgroundVeryNearLayer').tilePosition.y += 0.4 * frameDelta;
     }
 
-    updatePlayer() {
+    updatePlayer(frameDelta) {
         let player = this.objectStore.get('player');
 
-        player.update(this.frame);
+        player.update(frameDelta);
     }
 
-    updateEnemies() {
-        this.framesTillWave--;
+    updateEnemies(frameDelta) {
+        this.framesTillWave -= frameDelta;
         let enemyContainer = this.objectStore.get('enemyContainer');
 
         if (this.framesTillWave <= 0 || this.remainingEnemies === 0) {
@@ -253,13 +255,13 @@ class MainScene extends Scene{
             for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
                 let enemy = enemyContainer.children[enemyIndex];
                 if (enemy.visible) {
-                    enemy.update();
-                    enemy.engage();
+                    enemy.update(frameDelta);
+                    enemy.engage(frameDelta);
                 }
             }
     }
 
-    updateProjectiles() {
+    updateProjectiles(frameDelta) {
         let playerProjectileContainer = this.objectStore.get('playerProjectileContainer');
 
         for (let playerProjectileIndex = playerProjectileContainer.children.length - 1; playerProjectileIndex >= 0; playerProjectileIndex--) {
@@ -269,8 +271,8 @@ class MainScene extends Scene{
                 if (playerProjectile.y < 0) {
                     playerProjectile.visible = false;
                 } else {
-                    playerProjectile.x += playerProjectile.vx;
-                    playerProjectile.y += playerProjectile.vy;
+                    playerProjectile.x += playerProjectile.vx * frameDelta;
+                    playerProjectile.y += playerProjectile.vy * frameDelta;
                 }
             }
         }
@@ -283,8 +285,8 @@ class MainScene extends Scene{
                 if (enemyProjectile.y > this.pixiApp.screen.height/this.pixiApp.stage.scale.y) {
                     enemyProjectile.visible = false;
                 } else {
-                    enemyProjectile.x += enemyProjectile.vx;
-                    enemyProjectile.y += enemyProjectile.vy;
+                    enemyProjectile.x += enemyProjectile.vx * frameDelta;
+                    enemyProjectile.y += enemyProjectile.vy * frameDelta;
                 }
             }
         }

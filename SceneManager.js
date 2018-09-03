@@ -5,13 +5,13 @@ class SceneManager {
         this.scenes = [];
         this.currentScene = undefined;
         this.paused = false;
-        this.pixiApp.ticker.add(delta=> this.update(delta));
+        this.pixiApp.ticker.add(delta => this.update(delta));
     }
 
     update() {
         if (!this.paused) {
-            this.currentScene.frame += 1;
-            this.currentScene.update();
+            let frameDelta = 60 * this.pixiApp.ticker.elapsedMS / 1000;
+            this.currentScene.update(frameDelta);
         }
     }
 

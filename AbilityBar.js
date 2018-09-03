@@ -119,11 +119,11 @@ class AbilityBar extends PIXI.Container {
         }
     }
 
-    update() {
+    update(frameDelta) {
         for (let i = 1; i < 11; i++) {
             let abilityController = this.objectStore.get('abilityController' + i);
             if (abilityController !== undefined) {
-                abilityController.update();
+                abilityController.update(frameDelta);
             }
         }
     }
