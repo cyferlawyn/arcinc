@@ -13,7 +13,6 @@ class Savegame {
             'maxArmor': 0,
             'armorPlating': 0,
             'titaniumAlloy': 0,
-            'maxStructure': 0,
             'repulsorField': 0,
             'rateOfFire': 0,
             'projectileDamage': 0,

@@ -202,6 +202,7 @@ class ArcInc {
         });
 
         let input = document.createElement('input');
+        input.id = 'chatInput';
         input.classList.add('form-control', 'form-control-sm');
         input.type = 'text';
         input.addEventListener('keypress', function(event) {
@@ -632,13 +633,6 @@ class ArcInc {
             '-> 250 * [Max Armor] * [Titanium Alloy] * [Factory Scaling]',
             '-> 250 * [' + this.evStat('maxArmor') + '] * [' + this.evStat('titaniumAlloy') + '] * [' + this.evStat('factoryScaling') +  ']',
             '-> ' + this.evStat('effectiveMaxArmor'));
-
-        this.initStatsAndFormulasCard(
-            categoryCardBody,
-            'Effective Max Structure',
-            '-> 500 * [Max Structure] * [Factory Scaling] ^ 2',
-            '-> 500 * [' + this.evStat('maxStructure') + '] * [' + this.evStat('factoryScaling') +  '] ^ 2',
-            '-> ' + this.evStat('effectiveMaxStructure'));
 
         // Utility
         this.initStatsAndFormulasCard(

@@ -36,7 +36,7 @@ class Player extends PIXI.Sprite {
             'overshieldChance': {
                 'title': 'Overshield Chance',
                 'cost': 100000,
-                'description': 'Chance that a hit is fully absorbed by the shield without affecting armor or structure. ' +
+                'description': 'Chance that a hit is fully absorbed by the shield without affecting armor . ' +
                     'Requires full shield to trigger and will deplete the whole shield bar',
                 'valueTemplate': 'VALUE% chance',
                 'cap': 400
@@ -50,19 +50,13 @@ class Player extends PIXI.Sprite {
             'armorPlating': {
                 'title': 'Armor Plating',
                 'cost': 100000,
-                'description': 'Reduces armor and structure damage taken by an absolute value',
+                'description': 'Reduces armor  damage taken by an absolute value',
                 'valueTemplate': 'VALUE abs. reduction'
             },
             'titaniumAlloy': {
                 'title': 'Titanium Alloy',
                 'cost': 1000000000,
                 'description': 'Increases the Maximum Armor',
-                'valueTemplate': 'VALUEx multiplier'
-            },
-            'maxStructure': {
-                'title': 'Structure Amount',
-                'cost': 50000,
-                'description': 'Increases the Maximum Structure',
                 'valueTemplate': 'VALUEx multiplier'
             },
             'repulsorField': {
@@ -165,7 +159,7 @@ class Player extends PIXI.Sprite {
         this.ticksSinceLastHit = 0;
         this.currentShield = this.stats.effectiveMaxShield;
         this.currentArmor = this.stats.effectiveMaxArmor;
-        this.currentStructure = this.stats.effectiveMaxStructure;
+        this.currentEnergy = this.stats.effectiveMaxEnergy;
     }
 
     applyUpgrades() {
@@ -229,6 +223,11 @@ class Player extends PIXI.Sprite {
     }
 
     regenerate() {
+        this.currentEnergy += this.stats.effectiveEnergyRegenerationPerTick;
+        if (this.currentEnergy > this.stats.effectiveMaxEnergy) {
+            this.currentEnergy = this.stats.effectiveMaxEnergy;
+        }
+
         if (this.ticksSinceLastHit > 300) {
             this.currentShield += this.stats.effectiveShieldRechargePerTickOutOfCombat;
         } else {
@@ -333,7 +332,7 @@ class Player extends PIXI.Sprite {
             this.currentShield -= damage;
             return;
         } else {
-            // Check for overshield
+            // check for overshield
             if (this.currentShield === this.stats.effectiveMaxShield) {
                 if (this.stats.chanceHappened('overshieldChance')) {
                     this.currentShield = 0;
@@ -344,7 +343,7 @@ class Player extends PIXI.Sprite {
             this.currentShield = 0;
         }
 
-        // second hit armor
+        // lastly hit armor
         damage += this.stats.effectiveAbsoluteIncomingArmorDamageAddition;
         if (damage <= 0) {
             return;
@@ -352,16 +351,6 @@ class Player extends PIXI.Sprite {
 
         if (this.currentArmor >= damage) {
             this.currentArmor -= damage;
-            return;
-        } else {
-            damage -= this.currentArmor;
-            this.currentArmor = 0;
-        }
-
-        // lastly hit structure
-        damage += this.stats.effectiveAbsoluteIncomingStructureDamageAddition;
-        if (damage < this.currentStructure) {
-            this.currentStructure -= damage;
         } else {
             arcInc.sceneManager.scenes['main'].reset();
             arcInc.sceneManager.loadScene('main');

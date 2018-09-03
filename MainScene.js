@@ -19,6 +19,7 @@ class MainScene extends Scene{
         this.initContainer();
         this.initBackground();
         this.initGui();
+        this.initAbilities();
         this.initPlayer();
     }
 
@@ -41,7 +42,7 @@ class MainScene extends Scene{
         let player = this.objectStore.get('player');
         player.currentShield = player.stats.effectiveMaxShield;
         player.currentArmor = player.stats.effectiveMaxArmor;
-        player.currentStructure = player.stats.effectiveMaxStructure;
+        player.currentEnergy = player.stats.effectiveMaxEnergy;
 
         this.wave = Math.floor(arcInc.savegame.highestWave - 1);
         if (this.wave < 0) {
@@ -178,25 +179,25 @@ class MainScene extends Scene{
         guiContainer.addChild(armor);
         this.objectStore.put('armor', armor);
 
-        let structureDamage = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/DamageBar.png"].texture);
-        structureDamage.x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-100;
-        structureDamage.y = this.pixiApp.screen.height/this.pixiApp.stage.scale.y -20;
-        structureDamage.width = 200;
-        structureDamage.height = 15;
-        guiContainer.addChild(structureDamage);
+        let energyBackdrop = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/DamageBar.png"].texture);
+        energyBackdrop.x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-100;
+        energyBackdrop.y = this.pixiApp.screen.height/this.pixiApp.stage.scale.y -20;
+        energyBackdrop.width = 200;
+        energyBackdrop.height = 15;
+        guiContainer.addChild(energyBackdrop);
 
-        let structureBar = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/HealthBar.png"].texture);
-        structureBar.x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-100;
-        structureBar.y = this.pixiApp.screen.height/this.pixiApp.stage.scale.y -20;
-        structureBar.width = 200;
-        structureBar.height = 15;
-        guiContainer.addChild(structureBar);
-        this.objectStore.put('structureBar', structureBar);
+        let energyBar = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/EnergyBar.png"].texture);
+        energyBar.x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-100;
+        energyBar.y = this.pixiApp.screen.height/this.pixiApp.stage.scale.y -20;
+        energyBar.width = 200;
+        energyBar.height = 15;
+        guiContainer.addChild(energyBar);
+        this.objectStore.put('energyBar', energyBar);
 
-        let structure = new PIXI.Text('0 / 0', healthStyle);
-        structure.position.set(this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-40, this.pixiApp.screen.height/this.pixiApp.stage.scale.y -23);
-        guiContainer.addChild(structure);
-        this.objectStore.put('structure', structure);
+        let energy = new PIXI.Text('0 / 0', healthStyle);
+        energy.position.set(this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2-40, this.pixiApp.screen.height/this.pixiApp.stage.scale.y -23);
+        guiContainer.addChild(energy);
+        this.objectStore.put('energy', energy);
     }
 
     initPlayer() {
@@ -221,6 +222,7 @@ class MainScene extends Scene{
         this.updateProjectiles();
         this.checkForCollisions();
         this.updateGui();
+        this.objectStore.get('abilityBar').update();
         this.elapsed = this.now;
     }
 
@@ -362,8 +364,18 @@ class MainScene extends Scene{
         this.objectStore.get('armor').text = '' + arcInc.format(Math.floor(player.currentArmor), 3)  + ' / ' + arcInc.format(Math.floor(player.stats.effectiveMaxArmor), 3);
         this.objectStore.get('armor').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('armor').width/2;
 
-        this.objectStore.get('structureBar').width = 200 * player.currentStructure / player.stats.effectiveMaxStructure;
-        this.objectStore.get('structure').text = '' + arcInc.format(Math.floor(player.currentStructure), 3)  + ' / ' + arcInc.format(Math.floor(player.stats.effectiveMaxStructure), 3);
-        this.objectStore.get('structure').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('structure').width/2;
+        this.objectStore.get('energyBar').width = 200 * player.currentEnergy/ player.stats.effectiveMaxEnergy;
+        this.objectStore.get('energy').text = '' + arcInc.format(Math.floor(player.currentEnergy), 3)  + ' / ' + arcInc.format(Math.floor(player.stats.effectiveMaxEnergy), 3);
+        this.objectStore.get('energy').x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2 - this.objectStore.get('energy').width/2;
+    }
+
+    initAbilities() {
+        let guiContainer = this.objectStore.get('guiContainer');
+        let abilityBar = new AbilityBar(this.objectStore);
+        abilityBar.init();
+        abilityBar.y = this.pixiApp.screen.height/this.pixiApp.stage.scale.y - abilityBar.height - 10;
+        abilityBar.x = 10;
+        guiContainer.addChild(abilityBar);
+        this.objectStore.put('abilityBar', abilityBar);
     }
 }

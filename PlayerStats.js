@@ -1,6 +1,7 @@
 class PlayerStats {
     calculate() {
         // Module based scaling
+        this.solarPanelScaling =  0.005 *  (this.ml('solarPanels'));
         this.factoryScaling = 1 + Math.max(0, 0.25 * (this.ml('factory') - 100));
 
         // Upgrade based scaling
@@ -43,9 +44,11 @@ class PlayerStats {
         // effective stats
         this.effectiveMovementSpeed = 5 * this.movementSpeed;
 
+        this.effectiveMaxEnergy = 100;
+        this.effectiveEnergyRegenerationPerTick = this.solarPanelScaling / 60;
+
         this.effectiveMaxShield = 100 * this.maxShield * this.plasmaField * this.factoryScaling;
-        this.effectiveMaxArmor = 250 * this.maxArmor * this.titaniumAlloy * this.factoryScaling;
-        this.effectiveMaxStructure = 500 * this.maxStructure  * this.factoryScaling**2;
+        this.effectiveMaxArmor = 750 * this.maxArmor * this.titaniumAlloy * this.factoryScaling;
 
         this.effectiveShieldRechargePerTickInCombat = this.effectiveMaxShield / (600 / (this.shieldRechargeTime) * 60);
         this.effectiveShieldRechargePerTickOutOfCombat = this.effectiveShieldRechargePerTickInCombat * this.shieldRechargeAccelerator;
@@ -53,7 +56,6 @@ class PlayerStats {
         this.effectiveRelativeIncomingDamageMultiplier = this.repulsorField;
         this.effectiveAbsoluteIncomingShieldDamageAddition = 0;
         this.effectiveAbsoluteIncomingArmorDamageAddition = this.armorPlating;
-        this.effectiveAbsoluteIncomingStructureDamageAddition = 0;
 
         this.effectiveProjectileAmount = Math.min(5, this.projectileAmount);
         this.effectiveProjectileAmountCompensation = 1 + (this.projectileAmount - this.effectiveProjectileAmount) / this.effectiveProjectileAmount;
