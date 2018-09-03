@@ -78,6 +78,9 @@ class Spawner {
         enemy.vyBase = enemy.vy = vy * enemy.baseMovementSpeed;
         enemy.rotation = Math.atan2(vy, vx) - Math.PI/2;
         // Initialize stats
+        enemy.defaultShotDelay = 0;
+        enemy.bossShot1Delay = 0;
+        enemy.bossShot2Delay = 0;
         enemy.maxHealth = Math.floor(10 * Math.pow(arcInc.growth, wave));
         enemy.currentHealth = enemy.maxHealth;
         enemy.credits = Math.floor(10 * Math.pow(arcInc.growth, wave));
