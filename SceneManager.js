@@ -11,7 +11,7 @@ class SceneManager {
     update() {
         if (!this.paused) {
             let frameDelta = 60 * this.pixiApp.ticker.elapsedMS / 1000;
-            this.currentScene.update(frameDelta * 2.2);
+            this.currentScene.update(frameDelta);
         }
     }
 
