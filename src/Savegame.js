@@ -1,6 +1,6 @@
 class Savegame {
     constructor() {
-        this.version = 'v0.16';
+        this.version = 'v0.15';
         this.credits = 0;
         this.highestWave = 0;
         this.upgrades = {
