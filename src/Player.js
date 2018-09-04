@@ -272,8 +272,8 @@ class Player extends PIXI.Sprite {
         // test projectile fork
         if (this.stats.chanceHappened('projectileForkChance')) {
             projectile.ignore.push(enemy.id);
-            let newProjectileOne = arcInc.sceneManager.scenes['main'].spawner.spawnPlayerProjectile(projectile.x, projectile.y, projectile.vy / 4, projectile.vy, projectile.damage);
-            let newProjectileTwo = arcInc.sceneManager.scenes['main'].spawner.spawnPlayerProjectile(projectile.x, projectile.y, -projectile.vy / 4, projectile.vy, projectile.damage);
+            let newProjectileOne = arcInc.spawner.spawnPlayerProjectile(projectile.x, projectile.y, projectile.vy / 4, projectile.vy, projectile.damage);
+            let newProjectileTwo = arcInc.spawner.spawnPlayerProjectile(projectile.x, projectile.y, -projectile.vy / 4, projectile.vy, projectile.damage);
             newProjectileOne.ignore = projectile.ignore.slice();
             newProjectileTwo.ignore = projectile.ignore.slice();
         }

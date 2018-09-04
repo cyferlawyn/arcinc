@@ -10,6 +10,7 @@ class Spawner {
         let enemy = new Enemy(PIXI.Loader.shared.resources["assets/sprites/A1.png"].texture, 10);
         enemy.baseMovementSpeed = 2;
         enemy.scale.set(0.4);
+        enemy.anchor.set(0.5, 0.5);
         enemy.isBoss = false;
 
         enemyContainer.addChild(enemy);

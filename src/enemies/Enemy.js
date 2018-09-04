@@ -5,15 +5,15 @@ class Enemy extends PIXI.Sprite {
         this.currentHealth = maxHealth;
 
         let damageBar = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/DamageBar.png"].texture);
-        damageBar.x = 0;
-        damageBar.y = -10;
+        damageBar.x = -this.width/2;
+        damageBar.y = -this.height/2-15;
         damageBar.width = this.width;
         damageBar.height = 10;
         this.addChild(damageBar);
 
         let healthBar = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/HealthBar.png"].texture);
-        healthBar.x = 0;
-        healthBar.y = -10;
+        healthBar.x = -this.width/2;
+        healthBar.y = -this.height/2-15;
         healthBar.width = this.width;
         healthBar.height = 10;
         this.addChild(healthBar);
@@ -43,7 +43,7 @@ class Enemy extends PIXI.Sprite {
                     this.x = arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - this.width;
                 }
             } else {
-                arcInc.framesTillWave = 600;
+                arcInc.sceneManager.scenes['main'].framesTillWave = 600;
 
                 if (this.y > 40) {
                     this.y = 40;
@@ -87,7 +87,7 @@ class Enemy extends PIXI.Sprite {
                 arcInc.spawner.spawnEnemyProjectile(
                     this.x + this.width / 2,
                     this.y + this.height / 2,
-                    5 * Math.sin(arcInc.frame / 10),
+                    5 * Math.sin(arcInc.sceneManager.scenes['main'].frame / 10),
                     7,
                     "0x66DD66",
                     this.damage,

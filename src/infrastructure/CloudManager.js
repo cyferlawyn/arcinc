@@ -13,7 +13,7 @@ class CloudManager {
                 sha256.update(passwordInput.value);
                 let passwordHash = sha256.getHash("HEX");
 
-                arcInc.backend.createUser(usernameInput.value, passwordHash, arcInc.loginSucceeded, arcInc.registerFailed);
+                arcInc.backend.createUser(usernameInput.value, passwordHash, CloudManager.loginSucceeded, CloudManager.registerFailed);
             });
 
             let loginButton = document.getElementById('login-button');
@@ -25,7 +25,7 @@ class CloudManager {
                 sha256.update(passwordInput.value);
                 let passwordHash = sha256.getHash("HEX");
 
-                arcInc.backend.loginUser(usernameInput.value, passwordHash, arcInc.loginSucceeded, arcInc.loginFailed);
+                arcInc.backend.loginUser(usernameInput.value, passwordHash, CloudManager.loginSucceeded, CloudManager.loginFailed);
             });
         } else {
             window.setInterval(arcInc.cloudSave, 60000);

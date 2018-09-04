@@ -21,6 +21,11 @@ class AbilityBar extends PIXI.Container {
                 'resourceUri': 'assets/sprites/abilities/armorRepairer.png',
                 'abilityController': new ArmorRepairer()
             },
+            'blackHole': {
+                'name': 'Black Hole',
+                'resourceUri': 'assets/sprites/abilities/blackHole.png',
+                'abilityController': new BlackHole()
+            },
             'nyi': {
                 'name': 'nyi',
                 'resourceUri': 'assets/sprites/abilities/comingSoon.png'
@@ -39,7 +44,7 @@ class AbilityBar extends PIXI.Container {
             },
             '3': {
                 'hotkey': '3',
-                'ability': 'nyi'
+                'ability': 'blackHole'
             },
             '4': {
                 'hotkey': '4',

@@ -56,6 +56,11 @@ table {
     font-family:monospace;
 }
 
+#login-screen{
+    background: url("assets/textures/login.png") no-repeat;
+    background-size: cover;
+}
+
 .card {
     margin: 5px;
 }

@@ -59,4 +59,26 @@ class Utils {
         //`hit` will be either `true` or `false`
         return hit;
     }
+
+    static getDistance(r1, r2) {
+        let distanceX = r1.x - r2.x;
+        let distanceY = r1.y - r2.y;
+
+        // calculate the velocity vector length
+        return Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+    }
+
+    static getNormVector(r1, r2) {
+        let distanceX = r1.x - r2.x;
+        let distanceY = r1.y - r2.y;
+
+        // calculate the velocity vector length
+        let distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+        // normalize velocity vector length
+        let vx = distanceX / distance;
+        let vy = distanceY / distance;
+
+        return {'vx': vx, 'vy': vy};
+    }
 }
