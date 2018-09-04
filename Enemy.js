@@ -113,8 +113,8 @@ class Enemy extends PIXI.Sprite {
                 let vy = distanceY / distance;
 
                 // apply movement speed
-                vx = vx * 5 * frameDelta;
-                vy = vy * 5 * frameDelta;
+                vx = vx * 5;
+                vy = vy * 5;
 
                 arcInc.sceneManager.scenes['main'].spawner.spawnEnemyProjectile(
                     x,
