@@ -92,11 +92,15 @@ class Backend {
     }
 
     receiveChat(callback) {
-        let eventSource = new EventSource(backendAddress + '/chat/receive');
+        if (typeof(EventSource) !== 'undefined') {
+            let eventSource = new EventSource(backendAddress + '/chat/receive');
 
-        eventSource.onmessage = event => {
-            let chatEntry = JSON.parse(event.data);
-            callback(chatEntry.time, chatEntry.name, chatEntry.text);
+            eventSource.onmessage = event => {
+                let chatEntry = JSON.parse(event.data);
+                callback(chatEntry.time, chatEntry.name, chatEntry.text);
+            }
+        } else {
+            alert('Event Source is not supported in your browser, please be patient till the dev provides an alternative. For now, chat is disabled :(')
         }
     }
 
