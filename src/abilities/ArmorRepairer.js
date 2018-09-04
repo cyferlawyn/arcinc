@@ -7,7 +7,7 @@ class ArmorRepairer extends Ability{
     update(frameDelta) {
         if (this.active) {
             // Convert energy to armor
-            let player = arcInc.sceneManager.scenes['main'].objectStore.get('player');
+            let player = arcInc.objectStore.get('player');
             if (player.currentEnergy >= this.energyConsumption * frameDelta) {
                 if (player.currentArmor < player.stats.effectiveMaxArmor) {
                     player.currentEnergy -= this.energyConsumption * frameDelta;

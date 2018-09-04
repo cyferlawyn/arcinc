@@ -3,6 +3,7 @@ class ArcInc {
         // bootstrapping
         this.eventEmitter = new EventEmitter();
         this.backend = new Backend();
+        this.objectStore = new ObjectStore();
 
         // game variables
         this.growth = 1.03;
@@ -50,7 +51,7 @@ class ArcInc {
 
         this.pixiApp.stage.interactive = true;
         this.pixiApp.stage.on('touchmove', function(event) {
-            arcInc.sceneManager.scenes['main'].objectStore.get('player').destination = {
+            arcInc.objectStore.get('player').destination = {
                 'x': event.data.global.x,
                 'y': event.data.global.y
             };
@@ -74,7 +75,7 @@ class ArcInc {
 
         this.pixiApp.stage.on('mousemove', function(event) {
             if (arcInc.alwaysTrailCheckbox.checked || arcInc.mousedown) {
-                arcInc.sceneManager.scenes['main'].objectStore.get('player').destination = {
+                arcInc.objectStore.get('player').destination = {
                     'x': event.data.global.x,
                     'y': event.data.global.y
                 };
@@ -82,11 +83,13 @@ class ArcInc {
         });
 
         this.pixiApp.stage.on('click', function(event) {
-            arcInc.sceneManager.scenes['main'].objectStore.get('player').destination = {
+            arcInc.objectStore.get('player').destination = {
                 'x': event.data.global.x,
                 'y': event.data.global.y
             };
         });
+
+        arcInc.spawner = new Spawner(this.pixiApp, this.objectStore);
     }
 
     initPage() {

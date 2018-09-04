@@ -18,22 +18,22 @@ class StatsAndFormulas {
             categoryCardBody,
             'Current Wave Enemy Health',
             '-> 10 * [Growth Factor] ^ [Wave]',
-            '-> 10 * [' + arcInc.growth + '] ^ [' + arcInc.sceneManager.scenes['main'].wave + ']',
-            '-> ' + Utils.format(10 * arcInc.growth ** arcInc.sceneManager.scenes['main'].wave ));
+            '-> 10 * [' + arcInc.growth + '] ^ [' + arcInc.wave + ']',
+            '-> ' + Utils.format(10 * arcInc.growth ** arcInc.wave ));
 
         StatsAndFormulas.prepareCard(
             categoryCardBody,
             'Current Wave Enemy Damage',
             '-> 5 * [Growth Factor] ^ [Wave]',
-            '-> 5 * [' + arcInc.growth + '] ^ [' + arcInc.sceneManager.scenes['main'].wave + ']',
-            '-> ' + Utils.format(5 * arcInc.growth ** arcInc.sceneManager.scenes['main'].wave ));
+            '-> 5 * [' + arcInc.growth + '] ^ [' + arcInc.wave + ']',
+            '-> ' + Utils.format(5 * arcInc.growth ** arcInc.wave ));
 
         StatsAndFormulas.prepareCard(
             categoryCardBody,
             'Current Wave Enemy Credits',
             '-> 10 * [Growth Factor] ^ [Wave]',
-            '-> 10 * [' + arcInc.growth + '] ^ [' + arcInc.sceneManager.scenes['main'].wave + ']',
-            '-> ' + Utils.format(10 * arcInc.growth ** arcInc.sceneManager.scenes['main'].wave ));
+            '-> 10 * [' + arcInc.growth + '] ^ [' + arcInc.wave + ']',
+            '-> ' + Utils.format(10 * arcInc.growth ** arcInc.wave ));
 
         // Offense
         StatsAndFormulas.prepareCard(
@@ -56,8 +56,8 @@ class StatsAndFormulas {
             '-> [Effective Projectile Damage] * [Effective Critical Hit Damage Multiplier]',
             '-> [' + Utils.evStat('effectiveProjectileDamage') + '] * [' + Utils.evStat('effectiveCriticalHitDamageMultiplier') + ']',
             '-> ' + Utils.format(
-            arcInc.sceneManager.scenes['main'].objectStore.get('player').stats['effectiveProjectileDamage'] *
-            arcInc.sceneManager.scenes['main'].objectStore.get('player').stats['effectiveCriticalHitDamageMultiplier']));
+            arcInc.objectStore.get('player').stats['effectiveProjectileDamage'] *
+            arcInc.objectStore.get('player').stats['effectiveCriticalHitDamageMultiplier']));
 
         // Defense
         StatsAndFormulas.prepareCard(

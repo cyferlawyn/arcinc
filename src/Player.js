@@ -1,5 +1,5 @@
 class Player extends PIXI.Sprite {
-    constructor(texture, spawner, boundaryWidth, boundaryHeight) {
+    constructor(texture, boundaryWidth, boundaryHeight) {
         super(texture);
 
         this.upgrades = {
@@ -145,7 +145,6 @@ class Player extends PIXI.Sprite {
             }
         };
 
-        this.spawner = spawner;
         this.boundaryWidth = boundaryWidth;
         this.boundaryHeight = boundaryHeight;
 
@@ -257,7 +256,7 @@ class Player extends PIXI.Sprite {
                 let vy = -5;
 
                 let projectileDamage = this.stats.effectiveProjectileDamage;
-                this.spawner.spawnPlayerProjectile(x, y, vx, vy, projectileDamage);
+                arcInc.spawner.spawnPlayerProjectile(x, y, vx, vy, projectileDamage);
             }
         }
     }

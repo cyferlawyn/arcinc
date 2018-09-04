@@ -43,7 +43,7 @@ class Enemy extends PIXI.Sprite {
                     this.x = arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - this.width;
                 }
             } else {
-                arcInc.sceneManager.scenes['main'].framesTillWave = 600;
+                arcInc.framesTillWave = 600;
 
                 if (this.y > 40) {
                     this.y = 40;
@@ -72,7 +72,7 @@ class Enemy extends PIXI.Sprite {
             this.defaultShotDelay += frameDelta;
             if (this.defaultShotDelay > 120) {
                 this.defaultShotDelay -= 120;
-                arcInc.sceneManager.scenes['main'].spawner.spawnEnemyProjectile(
+                arcInc.spawner.spawnEnemyProjectile(
                     this.x + this.width / 2,
                     this.y + this.height / 2,
                     this.vxBase * 2,
@@ -84,10 +84,10 @@ class Enemy extends PIXI.Sprite {
             this.bossShot1Delay += frameDelta;
             if (this.bossShot1Delay > 5) {
                 this.bossShot1Delay -= 5;
-                arcInc.sceneManager.scenes['main'].spawner.spawnEnemyProjectile(
+                arcInc.spawner.spawnEnemyProjectile(
                     this.x + this.width / 2,
                     this.y + this.height / 2,
-                    5 * Math.sin(arcInc.sceneManager.scenes['main'].frame / 10),
+                    5 * Math.sin(arcInc.frame / 10),
                     7,
                     "0x66DD66",
                     this.damage,
@@ -116,7 +116,7 @@ class Enemy extends PIXI.Sprite {
                 vx = vx * 5;
                 vy = vy * 5;
 
-                arcInc.sceneManager.scenes['main'].spawner.spawnEnemyProjectile(
+                arcInc.spawner.spawnEnemyProjectile(
                     x,
                     y,
                     vx,
@@ -129,12 +129,12 @@ class Enemy extends PIXI.Sprite {
     }
 
     checkForDestruction() {
-        let player = arcInc.sceneManager.scenes['main'].objectStore.get('player');
+        let player = arcInc.objectStore.get('player');
         if (this.currentHealth <= 0) {
             arcInc.savegame.credits += this.credits * player.stats.effectiveKillCreditMultiplier;
             arcInc.eventEmitter.emit('credits-updated', arcInc.savegame.credits);
-            if (this.wave === arcInc.sceneManager.scenes['main'].wave) {
-                arcInc.sceneManager.scenes['main'].remainingEnemies--;
+            if (this.wave === arcInc.wave) {
+                arcInc.remainingEnemies--;
 
                 if (this.isBoss) {
                     arcInc.savegame.highestWave = this.wave + 1;

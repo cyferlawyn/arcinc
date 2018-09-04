@@ -9,7 +9,7 @@ class TacticalNuke extends Ability {
         this.updateTacticalNukes(frameDelta);
 
         if (this.active) {
-            let player = arcInc.sceneManager.scenes['main'].objectStore.get('player');
+            let player = arcInc.objectStore.get('player');
             if (player.currentEnergy >= this.energyConsumption) {
                 player.currentEnergy -= this.energyConsumption;
                 this.spawnTacticalNuke();
@@ -19,8 +19,8 @@ class TacticalNuke extends Ability {
     }
 
     spawnTacticalNuke() {
-        let playerContainer = arcInc.sceneManager.scenes['main'].objectStore.get('playerContainer');
-        let player = arcInc.sceneManager.scenes['main'].objectStore.get('player');
+        let playerContainer = arcInc.objectStore.get('playerContainer');
+        let player = arcInc.objectStore.get('player');
         let tacticalNuke = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/TacticalNuke.png"].texture);
         tacticalNuke.scale.set(0.5);
         playerContainer.addChild(tacticalNuke);
@@ -32,7 +32,7 @@ class TacticalNuke extends Ability {
     }
 
     updateTacticalNukes(frameDelta) {
-        let enemyContainer = arcInc.sceneManager.scenes['main'].objectStore.get('enemyContainer');
+        let enemyContainer = arcInc.objectStore.get('enemyContainer');
 
         for (let i = this.tacticalNukes.length - 1; i >= 0; i--) {
             let tacticalNuke = this.tacticalNukes[i];
@@ -48,7 +48,7 @@ class TacticalNuke extends Ability {
                 let enemy = enemyContainer.children[enemyIndex];
 
                 if (enemy.visible) {
-                    if (arcInc.sceneManager.scenes['main'].intersect(enemy, tacticalNuke)) {
+                    if (Utils.intersect(enemy, tacticalNuke)) {
                         enemy.currentHealth *= 0.85;
                         tacticalNuke.destroy();
                         this.tacticalNukes.splice(i, 1);
