@@ -28,7 +28,7 @@ class CloudManager {
                 arcInc.backend.loginUser(usernameInput.value, passwordHash, CloudManager.loginSucceeded, CloudManager.loginFailed);
             });
         } else {
-            window.setInterval(arcInc.cloudSave, 60000);
+            window.setInterval(CloudManager.cloudSave, 60000);
             arcInc.authenticated();
         }
     }
