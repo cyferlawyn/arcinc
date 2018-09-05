@@ -96,9 +96,17 @@ class Utils {
     }
 
     static leftBounds(r) {
-        let screenWidth = arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x;
-        let screenHeight = arcInc.pixiApp.screen.height / arcInc.pixiApp.stage.scale.y;
+        return (r.x > 2 * Utils.getEffectiveScreenWidth()
+            || r.x < -Utils.getEffectiveScreenWidth()
+            || r.y > 2 * Utils.getEffectiveScreenHeight()
+            || r.y < -Utils.getEffectiveScreenHeight());
+    }
 
-        return (r.x > 2 * screenWidth || r.x < -screenWidth || r.y > 2 * screenHeight || r.y < -screenHeight);
+    static getEffectiveScreenWidth() {
+        return arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x;
+    }
+
+    static getEffectiveScreenHeight() {
+        return arcInc.pixiApp.screen.height / arcInc.pixiApp.stage.scale.y;
     }
 }

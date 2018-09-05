@@ -82,19 +82,10 @@ class Spawner {
 
     spawnBoss(wave, scalingFactor) {
         let enemyContainer = this.objectStore.get('enemyContainer');
-        let enemy;
-        for (let i = 0; i < enemyContainer.children.length; i++) {
-            if (!enemyContainer.children[i].visible && enemyContainer.children[i].isBoss) {
-                enemy = enemyContainer.children[i];
-                break;
-            }
-        }
 
-        if (enemy === undefined) {
-            enemy = new Enemy(PIXI.Loader.shared.resources["assets/sprites/boss.png"].texture, 10 * scalingFactor);
-            enemy.anchor.set(0.5, 0.5);
-            enemy.isBoss = true;
-        }
+        let enemy = new BossEnemy(PIXI.Loader.shared.resources["assets/sprites/boss.png"].texture, 10 * scalingFactor);
+        enemy.anchor.set(0.5, 0.5);
+        enemy.isBoss = true;
 
         enemy.baseMovementSpeed = 2;
         enemy.scale.set(0.8);

@@ -26,7 +26,9 @@ class EventEmitter {
             return;
         }
         Object.keys(this.events[event]).forEach(function(key) {
-            //console.log('Emitting ' + event + ' to ' + key);
+            if (key.startsWith('Boss')) {
+                console.log('Emitting ' + event + ' to ' + key);
+            }
             arcInc.eventEmitter.events[event][key](payload);
         });
     }
