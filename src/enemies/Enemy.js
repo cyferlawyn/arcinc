@@ -45,19 +45,19 @@ class Enemy extends PIXI.Sprite {
             } else {
                 arcInc.sceneManager.scenes['main'].framesTillWave = 600;
 
-                if (this.y > 40) {
-                    this.y = 40;
+                if (this.y > 40 + this.height/2) {
+                    this.y = 40 + this.height/2;
                     this.vy = 0;
                     this.vx = 1;
                 }
 
-                if (this.x < 0) {
-                    this.x = 0;
+                if (this.x < this.width/2) {
+                    this.x = this.width/2;
                     this.vx *= -1;
                 }
 
-                if (this.x + this.width > arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x) {
-                    this.x = arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - this.width;
+                if (this.x + this.width/2 > arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x) {
+                    this.x = arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - this.width/2;
                     this.vx *= -1;
                 }
             }
@@ -73,8 +73,8 @@ class Enemy extends PIXI.Sprite {
             if (this.defaultShotDelay > 120) {
                 this.defaultShotDelay -= 120;
                 arcInc.spawner.spawnEnemyProjectile(
-                    this.x + this.width / 2,
-                    this.y + this.height / 2,
+                    this.x,
+                    this.y,
                     this.vxBase * 2,
                     this.vyBase * 2,
                     this.tint,
@@ -85,8 +85,8 @@ class Enemy extends PIXI.Sprite {
             if (this.bossShot1Delay > 5) {
                 this.bossShot1Delay -= 5;
                 arcInc.spawner.spawnEnemyProjectile(
-                    this.x + this.width / 2,
-                    this.y + this.height / 2,
+                    this.x,
+                    this.y,
                     5 * Math.sin(arcInc.sceneManager.scenes['main'].frame / 10),
                     7,
                     "0x66DD66",
@@ -98,8 +98,8 @@ class Enemy extends PIXI.Sprite {
             if (this.bossShot2Delay > 3) {
                 this.bossShot2Delay -= 3;
                 this.cascadeAngle += 15;
-                let x = this.x + this.width/2;
-                let y = this.y + this.height/2;
+                let x = this.x;
+                let y = this.y;
 
                 let angle = this.cascadeAngle * Math.PI/180; //degrees converted to radians
                 let distanceX = Math.cos(angle);

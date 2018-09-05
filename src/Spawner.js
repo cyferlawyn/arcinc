@@ -109,6 +109,7 @@ class Spawner {
 
         if (enemy === undefined) {
             enemy = new Enemy(PIXI.Loader.shared.resources["assets/sprites/boss.png"].texture, 10 * scalingFactor);
+            enemy.anchor.set(0.5, 0.5);
             enemy.isBoss = true;
         }
 
@@ -124,8 +125,8 @@ class Spawner {
         enemy.credits = Math.floor(50 * Math.pow(arcInc.growth, wave) * scalingFactor);
         enemy.damage = Math.floor(Math.pow(arcInc.growth, wave));
 
-        enemy.x = (arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - enemy.width) / 2;
-        enemy.y = -enemy.height;
+        enemy.x = (arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x) / 2;
+        enemy.y = -enemy.height/2;
 
         enemy.vx = 0;
         enemy.vy = 1;
