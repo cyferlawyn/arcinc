@@ -79,7 +79,7 @@ class Station {
 
             arcInc.station.cps = cps;
             arcInc.savegame.credits += cps;
-            arcInc.eventEmitter.emit('credits-updated', arcInc.savegame.credits);
+            arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
             arcInc.saveSavegame();
         };
 

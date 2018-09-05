@@ -25,7 +25,7 @@ class ShipUpgrades {
                     let effectiveCost = Math.ceil(value.cost * Math.pow(arcInc.growth, arcInc.savegame.upgrades[key]));
                     if (arcInc.savegame.credits >= effectiveCost) {
                         arcInc.savegame.credits -= effectiveCost;
-                        arcInc.eventEmitter.emit('credits-updated', arcInc.savegame.credits);
+                        arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
                         arcInc.savegame.upgrades[key]++;
                         arcInc.saveSavegame();
                         arcInc.objectStore.get('player').applyUpgrades();

@@ -100,7 +100,7 @@ class ArcInc {
         ShipUpgrades.prepare(parent);
         StatsAndFormulas.prepare(parent);
 
-        this.eventEmitter.subscribe('credits-updated', function(credits) {
+        this.eventEmitter.subscribe(Events.CREDITS_UPDATED, '#credits', function(credits) {
             document.querySelector('#credits').innerText = 'Credits: ' + Utils.format(credits, 2) + ' $ (+ ' + Utils.format(arcInc.station.cps) + ' $ / s)';
         });
     }

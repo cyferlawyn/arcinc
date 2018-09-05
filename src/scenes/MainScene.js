@@ -7,8 +7,6 @@ class MainScene extends Scene{
     }
 
     init() {
-        this.now = Date.now();
-        this.elapsed = Date.now();
         this.wave = arcInc.savegame.highestWave - 1;
         if (this.wave < 0) {
             this.wave = 0;
@@ -25,7 +23,7 @@ class MainScene extends Scene{
     reset() {
         let enemyContainer = arcInc.objectStore.get('enemyContainer');
         for (let i = 0; i < enemyContainer.children.length; i++) {
-            enemyContainer.children[i].visible = false;
+            enemyContainer.children[i].markedForDestruction = true;
         }
 
         let enemyProjectileContainer = arcInc.objectStore.get('enemyProjectileContainer');
@@ -183,16 +181,28 @@ class MainScene extends Scene{
     update(frameDelta) {
         this.frame += frameDelta;
 
+        arcInc.eventEmitter.emit(Events.CREATION_PHASE_STARTED, frameDelta);
+
+        arcInc.eventEmitter.emit(Events.REGENERATION_PHASE_STARTED, frameDelta);
+
+        arcInc.eventEmitter.emit(Events.MOVEMENT_PHASE_STARTED, frameDelta);
         ParallaxManager.update(frameDelta);
         this.updatePlayer(frameDelta);
         this.updateEnemies(frameDelta);
         this.updateProjectiles(frameDelta);
+
+        arcInc.eventEmitter.emit(Events.ENGAGEMENT_PHASE_STARTED, frameDelta);
+
+        arcInc.eventEmitter.emit(Events.COLLISION_DETECTION_PHASE_STARTED, frameDelta);
         this.checkForCollisions();
+
+        arcInc.eventEmitter.emit(Events.CLEANUP_PHASE_STARTED, frameDelta);
+
         this.updateGui();
         arcInc.objectStore.get('abilityBar').update(frameDelta);
+
+        console.log(arcInc.objectStore.get('enemyContainer').children.length);
     }
-
-
 
     updatePlayer(frameDelta) {
         let player = arcInc.objectStore.get('player');
@@ -202,7 +212,6 @@ class MainScene extends Scene{
 
     updateEnemies(frameDelta) {
         this.framesTillWave -= frameDelta;
-        let enemyContainer = arcInc.objectStore.get('enemyContainer');
 
         if (this.framesTillWave <= 0 || this.remainingEnemies === 0) {
             this.wave++;
@@ -210,13 +219,6 @@ class MainScene extends Scene{
             this.framesTillWave = 600;
             this.remainingEnemies = arcInc.spawner.spawnEnemyWave(this.wave);
         }
-            for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
-                let enemy = enemyContainer.children[enemyIndex];
-                if (enemy.visible) {
-                    enemy.update(frameDelta);
-                    enemy.engage(frameDelta);
-                }
-            }
     }
 
     updateProjectiles(frameDelta) {
@@ -259,6 +261,11 @@ class MainScene extends Scene{
             for (let projectileIndex = playerProjectileContainer.children.length - 1; projectileIndex >= 0; projectileIndex--) {
                 let projectile = playerProjectileContainer.children[projectileIndex];
                 let enemy = enemyContainer.children[enemyIndex];
+
+                if (enemy === undefined) {
+                    console.log('shit');
+                    break;
+                }
 
                 if (projectile.visible && enemy.visible && !projectile.ignore.includes(enemy.id)) {
                     if (Utils.intersect(enemy, projectile)) {

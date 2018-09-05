@@ -6,14 +6,7 @@ class Spawner {
     }
 
     prepareEnemy() {
-        let enemyContainer = this.objectStore.get('enemyContainer');
-        let enemy = new Enemy(PIXI.Loader.shared.resources["assets/sprites/A1.png"].texture, 10);
-        enemy.baseMovementSpeed = 2;
-        enemy.scale.set(0.4);
-        enemy.anchor.set(0.5, 0.5);
-        enemy.isBoss = false;
 
-        enemyContainer.addChild(enemy);
         return enemy;
     }
 
@@ -46,19 +39,13 @@ class Spawner {
 
     spawnRandomEnemy(wave) {
         let enemyContainer = this.objectStore.get('enemyContainer');
+        let enemy = new Enemy(PIXI.Loader.shared.resources["assets/sprites/A1.png"].texture, 10);
+        enemy.baseMovementSpeed = 2;
+        enemy.scale.set(0.4);
+        enemy.anchor.set(0.5, 0.5);
+        enemy.isBoss = false;
 
-        let enemy;
-        for (let i = 0; i < enemyContainer.children.length; i++) {
-            if (!enemyContainer.children[i].visible && !enemyContainer.children[i].isBoss) {
-                enemy = enemyContainer.children[i];
-                break;
-            }
-        }
-
-        // if no enemy is available in the enemy container, create another
-        if (enemy === undefined) {
-            enemy = this.prepareEnemy();
-        }
+        enemyContainer.addChild(enemy);
 
         // Randomize positioning
         enemy.x = Math.random() * (this.pixiApp.screen.width/this.pixiApp.stage.scale.x - enemy.width);
@@ -90,11 +77,7 @@ class Spawner {
         enemy.burnDamage = 0;
 
         enemy.tint = this.enemyColors[Math.floor(Math.random()*this.enemyColors.length)];
-        enemy.id = Math.round(Math.random() * 1000000);
-
-        enemy.updateHealthBar();
         enemy.wave = wave;
-        enemy.visible = true;
     }
 
     spawnBoss(wave, scalingFactor) {
@@ -133,11 +116,7 @@ class Spawner {
 
         enemy.burnDamage = 0;
 
-        enemy.id = Math.round(Math.random() * 1000000);
-
-        enemy.updateHealthBar();
         enemy.wave = wave;
-        enemy.visible = true;
     }
 
     preparePlayerProjectile() {

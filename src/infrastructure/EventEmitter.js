@@ -3,25 +3,31 @@ class EventEmitter {
         this.events = [];
     }
 
-    subscribe(event, callback) {
+    subscribe(event, id, callback) {
         if (this.events[event] === undefined) {
             this.events[event] = [];
         }
 
-        this.events[event].push(callback);
+        this.events[event][id] = callback;
     }
 
-    unsubscribe(event, callback) {
+    unsubscribe(event, id) {
         if (this.events[event] === undefined) {
+            console.error(id + ' unsubscribed from a event stream that no-one ever subscribed to: ' + event);
             return;
         }
 
-        this.events[event].splice(callback, 1);
+        delete this.events[event][id];
     }
 
     emit(event, payload) {
-        this.events[event].forEach(function(callback) {
-            callback(payload);
-        })
+        if (this.events[event] === undefined) {
+            //console.log('Emitted an event to an event stream that no-one ever subscribed to: ' + event);
+            return;
+        }
+        Object.keys(this.events[event]).forEach(function(key) {
+            //console.log('Emitting ' + event + ' to ' + key);
+            arcInc.eventEmitter.events[event][key](payload);
+        });
     }
 }

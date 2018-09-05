@@ -145,6 +145,8 @@ class Player extends PIXI.Sprite {
             }
         };
 
+        this.id = 'Player-' + Utils.getUUID();
+
         this.boundaryWidth = boundaryWidth;
         this.boundaryHeight = boundaryHeight;
 
@@ -159,6 +161,11 @@ class Player extends PIXI.Sprite {
         this.currentShield = this.stats.effectiveMaxShield;
         this.currentArmor = this.stats.effectiveMaxArmor;
         this.currentEnergy = this.stats.effectiveMaxEnergy;
+
+        // Register event listener
+        arcInc.eventEmitter.subscribe(Events.REGENERATION_PHASE_STARTED, this.id, this.regenerate.bind(this));
+        arcInc.eventEmitter.subscribe(Events.MOVEMENT_PHASE_STARTED, this.id, this.move.bind(this));
+        arcInc.eventEmitter.subscribe(Events.ENGAGEMENT_PHASE_STARTED, this.id, this.engage.bind(this));
     }
 
     applyUpgrades() {
@@ -168,10 +175,6 @@ class Player extends PIXI.Sprite {
 
     update(frameDelta) {
         this.ticksSinceLastHit+= frameDelta;
-
-        this.move(frameDelta);
-        this.regenerate(frameDelta);
-        this.engage(frameDelta);
     }
 
     move(frameDelta) {

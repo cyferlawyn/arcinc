@@ -81,4 +81,24 @@ class Utils {
 
         return {'vx': vx, 'vy': vy};
     }
+
+    static getUUID() {
+        let uuid = "";
+        for (let i = 0; i < 32; i++) {
+            let random = Math.random() * 16 | 0;
+
+            if (i === 8 || i === 12 || i === 16 || i === 20) {
+                uuid += "-"
+            }
+            uuid += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random)).toString(16);
+        }
+        return uuid;
+    }
+
+    static leftBounds(r) {
+        let screenWidth = arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x;
+        let screenHeight = arcInc.pixiApp.screen.height / arcInc.pixiApp.stage.scale.y;
+
+        return (r.x > 2 * screenWidth || r.x < -screenWidth || r.y > 2 * screenHeight || r.y < -screenHeight);
+    }
 }

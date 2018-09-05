@@ -1,6 +1,30 @@
 class Enemy extends PIXI.Sprite {
     constructor(texture, maxHealth) {
         super(texture);
+        this.init(maxHealth);
+
+        this.id = 'Enemy-' + Utils.getUUID();
+        this.markedForDestruction = false;
+
+        // Register event listener
+        arcInc.eventEmitter.subscribe(Events.REGENERATION_PHASE_STARTED,this.id, this.regenerate.bind(this));
+        arcInc.eventEmitter.subscribe(Events.MOVEMENT_PHASE_STARTED,this.id, this.move.bind(this));
+        arcInc.eventEmitter.subscribe(Events.ENGAGEMENT_PHASE_STARTED,this.id, this.engage.bind(this));
+        arcInc.eventEmitter.subscribe(Events.CLEANUP_PHASE_STARTED,this.id, this.cleanup.bind(this));
+    }
+
+    destructor() {
+        arcInc.eventEmitter.unsubscribe(Events.REGENERATION_PHASE_STARTED,this.id);
+        arcInc.eventEmitter.unsubscribe(Events.MOVEMENT_PHASE_STARTED, this.id);
+        arcInc.eventEmitter.unsubscribe(Events.ENGAGEMENT_PHASE_STARTED, this.id);
+        arcInc.eventEmitter.unsubscribe(Events.CLEANUP_PHASE_STARTED,this.id);
+
+        let enemyContainer = arcInc.objectStore.get('enemyContainer');
+        enemyContainer.removeChild(this);
+        this.destroy();
+    }
+
+    init(maxHealth) {
         this.maxHealth = maxHealth;
         this.currentHealth = maxHealth;
 
@@ -23,47 +47,51 @@ class Enemy extends PIXI.Sprite {
         this.bossShot2Delay = 0;
     }
 
-    update(frameDelta) {
+    regenerate(frameDelta) {
+        // TODO
         this.currentHealth -= this.burnDamage;
         this.burnDamage *= 0.99;
         this.checkForDestruction();
+    }
 
-        if (this.y > arcInc.pixiApp.screen.height / arcInc.pixiApp.stage.scale.y) {
-            this.visible = false;
-        } else {
-            if (!this.isBoss) {
-                this.vx = Math.sin(this.y / 75) * this.vy;
-                this.rotation = Math.atan2(this.vy, this.vx) - Math.PI / 2;
+    move(frameDelta){
+        if (!this.isBoss) {
+            this.vx = Math.sin(this.y / 75) * this.vy;
+            this.rotation = Math.atan2(this.vy, this.vx) - Math.PI / 2;
 
-                if (this.x < 0) {
-                    this.x = 0;
-                }
-
-                if (this.x + this.width > arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x) {
-                    this.x = arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - this.width;
-                }
-            } else {
-                arcInc.sceneManager.scenes['main'].framesTillWave = 600;
-
-                if (this.y > 40 + this.height/2) {
-                    this.y = 40 + this.height/2;
-                    this.vy = 0;
-                    this.vx = 1;
-                }
-
-                if (this.x < this.width/2) {
-                    this.x = this.width/2;
-                    this.vx *= -1;
-                }
-
-                if (this.x + this.width/2 > arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x) {
-                    this.x = arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - this.width/2;
-                    this.vx *= -1;
-                }
+            if (this.x < 0) {
+                this.x = 0;
             }
 
-            this.x += this.vx * frameDelta;
-            this.y += this.vy * frameDelta;
+            if (this.x + this.width > arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x) {
+                this.x = arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - this.width;
+            }
+        } else {
+            arcInc.sceneManager.scenes['main'].framesTillWave = 600;
+
+            if (this.y > 40 + this.height / 2) {
+                this.y = 40 + this.height / 2;
+                this.vy = 0;
+                this.vx = 1;
+            }
+
+            if (this.x < this.width / 2) {
+                this.x = this.width / 2;
+                this.vx *= -1;
+            }
+
+            if (this.x + this.width / 2 > arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x) {
+                this.x = arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - this.width / 2;
+                this.vx *= -1;
+            }
+        }
+
+        this.x += this.vx * frameDelta;
+        this.y += this.vy * frameDelta;
+
+        if (Utils.leftBounds(this)) {
+            this.markedForDestruction = true;
+            console.log (this.id + ' left bounds and will be destroyed');
         }
     }
 
@@ -132,7 +160,7 @@ class Enemy extends PIXI.Sprite {
         let player = arcInc.objectStore.get('player');
         if (this.currentHealth <= 0) {
             arcInc.savegame.credits += this.credits * player.stats.effectiveKillCreditMultiplier;
-            arcInc.eventEmitter.emit('credits-updated', arcInc.savegame.credits);
+            arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
             if (this.wave === arcInc.sceneManager.scenes['main'].wave) {
                 arcInc.sceneManager.scenes['main'].remainingEnemies--;
 
@@ -141,13 +169,15 @@ class Enemy extends PIXI.Sprite {
                     arcInc.saveSavegame();
                 }
             }
-            this.visible = false;
-        } else {
-            this.updateHealthBar();
+            this.markedForDestruction = true;
         }
     }
 
-    updateHealthBar() {
-        this.children[1].width = this.width / this.scale.x * this.currentHealth / this.maxHealth;
+    cleanup(frameDelta) {
+        if (this.markedForDestruction) {
+            this.destructor();
+        } else {
+            this.children[1].width = this.width / this.scale.x * this.currentHealth / this.maxHealth;
+        }
     }
 }
