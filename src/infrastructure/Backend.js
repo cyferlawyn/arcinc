@@ -67,7 +67,9 @@ class Backend {
             if (this.readyState === 4) {
                 if (this.status === 200) {
                     let response = JSON.parse(this.responseText);
-                    successCallback(response['savegame']);
+                    let savegame = response['savegame'];
+                    savegame.credits = Math.round(parseFloat(savegame.credits));
+                    successCallback(savegame);
                 }
                 else {
                     failureCallback();

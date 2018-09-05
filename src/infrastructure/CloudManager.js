@@ -57,8 +57,13 @@ class CloudManager {
     }
 
     static cloudSave() {
-        let savegameString = JSON.stringify(arcInc.savegame);
-        localStorage.setItem(savegameName, savegameString);
+        let savegameString = JSON.stringify(arcInc.savegame, function(key, value) {
+            if (key === 'credits') {
+                return value.toExponential();
+            } else {
+                return value;
+            }
+        });
         arcInc.backend.saveUser(arcInc.authToken, savegameString);
     }
 }

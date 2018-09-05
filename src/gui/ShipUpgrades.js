@@ -18,7 +18,7 @@ class ShipUpgrades {
                 key,
                 value.title,
                 value.description,
-                'Level ' + arcInc.savegame.upgrades[key] + ' (' + value.valueTemplate.replace('VALUE', Utils.format(arcInc.objectStore.get('player').stats[key])) + ')',
+                'Level ' + arcInc.savegame.upgrades[key] + ' (' + value.valueTemplate.replace('VALUE', Utils.format(arcInc.objectStore.get('player').stats[key], 4)) + ')',
                 'Buy 1 (' + Utils.format(Math.ceil(value.cost * Math.pow(arcInc.growth, arcInc.savegame.upgrades[key]))) + ' $)',
                 function (event) {
                     let key = event.currentTarget.name;
@@ -30,7 +30,7 @@ class ShipUpgrades {
                         arcInc.saveSavegame();
                         arcInc.objectStore.get('player').applyUpgrades();
 
-                        document.getElementById(key + '-card-text').innerText = 'Level ' + arcInc.savegame.upgrades[key] + ' (' + value.valueTemplate.replace('VALUE', Utils.format(arcInc.objectStore.get('player').stats[key])) + ')';
+                        document.getElementById(key + '-card-text').innerText = 'Level ' + arcInc.savegame.upgrades[key] + ' (' + value.valueTemplate.replace('VALUE', Utils.format(arcInc.objectStore.get('player').stats[key], 4)) + ')';
 
                         if (value.cap === undefined || arcInc.savegame.upgrades[key] < value.cap) {
                             document.getElementById(key + '-card-anchor').innerText = 'Buy 1 (' + Utils.format(Math.ceil(value.cost * Math.pow(arcInc.growth, arcInc.savegame.upgrades[key]))) + ' $)';
