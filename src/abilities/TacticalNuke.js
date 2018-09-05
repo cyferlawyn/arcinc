@@ -47,13 +47,11 @@ class TacticalNuke extends Ability {
             for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
                 let enemy = enemyContainer.children[enemyIndex];
 
-                if (enemy.visible) {
-                    if (Utils.intersect(enemy, tacticalNuke)) {
-                        enemy.currentHealth *= 0.85;
-                        tacticalNuke.destroy();
-                        this.tacticalNukes.splice(i, 1);
-                        break;
-                    }
+                if (Utils.intersect(enemy, tacticalNuke)) {
+                    enemy.stats.currentHealth *= 0.85;
+                    tacticalNuke.destroy();
+                    this.tacticalNukes.splice(i, 1);
+                    break;
                 }
             }
         }
