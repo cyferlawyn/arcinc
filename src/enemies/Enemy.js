@@ -133,8 +133,8 @@ class Enemy extends PIXI.Sprite {
         if (this.currentHealth <= 0) {
             arcInc.savegame.credits += this.credits * player.stats.effectiveKillCreditMultiplier;
             arcInc.eventEmitter.emit('credits-updated', arcInc.savegame.credits);
-            if (this.wave === arcInc.wave) {
-                arcInc.remainingEnemies--;
+            if (this.wave === arcInc.sceneManager.scenes['main'].wave) {
+                arcInc.sceneManager.scenes['main'].remainingEnemies--;
 
                 if (this.isBoss) {
                     arcInc.savegame.highestWave = this.wave + 1;
