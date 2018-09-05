@@ -14,7 +14,7 @@ class MainScene extends Scene{
         this.framesTillWave = 0;
 
         this.initContainer();
-        ParallaxManager.prepare();
+        new ParallaxManager();
         this.initGui();
         this.initAbilities();
         this.initPlayer();
@@ -28,12 +28,12 @@ class MainScene extends Scene{
 
         let enemyProjectileContainer = arcInc.objectStore.get('enemyProjectileContainer');
         for (let i = 0; i < enemyProjectileContainer.children.length; i++) {
-            enemyProjectileContainer.children[i].visible = false;
+            enemyProjectileContainer.children[i].markedForDestruction = true;
         }
 
         let playerProjectileContainer = arcInc.objectStore.get('playerProjectileContainer');
         for (let i = 0; i < playerProjectileContainer.children.length; i++) {
-            playerProjectileContainer.children[i].visible = false;
+            playerProjectileContainer.children[i].markedForDestruction = true;
         }
 
         let player = arcInc.objectStore.get('player');
@@ -186,10 +186,8 @@ class MainScene extends Scene{
         arcInc.eventEmitter.emit(Events.REGENERATION_PHASE_STARTED, frameDelta);
 
         arcInc.eventEmitter.emit(Events.MOVEMENT_PHASE_STARTED, frameDelta);
-        ParallaxManager.update(frameDelta);
         this.updatePlayer(frameDelta);
         this.updateEnemies(frameDelta);
-        this.updateProjectiles(frameDelta);
 
         arcInc.eventEmitter.emit(Events.ENGAGEMENT_PHASE_STARTED, frameDelta);
 
@@ -200,8 +198,6 @@ class MainScene extends Scene{
 
         this.updateGui();
         arcInc.objectStore.get('abilityBar').update(frameDelta);
-
-        console.log(arcInc.objectStore.get('enemyContainer').children.length);
     }
 
     updatePlayer(frameDelta) {
@@ -221,55 +217,28 @@ class MainScene extends Scene{
         }
     }
 
-    updateProjectiles(frameDelta) {
-        let playerProjectileContainer = arcInc.objectStore.get('playerProjectileContainer');
-
-        for (let playerProjectileIndex = playerProjectileContainer.children.length - 1; playerProjectileIndex >= 0; playerProjectileIndex--) {
-            let playerProjectile = playerProjectileContainer.children[playerProjectileIndex];
-
-            if (playerProjectile.visible) {
-                if (playerProjectile.y < 0) {
-                    playerProjectile.visible = false;
-                } else {
-                    playerProjectile.x += playerProjectile.vx * frameDelta;
-                    playerProjectile.y += playerProjectile.vy * frameDelta;
-                }
-            }
-        }
-
-        let enemyProjectileContainer = arcInc.objectStore.get('enemyProjectileContainer');
-
-        for (let enemyProjectileIndex = enemyProjectileContainer.children.length - 1; enemyProjectileIndex >= 0; enemyProjectileIndex--) {
-            let enemyProjectile = enemyProjectileContainer.children[enemyProjectileIndex];
-            if (enemyProjectile.visible) {
-                if (enemyProjectile.y > this.pixiApp.screen.height/this.pixiApp.stage.scale.y) {
-                    enemyProjectile.visible = false;
-                } else {
-                    enemyProjectile.x += enemyProjectile.vx * frameDelta;
-                    enemyProjectile.y += enemyProjectile.vy * frameDelta;
-                }
-            }
-        }
-    }
-
     checkForCollisions() {
         let enemyContainer = arcInc.objectStore.get('enemyContainer');
         let playerProjectileContainer = arcInc.objectStore.get('playerProjectileContainer');
         let player = arcInc.objectStore.get('player');
 
         for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
-            for (let projectileIndex = playerProjectileContainer.children.length - 1; projectileIndex >= 0; projectileIndex--) {
-                let projectile = playerProjectileContainer.children[projectileIndex];
-                let enemy = enemyContainer.children[enemyIndex];
+            let enemy = enemyContainer.children[enemyIndex];
 
-                if (enemy === undefined) {
-                    console.log('shit');
-                    break;
-                }
+            if (!enemy.markedForDestruction) {
+                for (let projectileIndex = playerProjectileContainer.children.length - 1; projectileIndex >= 0; projectileIndex--) {
+                    let projectile = playerProjectileContainer.children[projectileIndex];
 
-                if (projectile.visible && enemy.visible && !projectile.ignore.includes(enemy.id)) {
-                    if (Utils.intersect(enemy, projectile)) {
-                        player.hits(enemy, projectile);
+                    if (!projectile.markedForDestruction) {
+                        if (!projectile.ignore.includes(enemy.id)) {
+                            if (Utils.intersect(enemy, projectile)) {
+                                player.hits(enemy, projectile);
+
+                                if (projectile.markedForDestruction) {
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -279,10 +248,9 @@ class MainScene extends Scene{
 
         for (let enemyProjectileIndex = 0; enemyProjectileIndex < enemyProjectileContainer.children.length; enemyProjectileIndex++) {
             let enemyProjectile = enemyProjectileContainer.children[enemyProjectileIndex];
-            if (enemyProjectile.visible) {
+            if (!enemyProjectile.markedForDestruction) {
                 if (Utils.intersect(player, enemyProjectile)) {
                     player.isHit(enemyProjectile);
-
                 }
             }
         }

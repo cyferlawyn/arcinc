@@ -119,100 +119,22 @@ class Spawner {
         enemy.wave = wave;
     }
 
-    preparePlayerProjectile() {
-        let playerProjectileContainer = this.objectStore.get('playerProjectileContainer');
-        let projectile = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/Bullet.png"].texture);
-        projectile.scale.set(0.55);
-        projectile.damage = 5;
-        projectile.ignore = [];
-
-        playerProjectileContainer.addChild(projectile);
-
-        return projectile;
-    }
-
-    spawnPlayerProjectile(x, y, vx, vy, damage, spriteId) {
-        let playerProjectileContainer = this.objectStore.get('playerProjectileContainer');
-
-        let projectile;
-        for (let i = 0; i < playerProjectileContainer.children.length; i++) {
-            if (!playerProjectileContainer.children[i].visible) {
-                projectile = playerProjectileContainer.children[i];
-                break;
-            }
-        }
-
-        // if no player projectile is available in the player projectile container, create another
-        if (projectile === undefined) {
-            projectile = this.preparePlayerProjectile();
-        }
-
-        projectile.x = x;
-        projectile.y = y;
-        projectile.vx = vx;
-        projectile.vy = vy;
-
-        projectile.anchor.set(0.5, 0.5);
-        projectile.rotation = Math.atan2(vy, vx) + Math.PI/2;
-
-        projectile.damage = damage;
-        projectile.ignore = [];
-        projectile.visible = true;
-
-        return projectile;
-    }
-
-    prepareEnemyProjectile(spriteId) {
-        let enemyProjectileContainer = this.objectStore.get('enemyProjectileContainer');
-        let projectile;
-        switch(spriteId) {
-            case 3:
-                projectile = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/Bullet3.png"].texture);
-                projectile.spriteId = 3;
-                break;
-            default:
-                projectile = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/Bullet2.png"].texture);
-                projectile.spriteId = 2;
-        }
-
-        projectile.scale.set(0.3);
-        enemyProjectileContainer.addChild(projectile);
-
-        return projectile;
+    spawnPlayerProjectile(x, y, vx, vy, damage, original) {
+        return new PlayerProjectile(PIXI.Loader.shared.resources["assets/sprites/Bullet.png"].texture, x, y, vx, vy, damage, original);
     }
 
     spawnEnemyProjectile(x, y, vx, vy, tint, damage, spriteId) {
         if (spriteId === undefined) {
             spriteId = 2;
         }
-        let enemyProjectileContainer = this.objectStore.get('enemyProjectileContainer');
 
-        let projectile;
-        for (let i = 0; i < enemyProjectileContainer.children.length; i++) {
-            if (!enemyProjectileContainer.children[i].visible && enemyProjectileContainer.children[i].spriteId === spriteId) {
-                projectile = enemyProjectileContainer.children[i];
+
+        switch(spriteId) {
+            case 3:
+                new EnemyProjectile(PIXI.Loader.shared.resources["assets/sprites/Bullet3.png"].texture, 3, x, y, vx, vy, tint, damage);
                 break;
-            }
+            default:
+                new EnemyProjectile(PIXI.Loader.shared.resources["assets/sprites/Bullet2.png"].texture, 2, x, y, vx, vy, tint, damage);
         }
-
-        // if no enemy projectile is available in the enemy projectile container, create another
-        if (projectile === undefined) {
-            projectile = this.prepareEnemyProjectile(spriteId);
-        }
-
-        projectile.x = x;
-        projectile.y = y;
-        projectile.vx = vx;
-        projectile.vy = vy;
-
-        projectile.anchor.set(0.5, 0.5);
-        projectile.rotation = Math.atan2(vy, vx) - Math.PI/2;
-
-        projectile.tint = tint;
-        projectile.damage = damage;
-
-        projectile.visible = true;
-
-        return projectile;
     }
 }

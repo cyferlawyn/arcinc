@@ -259,7 +259,7 @@ class Player extends PIXI.Sprite {
                 let vy = -5;
 
                 let projectileDamage = this.stats.effectiveProjectileDamage;
-                arcInc.spawner.spawnPlayerProjectile(x, y, vx, vy, projectileDamage);
+                arcInc.spawner.spawnPlayerProjectile(x, y, vx, vy, projectileDamage, true);
             }
         }
     }
@@ -273,10 +273,10 @@ class Player extends PIXI.Sprite {
         }
 
         // test projectile fork
-        if (this.stats.chanceHappened('projectileForkChance')) {
+        if (projectile.original && this.stats.chanceHappened('projectileForkChance')) {
             projectile.ignore.push(enemy.id);
-            let newProjectileOne = arcInc.spawner.spawnPlayerProjectile(projectile.x, projectile.y, projectile.vy / 4, projectile.vy, projectile.damage);
-            let newProjectileTwo = arcInc.spawner.spawnPlayerProjectile(projectile.x, projectile.y, -projectile.vy / 4, projectile.vy, projectile.damage);
+            let newProjectileOne = arcInc.spawner.spawnPlayerProjectile(projectile.x, projectile.y, projectile.vy / 4, projectile.vy, projectile.damage, false);
+            let newProjectileTwo = arcInc.spawner.spawnPlayerProjectile(projectile.x, projectile.y, -projectile.vy / 4, projectile.vy, projectile.damage, false);
             newProjectileOne.ignore = projectile.ignore.slice();
             newProjectileTwo.ignore = projectile.ignore.slice();
         }
@@ -285,7 +285,7 @@ class Player extends PIXI.Sprite {
         if (this.stats.chanceHappened('projectilePierceChance')) {
             projectile.ignore.push(enemy.id);
         } else {
-            projectile.visible = false;
+            projectile.markedForDestruction = true;
         }
 
         // Skip ailment calculations for direct kills
@@ -323,7 +323,7 @@ class Player extends PIXI.Sprite {
         let damage = projectile.damage;
 
         // free projectile again
-        projectile.visible = false;
+        projectile.markedForDestruction = true;
 
         // Apply relative multiplier
         damage *=  this.stats.effectiveRelativeIncomingDamageMultiplier;

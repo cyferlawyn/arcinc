@@ -91,7 +91,6 @@ class Enemy extends PIXI.Sprite {
 
         if (Utils.leftBounds(this)) {
             this.markedForDestruction = true;
-            console.log (this.id + ' left bounds and will be destroyed');
         }
     }
 
