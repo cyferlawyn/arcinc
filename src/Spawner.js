@@ -5,11 +5,6 @@ class Spawner {
         this.enemyColors = ["0xCB3301", "0xFF0066", "0xFF6666", "0xFEFF99", "0xFFFF67", "0xCCFF66", "0x99FE00", "0xEC8EED", "0xFF99CB", "0xFE349A", "0xCC99FE", "0x6599FF", "0x03CDFF", "0xFF0000", "0xFFFF00", "0x00FF00", "0x00FFFF", "0x0000FF", "0xFF00FF"];
     }
 
-    prepareEnemy() {
-
-        return enemy;
-    }
-
     spawnEnemyWave(wave) {
         let amountSpawned = 0;
 
@@ -28,86 +23,83 @@ class Spawner {
                 spawnAmount = 25;
             }
             amountSpawned = 0;
-            for (let i = 0; i < spawnAmount; i++) {
-                this.spawnRandomEnemy(wave);
-                amountSpawned++;
+            let enemyType = Math.round(Math.random());
+            switch(enemyType) {
+                case 0:
+                    for (let i = 0; i < spawnAmount; i++) {
+                        this.spawnCrawlerEnemy(wave);
+                        amountSpawned++;
+                    }
+                    break;
+                case 1:
+                    for (let i = 0; i < spawnAmount; i++) {
+                        this.spawnAsteroidEnemy(wave);
+                        amountSpawned++;
+                    }
             }
+
         }
 
         return amountSpawned;
     }
 
-    spawnRandomEnemy(wave) {
-        let enemyContainer = this.objectStore.get('enemyContainer');
-        let enemy = new Enemy(PIXI.Loader.shared.resources["assets/sprites/A1.png"].texture, 10);
-        enemy.baseMovementSpeed = 2;
-        enemy.scale.set(0.4);
-        enemy.anchor.set(0.5, 0.5);
-        enemy.isBoss = false;
+    spawnCrawlerEnemy(wave) {
+        // Initialize stats
+        let enemyStats = EnemyStats.get();
+        enemyStats.maxHealth = Math.floor(enemyStats.maxHealth * Math.pow(arcInc.growth, wave));
+        enemyStats.currentHealth = enemyStats.maxHealth;
+        enemyStats.credits = Math.floor(enemyStats.credits * Math.pow(arcInc.growth, wave));
+        enemyStats.damage = Math.floor(enemyStats.damage * Math.pow(arcInc.growth, wave));
+        enemyStats.wave = wave;
 
-        enemyContainer.addChild(enemy);
+        let enemy = new CrawlerEnemy(enemyStats);
+        enemy.tint = this.enemyColors[Math.floor(Math.random()*this.enemyColors.length)];
 
         // Randomize positioning
         enemy.x = Math.random() * (Utils.getEffectiveScreenWidth() - enemy.width);
         enemy.y = Math.random() * -(Utils.getEffectiveScreenHeight()/2) - enemy.height;
-        enemy.position.set(enemy.x, enemy.y);
 
-        // Randomize movement vector
-        let vx = Math.random() - 0.5;
-        let vy = 1;
+        enemy.vx = 0;
+        enemy.vy = 2;
+    }
 
-        // calculate the velocity vector length
-        let distance = Math.sqrt( vx*vx + vy*vy);
-
-        vx /= distance;
-        vy /= distance;
-
-        enemy.vxBase = enemy.vx = vx * enemy.baseMovementSpeed;
-        enemy.vyBase = enemy.vy = vy * enemy.baseMovementSpeed;
-        enemy.rotation = Math.atan2(vy, vx) - Math.PI/2;
+    spawnAsteroidEnemy(wave) {
         // Initialize stats
-        enemy.defaultShotDelay = 0;
-        enemy.bossShot1Delay = 0;
-        enemy.bossShot2Delay = 0;
-        enemy.maxHealth = Math.floor(10 * Math.pow(arcInc.growth, wave));
-        enemy.currentHealth = enemy.maxHealth;
-        enemy.credits = Math.floor(10 * Math.pow(arcInc.growth, wave));
-        enemy.damage = Math.floor(5 * Math.pow(arcInc.growth, wave));
+        let enemyStats = EnemyStats.get();
+        enemyStats.maxHealth = Math.floor(enemyStats.maxHealth * Math.pow(arcInc.growth, wave));
+        enemyStats.currentHealth = enemyStats.maxHealth;
+        enemyStats.credits = Math.floor(enemyStats.credits * Math.pow(arcInc.growth, wave));
+        enemyStats.damage = Math.floor(enemyStats.damage * Math.pow(arcInc.growth, wave));
+        enemyStats.wave = wave;
 
-        enemy.burnDamage = 0;
+        let enemy = new AsteroidEnemy(enemyStats);
 
-        enemy.tint = this.enemyColors[Math.floor(Math.random()*this.enemyColors.length)];
-        enemy.wave = wave;
+        // Randomize positioning
+        enemy.x = (Math.random() * -(Utils.getEffectiveScreenWidth()) - enemy.width + Utils.getEffectiveScreenWidth()/2);
+        enemy.y = Math.random() * -(Utils.getEffectiveScreenHeight()/2) - enemy.height;
+
+        enemy.vx = 4;
+        enemy.vy = 4;
     }
 
     spawnBoss(wave, scalingFactor) {
-        let enemyContainer = this.objectStore.get('enemyContainer');
-
-        let enemy = new BossEnemy(PIXI.Loader.shared.resources["assets/sprites/boss.png"].texture, 10 * scalingFactor);
-        enemy.anchor.set(0.5, 0.5);
-        enemy.isBoss = true;
-
-        enemy.baseMovementSpeed = 2;
-        enemy.scale.set(0.8);
-        enemy.cascadeAngle = 0;
-
-        enemyContainer.addChild(enemy);
-
         // Initialize stats
-        enemy.maxHealth = Math.floor(10 * Math.pow(arcInc.growth, wave) * scalingFactor);
-        enemy.currentHealth = enemy.maxHealth;
-        enemy.credits = Math.floor(50 * Math.pow(arcInc.growth, wave) * scalingFactor);
-        enemy.damage = Math.floor(Math.pow(arcInc.growth, wave));
+        let enemyStats = EnemyStats.get();
+        enemyStats.maxHealth = Math.floor(enemyStats.maxHealth * Math.pow(arcInc.growth, wave) * scalingFactor);
+        enemyStats.currentHealth = enemyStats.maxHealth;
+        enemyStats.credits = Math.floor(enemyStats.credits * Math.pow(arcInc.growth, wave) * scalingFactor);
+        enemyStats.damage = Math.floor(enemyStats.damage / 5 * Math.pow(arcInc.growth, wave));
+        enemyStats.wave = wave;
+        enemyStats.isBoss = true;
 
-        enemy.x = (arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x) / 2;
+        let enemy = new BossEnemy(enemyStats);
+
+        // positioning
+        enemy.x = Utils.getEffectiveScreenWidth() / 2;
         enemy.y = -enemy.height/2;
 
         enemy.vx = 0;
         enemy.vy = 1;
-
-        enemy.burnDamage = 0;
-
-        enemy.wave = wave;
     }
 
     spawnPlayerProjectile(x, y, vx, vy, damage, original) {

@@ -1,12 +1,16 @@
 class BossEnemy extends Enemy{
-    constructor(texture, maxHealth) {
-        super(texture, maxHealth);
+    constructor(stats) {
+        super(PIXI.Loader.shared.resources["assets/sprites/enemies/BossEnemy.png"].texture, stats);
     }
 
-    prepareStats(maxHealth) {
-        this.maxHealth = maxHealth;
-        this.currentHealth = maxHealth;
+    prepareProperties() {
+        this.scale.set(0.8);
+        this.cascadeAngle = 0;
+        this.bossShot1Delay = 0;
+        this.bossShot2Delay = 0;
+    }
 
+    prepareGui() {
         let guiContainer = arcInc.objectStore.get('guiContainer');
 
         this.damageBar = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/DamageBar.png"].texture);
@@ -31,13 +35,10 @@ class BossEnemy extends Enemy{
             strokeThickness: 3
         });
 
-        this.healthText = new PIXI.Text(this.maxHealth, healthStyle);
+        this.healthText = new PIXI.Text(this.stats.maxHealth, healthStyle);
         guiContainer.addChild(this.healthText);
         this.healthText.x = Utils.getEffectiveScreenWidth()/2 - this.healthText.width/2;
         this.healthText.y = 40;
-
-        this.bossShot1Delay = 0;
-        this.bossShot2Delay = 0;
     }
 
     move(frameDelta) {
@@ -54,8 +55,8 @@ class BossEnemy extends Enemy{
             this.vx *= -1;
         }
 
-        if (this.x + this.width / 2 > arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x) {
-            this.x = arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - this.width / 2;
+        if (this.x + this.width / 2 > Utils.getEffectiveScreenWidth()) {
+            this.x = Utils.getEffectiveScreenWidth() - this.width / 2;
             this.vx *= -1;
         }
 
@@ -77,7 +78,7 @@ class BossEnemy extends Enemy{
                 5 * Math.sin(arcInc.sceneManager.scenes['main'].frame / 10),
                 7,
                 "0x66DD66",
-                this.damage,
+                this.stats.damage,
                 3);
         }
 
@@ -109,14 +110,14 @@ class BossEnemy extends Enemy{
                 vx,
                 vy,
                 "0xEEEE66",
-                this.damage,
+                this.stats.damage,
                 2);
         }
     }
 
     updateGuiElements() {
-        this.healthBar.width = Utils.getEffectiveScreenWidth() * 0.75 * this.currentHealth / this.maxHealth;
-        this.healthText.text = Utils.format(this.currentHealth) + ' (' + Utils.format(100 * this.currentHealth/this.maxHealth, 2) + ' %)';
+        this.healthBar.width = Utils.getEffectiveScreenWidth() * 0.75 * this.stats.currentHealth / this.stats.maxHealth;
+        this.healthText.text = Utils.format(this.stats.currentHealth) + ' (' + Utils.format(100 * this.stats.currentHealth/this.stats.maxHealth, 2) + ' %)';
         this.healthText.x = Utils.getEffectiveScreenWidth()/2 - this.healthText.width/2;
     }
 

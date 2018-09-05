@@ -1,9 +1,11 @@
 class AssetLoader {
     static init() {
         PIXI.Loader.shared
-            .add('assets/sprites/A1.png')
+            .add('assets/sprites/enemies/CrawlerEnemy.png')
+            .add('assets/sprites/enemies/BossEnemy.png')
+            .add('assets/sprites/enemies/AsteroidEnemy.png')
+
             .add('assets/sprites/A5.png')
-            .add('assets/sprites/boss.png')
             .add('assets/sprites/HealthBar.png')
             .add('assets/sprites/DamageBar.png')
             .add('assets/sprites/EnergyBar.png')
@@ -16,6 +18,7 @@ class AssetLoader {
             .add('assets/sprites/Bullet3.png')
             .add('assets/sprites/TacticalNuke.png')
             .add('assets/sprites/BlackHole.png')
+
             .add('assets/textures/bg-far.png')
             .add('assets/textures/bg-mid.png')
             .add('assets/textures/bg-mid-near.png')

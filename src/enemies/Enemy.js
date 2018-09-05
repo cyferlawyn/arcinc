@@ -1,8 +1,11 @@
 class Enemy extends PIXI.Sprite {
-    constructor(texture, maxHealth) {
+    constructor(texture, stats) {
         super(texture);
+        this.stats = stats;
+
+        this.prepareProperties();
         this.init();
-        this.prepareStats(maxHealth);
+        this.prepareGui();
     }
 
     destructor() {
@@ -18,6 +21,7 @@ class Enemy extends PIXI.Sprite {
     }
 
     init() {
+        this.anchor.set(0.5, 0.5);
         this.id = 'Enemy-' + Utils.getUUID();
         this.markedForDestruction = false;
 
@@ -27,78 +31,69 @@ class Enemy extends PIXI.Sprite {
         arcInc.eventEmitter.subscribe(Events.ENGAGEMENT_PHASE_STARTED,this.id, this.engage.bind(this));
         arcInc.eventEmitter.subscribe(Events.COLLISION_DETECTION_PHASE_STARTED,this.id, this.testCollision.bind(this));
         arcInc.eventEmitter.subscribe(Events.CLEANUP_PHASE_STARTED,this.id, this.cleanup.bind(this));
+
+        arcInc.objectStore.get('enemyContainer').addChild(this);
     }
 
-    prepareStats(maxHealth) {
-        this.maxHealth = maxHealth;
-        this.currentHealth = maxHealth;
+    prepareProperties() {
 
+    }
+
+    prepareGui() {
         let damageBar = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/DamageBar.png"].texture);
-        damageBar.x = -this.width/2;
-        damageBar.y = -this.height/2-15;
-        damageBar.width = this.width;
+        damageBar.width = this.width / this.scale.x;
         damageBar.height = 10;
         this.addChild(damageBar);
+        damageBar.x = -damageBar.width/2;
+        damageBar.y = (-this.height / this.scale.y)/2 - 20;
 
         let healthBar = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/HealthBar.png"].texture);
-        healthBar.x = -this.width/2;
-        healthBar.y = -this.height/2-15;
-        healthBar.width = this.width;
+        healthBar.width = this.width / this.scale.x;
         healthBar.height = 10;
         this.addChild(healthBar);
-
-        this.defaultShotDelay = 0;
+        healthBar.x = -healthBar.width/2;
+        healthBar.y = (-this.height / this.scale.y)/2 - 20;
     }
 
     regenerate(frameDelta) {
-        this.currentHealth -= this.burnDamage*frameDelta;
-        this.burnDamage *= 0.9975**frameDelta;
+        this.stats.currentHealth -= this.stats.burnDamage*frameDelta;
+        this.stats.burnDamage *= 0.9975**frameDelta;
     }
 
     move(frameDelta){
-        this.vx = Math.sin(this.y / 75) * this.vy;
-        this.rotation = Math.atan2(this.vy, this.vx) - Math.PI / 2;
-
-        if (this.x < 0) {
-            this.x = 0;
-        }
-
-        if (this.x + this.width > arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x) {
-            this.x = arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x - this.width;
-        }
-
         this.x += this.vx * frameDelta;
         this.y += this.vy * frameDelta;
 
         if (Utils.leftBounds(this)) {
-            console.log(this.id + ' left bounds!');
             this.markedForDestruction = true;
         }
     }
 
     engage(frameDelta) {
-        this.defaultShotDelay += frameDelta;
-        if (this.defaultShotDelay > 120) {
-            this.defaultShotDelay -= 120;
-            arcInc.spawner.spawnEnemyProjectile(
-                this.x,
-                this.y,
-                this.vxBase * 2,
-                this.vyBase * 2,
-                this.tint,
-                this.damage);
-        }
     }
 
     testCollision() {
+        // Collision with player projectiles
         let playerProjectileContainer = arcInc.objectStore.get('playerProjectileContainer');
-
         for (let i = 0; i < playerProjectileContainer.children.length-1; i++) {
             let projectile = playerProjectileContainer.children[i];
 
             if (!projectile.markedForDestruction && !projectile.ignore.includes(this.id) && Utils.intersect(this, projectile)) {
                 this.hitBy(projectile);
             }
+        }
+
+        // Collision with player
+        let player = arcInc.objectStore.get('player');
+        if (Utils.intersect(this, player)) {
+            // TODO
+            if (this.stats.isBoss) {
+                player.currentShield -= 1;
+                this.damage = this.stats.damage * 1000;
+            } else {
+                this.damage = this.stats.damage;
+            }
+            player.hitBy(this);
         }
     }
 
@@ -128,48 +123,49 @@ class Enemy extends PIXI.Sprite {
         }
 
         // Skip ailment calculations for direct kills
-        if (this.currentHealth > damage) {
+        if (this.stats.currentHealth > damage) {
             // test freeze
             if (player.stats.chanceHappened('freezeChance')) {
-                if (!this.isBoss) {
+                if (!this.stats.isBoss) {
                     this.vx = this.vx * 0.98;
-                    if (this.vx < 0.5) {
-                        this.vx = 0.5;
+                    if (this.vx < this.stats.baseMovementSpeed/4) {
+                        this.vx = this.stats.baseMovementSpeed/4;
                     }
                     this.vy = this.vy * 0.98;
-                    if (this.vy < 0.5) {
-                        this.vy = 0.5;
+                    if (this.vy < this.stats.baseMovementSpeed/4) {
+                        this.vy = this.stats.baseMovementSpeed/4;
                     }
                 }
             }
 
             // test burn
             if (player.stats.chanceHappened('burnChance')) {
-                this.burnDamage += damage * 0.01;
+                this.stats.burnDamage += damage * 0.01;
             }
         }
 
         // Apply final damage application
-        this.currentHealth -= damage;
+        this.stats.currentHealth -= damage;
     }
 
     cleanup(frameDelta) {
-        if (this.currentHealth <= 0) {
+        if (this.stats.currentHealth <= 0) {
             let player = arcInc.objectStore.get('player');
-            arcInc.savegame.credits += this.credits * player.stats.effectiveKillCreditMultiplier;
+            arcInc.savegame.credits += this.stats.credits * player.stats.effectiveKillCreditMultiplier;
             arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
-            if (this.wave === arcInc.sceneManager.scenes['main'].wave) {
-                arcInc.sceneManager.scenes['main'].remainingEnemies--;
 
-                if (this.isBoss) {
-                    arcInc.savegame.highestWave = this.wave + 1;
-                    arcInc.saveSavegame();
-                }
+            if (this.stats.isBoss) {
+                arcInc.savegame.highestWave = this.stats.wave + 1;
+                arcInc.saveSavegame();
             }
             this.markedForDestruction = true;
         }
 
         if (this.markedForDestruction) {
+            if (this.stats.wave === arcInc.sceneManager.scenes['main'].wave) {
+                arcInc.sceneManager.scenes['main'].remainingEnemies--;
+            }
+
             this.removeGuiElements();
             this.destructor();
         } else {
@@ -178,7 +174,7 @@ class Enemy extends PIXI.Sprite {
     }
 
     updateGuiElements() {
-        this.children[1].width = this.width / this.scale.x * this.currentHealth / this.maxHealth;
+        this.children[1].width = this.width / this.scale.x * this.stats.currentHealth / this.stats.maxHealth;
     }
 
     removeGuiElements() {

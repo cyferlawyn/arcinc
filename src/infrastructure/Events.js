@@ -1,5 +1,4 @@
 class Events {
-
     static get CREDITS_UPDATED() {return 'creditsUpdated'};
 
     // game phases

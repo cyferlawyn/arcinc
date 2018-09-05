@@ -264,15 +264,15 @@ class Player extends PIXI.Sprite {
         }
     }
 
-    hitBy(projectile) {
+    hitBy(collider) {
         // Reset out of combat timer
         this.ticksSinceLastHit = 0;
 
         // Take the unmodified projectile damage
-        let damage = projectile.damage;
+        let damage = collider.damage;
 
         // free projectile again
-        projectile.markedForDestruction = true;
+        collider.markedForDestruction = true;
 
         // Apply relative multiplier
         damage *=  this.stats.effectiveRelativeIncomingDamageMultiplier;
