@@ -48,8 +48,8 @@ class Spawner {
         enemyContainer.addChild(enemy);
 
         // Randomize positioning
-        enemy.x = Math.random() * (this.pixiApp.screen.width/this.pixiApp.stage.scale.x - enemy.width);
-        enemy.y = Math.random() * -500 - enemy.height;
+        enemy.x = Math.random() * (Utils.getEffectiveScreenWidth() - enemy.width);
+        enemy.y = Math.random() * -(Utils.getEffectiveScreenHeight()/2) - enemy.height;
         enemy.position.set(enemy.x, enemy.y);
 
         // Randomize movement vector

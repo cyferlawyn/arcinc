@@ -71,6 +71,7 @@ class Enemy extends PIXI.Sprite {
         this.y += this.vy * frameDelta;
 
         if (Utils.leftBounds(this)) {
+            console.log(this.id + ' left bounds!');
             this.markedForDestruction = true;
         }
     }
@@ -169,9 +170,17 @@ class Enemy extends PIXI.Sprite {
         }
 
         if (this.markedForDestruction) {
+            this.removeGuiElements();
             this.destructor();
         } else {
-            this.children[1].width = this.width / this.scale.x * this.currentHealth / this.maxHealth;
+            this.updateGuiElements();
         }
+    }
+
+    updateGuiElements() {
+        this.children[1].width = this.width / this.scale.x * this.currentHealth / this.maxHealth;
+    }
+
+    removeGuiElements() {
     }
 }

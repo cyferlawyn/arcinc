@@ -114,17 +114,16 @@ class BossEnemy extends Enemy{
         }
     }
 
-    cleanup(frameDelta) {
-        if (this.markedForDestruction) {
-            let guiContainer = arcInc.objectStore.get('guiContainer');
-            guiContainer.removeChild(this.damageBar);
-            guiContainer.removeChild(this.healthBar);
-            guiContainer.removeChild(this.healthText);
-            this.destructor();
-        } else {
-            this.healthBar.width = Utils.getEffectiveScreenWidth() * 0.75 * this.currentHealth / this.maxHealth;
-            this.healthText.text = Utils.format(this.currentHealth) + ' (' + Utils.format(100 * this.currentHealth/this.maxHealth, 2) + ' %)';
-            this.healthText.x = Utils.getEffectiveScreenWidth()/2 - this.healthText.width/2;
-        }
+    updateGuiElements() {
+        this.healthBar.width = Utils.getEffectiveScreenWidth() * 0.75 * this.currentHealth / this.maxHealth;
+        this.healthText.text = Utils.format(this.currentHealth) + ' (' + Utils.format(100 * this.currentHealth/this.maxHealth, 2) + ' %)';
+        this.healthText.x = Utils.getEffectiveScreenWidth()/2 - this.healthText.width/2;
+    }
+
+    removeGuiElements() {
+        let guiContainer = arcInc.objectStore.get('guiContainer');
+        guiContainer.removeChild(this.damageBar);
+        guiContainer.removeChild(this.healthBar);
+        guiContainer.removeChild(this.healthText);
     }
 }
