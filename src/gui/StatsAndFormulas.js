@@ -18,22 +18,22 @@ class StatsAndFormulas {
             categoryCardBody,
             'Current Wave Enemy Health',
             '-> 10 * [Growth Factor] ^ [Wave]',
-            '-> 10 * [' + arcInc.growth + '] ^ [' + arcInc.wave + ']',
-            '-> ' + Utils.format(10 * arcInc.growth ** arcInc.wave ));
+            '-> 10 * [' + arcInc.growth + '] ^ [' + arcInc.sceneManager.scenes['main'].wave + ']',
+            '-> ' + Utils.format(10 * arcInc.growth ** arcInc.sceneManager.scenes['main'].wave ));
 
         StatsAndFormulas.prepareCard(
             categoryCardBody,
             'Current Wave Enemy Damage',
             '-> 5 * [Growth Factor] ^ [Wave]',
-            '-> 5 * [' + arcInc.growth + '] ^ [' + arcInc.wave + ']',
-            '-> ' + Utils.format(5 * arcInc.growth ** arcInc.wave ));
+            '-> 5 * [' + arcInc.growth + '] ^ [' + arcInc.sceneManager.scenes['main'].wave + ']',
+            '-> ' + Utils.format(5 * arcInc.growth ** arcInc.sceneManager.scenes['main'].wave ));
 
         StatsAndFormulas.prepareCard(
             categoryCardBody,
             'Current Wave Enemy Credits',
             '-> 10 * [Growth Factor] ^ [Wave]',
-            '-> 10 * [' + arcInc.growth + '] ^ [' + arcInc.wave + ']',
-            '-> ' + Utils.format(10 * arcInc.growth ** arcInc.wave ));
+            '-> 10 * [' + arcInc.growth + '] ^ [' + arcInc.sceneManager.scenes['main'].wave + ']',
+            '-> ' + Utils.format(10 * arcInc.growth ** arcInc.sceneManager.scenes['main'].wave ));
 
         // Offense
         StatsAndFormulas.prepareCard(
