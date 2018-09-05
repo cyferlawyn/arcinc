@@ -264,58 +264,7 @@ class Player extends PIXI.Sprite {
         }
     }
 
-    hits(enemy, projectile) {
-        let damage = projectile.damage;
-
-        // test critical hit
-        if (this.stats.chanceHappened('criticalHitChance')) {
-            damage *= this.stats.effectiveCriticalHitDamageMultiplier;
-        }
-
-        // test projectile fork
-        if (projectile.original && this.stats.chanceHappened('projectileForkChance')) {
-            projectile.ignore.push(enemy.id);
-            let newProjectileOne = arcInc.spawner.spawnPlayerProjectile(projectile.x, projectile.y, projectile.vy / 4, projectile.vy, projectile.damage, false);
-            let newProjectileTwo = arcInc.spawner.spawnPlayerProjectile(projectile.x, projectile.y, -projectile.vy / 4, projectile.vy, projectile.damage, false);
-            newProjectileOne.ignore = projectile.ignore.slice();
-            newProjectileTwo.ignore = projectile.ignore.slice();
-        }
-
-        // test projectile pierce
-        if (this.stats.chanceHappened('projectilePierceChance')) {
-            projectile.ignore.push(enemy.id);
-        } else {
-            projectile.markedForDestruction = true;
-        }
-
-        // Skip ailment calculations for direct kills
-        if (enemy.currentHealth > damage) {
-            // test freeze
-            if (this.stats.chanceHappened('freezeChance')) {
-                if (!enemy.isBoss) {
-                    enemy.vx = enemy.vx * 0.98;
-                    if (enemy.vx < 0.5) {
-                        enemy.vx = 0.5;
-                    }
-                    enemy.vy = enemy.vy * 0.98;
-                    if (enemy.vy < 0.5) {
-                        enemy.vy = 0.5;
-                    }
-                }
-            }
-
-            // test burn
-            if (this.stats.chanceHappened('burnChance')) {
-                enemy.burnDamage += damage * 0.01;
-            }
-        }
-
-        // Apply final damage application
-        enemy.currentHealth -= damage;
-        enemy.checkForDestruction();
-    }
-
-    isHit(projectile) {
+    hitBy(projectile) {
         // Reset out of combat timer
         this.ticksSinceLastHit = 0;
 

@@ -9,6 +9,7 @@ class Enemy extends PIXI.Sprite {
         arcInc.eventEmitter.unsubscribe(Events.REGENERATION_PHASE_STARTED,this.id);
         arcInc.eventEmitter.unsubscribe(Events.MOVEMENT_PHASE_STARTED, this.id);
         arcInc.eventEmitter.unsubscribe(Events.ENGAGEMENT_PHASE_STARTED, this.id);
+        arcInc.eventEmitter.unsubscribe(Events.COLLISION_DETECTION_PHASE_STARTED, this.id);
         arcInc.eventEmitter.unsubscribe(Events.CLEANUP_PHASE_STARTED,this.id);
 
         let enemyContainer = arcInc.objectStore.get('enemyContainer');
@@ -24,6 +25,7 @@ class Enemy extends PIXI.Sprite {
         arcInc.eventEmitter.subscribe(Events.REGENERATION_PHASE_STARTED,this.id, this.regenerate.bind(this));
         arcInc.eventEmitter.subscribe(Events.MOVEMENT_PHASE_STARTED,this.id, this.move.bind(this));
         arcInc.eventEmitter.subscribe(Events.ENGAGEMENT_PHASE_STARTED,this.id, this.engage.bind(this));
+        arcInc.eventEmitter.subscribe(Events.COLLISION_DETECTION_PHASE_STARTED,this.id, this.testCollision.bind(this));
         arcInc.eventEmitter.subscribe(Events.CLEANUP_PHASE_STARTED,this.id, this.cleanup.bind(this));
     }
 
@@ -49,10 +51,8 @@ class Enemy extends PIXI.Sprite {
     }
 
     regenerate(frameDelta) {
-        // TODO
-        this.currentHealth -= this.burnDamage;
-        this.burnDamage *= 0.99;
-        this.checkForDestruction();
+        this.currentHealth -= this.burnDamage*frameDelta;
+        this.burnDamage *= 0.9975**frameDelta;
     }
 
     move(frameDelta){
@@ -89,9 +89,72 @@ class Enemy extends PIXI.Sprite {
         }
     }
 
-    checkForDestruction() {
+    testCollision() {
+        let playerProjectileContainer = arcInc.objectStore.get('playerProjectileContainer');
+
+        for (let i = 0; i < playerProjectileContainer.children.length-1; i++) {
+            let projectile = playerProjectileContainer.children[i];
+
+            if (!projectile.markedForDestruction && !projectile.ignore.includes(this.id) && Utils.intersect(this, projectile)) {
+                this.hitBy(projectile);
+            }
+        }
+    }
+
+    hitBy(projectile) {
         let player = arcInc.objectStore.get('player');
+        let damage = projectile.damage;
+
+        // test critical hit
+        if (player.stats.chanceHappened('criticalHitChance')) {
+            damage *= player.stats.effectiveCriticalHitDamageMultiplier;
+        }
+
+        // test projectile fork
+        if (projectile.original && player.stats.chanceHappened('projectileForkChance')) {
+            projectile.ignore.push(this.id);
+            let newProjectileOne = arcInc.spawner.spawnPlayerProjectile(projectile.x, projectile.y, projectile.vy / 4, projectile.vy, projectile.damage, false);
+            let newProjectileTwo = arcInc.spawner.spawnPlayerProjectile(projectile.x, projectile.y, -projectile.vy / 4, projectile.vy, projectile.damage, false);
+            newProjectileOne.ignore = projectile.ignore.slice();
+            newProjectileTwo.ignore = projectile.ignore.slice();
+        }
+
+        // test projectile pierce
+        if (player.stats.chanceHappened('projectilePierceChance')) {
+            projectile.ignore.push(this.id);
+        } else {
+            projectile.markedForDestruction = true;
+        }
+
+        // Skip ailment calculations for direct kills
+        if (this.currentHealth > damage) {
+            // test freeze
+            if (player.stats.chanceHappened('freezeChance')) {
+                if (!this.isBoss) {
+                    this.vx = this.vx * 0.98;
+                    if (this.vx < 0.5) {
+                        this.vx = 0.5;
+                    }
+                    this.vy = this.vy * 0.98;
+                    if (this.vy < 0.5) {
+                        this.vy = 0.5;
+                    }
+                }
+            }
+
+            // test burn
+            if (player.stats.chanceHappened('burnChance')) {
+                this.burnDamage += damage * 0.01;
+            }
+        }
+
+        // Apply final damage application
+        this.currentHealth -= damage;
+    }
+
+    cleanup(frameDelta) {
         if (this.currentHealth <= 0) {
+            let player = arcInc.objectStore.get('player');
             arcInc.savegame.credits += this.credits * player.stats.effectiveKillCreditMultiplier;
             arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
             if (this.wave === arcInc.sceneManager.scenes['main'].wave) {
@@ -104,9 +167,7 @@ class Enemy extends PIXI.Sprite {
             }
             this.markedForDestruction = true;
         }
-    }
 
-    cleanup(frameDelta) {
         if (this.markedForDestruction) {
             this.destructor();
         } else {

@@ -218,31 +218,7 @@ class MainScene extends Scene{
     }
 
     checkForCollisions() {
-        let enemyContainer = arcInc.objectStore.get('enemyContainer');
-        let playerProjectileContainer = arcInc.objectStore.get('playerProjectileContainer');
         let player = arcInc.objectStore.get('player');
-
-        for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
-            let enemy = enemyContainer.children[enemyIndex];
-
-            if (!enemy.markedForDestruction) {
-                for (let projectileIndex = playerProjectileContainer.children.length - 1; projectileIndex >= 0; projectileIndex--) {
-                    let projectile = playerProjectileContainer.children[projectileIndex];
-
-                    if (!projectile.markedForDestruction) {
-                        if (!projectile.ignore.includes(enemy.id)) {
-                            if (Utils.intersect(enemy, projectile)) {
-                                player.hits(enemy, projectile);
-
-                                if (projectile.markedForDestruction) {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         let enemyProjectileContainer = arcInc.objectStore.get('enemyProjectileContainer');
 
@@ -250,7 +226,7 @@ class MainScene extends Scene{
             let enemyProjectile = enemyProjectileContainer.children[enemyProjectileIndex];
             if (!enemyProjectile.markedForDestruction) {
                 if (Utils.intersect(player, enemyProjectile)) {
-                    player.isHit(enemyProjectile);
+                    player.hitBy(enemyProjectile);
                 }
             }
         }
