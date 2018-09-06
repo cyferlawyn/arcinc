@@ -45,8 +45,6 @@ class PlayerProjectile extends PIXI.Sprite {
         this.x += this.vx * frameDelta;
         this.y += this.vy * frameDelta;
 
-        console.log(this.id + ' ' + this.x + ' ' + this.y);
-
         if (Utils.leftBounds(this)) {
             this.markedForDestruction = true;
         }
