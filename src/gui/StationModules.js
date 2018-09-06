@@ -26,6 +26,7 @@ class StationModules {
                     if (arcInc.savegame.credits >= effectiveCost) {
                         arcInc.savegame.credits -= effectiveCost;
                         arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
+                        arcInc.eventEmitter.emit(Events.STATION_MODULE_PURCHASED, key);
                         arcInc.savegame.modules[key]++;
                         arcInc.saveSavegame();
                         arcInc.objectStore.get('player').applyUpgrades();
