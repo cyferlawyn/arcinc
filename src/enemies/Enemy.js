@@ -149,6 +149,7 @@ class Enemy extends PIXI.Sprite {
 
     cleanup() {
         if (this.stats.currentHealth <= 0) {
+            arcInc.eventEmitter.emit(Events.ENTITY_DESTROYED, {'x': this.x, 'y': this.y});
             let player = arcInc.objectStore.get('player');
             arcInc.savegame.credits += this.stats.credits * player.stats.effectiveKillCreditMultiplier;
             arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);

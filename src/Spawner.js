@@ -31,7 +31,7 @@ class Spawner {
                     spawnAmount = 25;
                 }
 
-                let enemyType = Math.round(Math.random());
+                let enemyType = Math.floor(Math.random()*3);
                 switch(enemyType) {
                     case 0:
                         for (let i = 0; i < spawnAmount; i++) {
@@ -44,6 +44,15 @@ class Spawner {
                             this.spawnAsteroidEnemy(effectiveWave);
                             amountSpawned++;
                         }
+                        break;
+                    case 2:
+                        for (let i = 0; i < spawnAmount; i++) {
+                            this.spawnSuicideBomberEnemy(effectiveWave);
+                            amountSpawned++;
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
 
@@ -71,6 +80,23 @@ class Spawner {
 
         enemy.vx = 0;
         enemy.vy = 2;
+    }
+
+    spawnSuicideBomberEnemy(wave) {
+        // Initialize stats
+        let enemyStats = EnemyStats.get();
+        enemyStats.maxHealth = Math.floor(enemyStats.maxHealth * Math.pow(arcInc.growth, wave));
+        enemyStats.currentHealth = enemyStats.maxHealth;
+        enemyStats.credits = Math.floor(enemyStats.credits * Math.pow(arcInc.growth, wave));
+        enemyStats.damage = Math.floor(enemyStats.damage * Math.pow(arcInc.growth, wave));
+        enemyStats.wave = wave;
+        enemyStats.baseMovementSpeed = 2;
+
+        let enemy = new SuicideBomberEnemy(enemyStats);
+
+        // Randomize positioning
+        enemy.x = Math.random() * (Utils.getEffectiveScreenWidth() - enemy.width);
+        enemy.y = Math.random() * -(Utils.getEffectiveScreenHeight()/2) - enemy.height;
     }
 
     spawnAsteroidEnemy(wave) {

@@ -15,6 +15,7 @@ class MainScene extends Scene{
 
         this.initContainer();
         new ParallaxManager();
+        this.particleEmitter = new ParticleEmitter();
         this.initGui();
         this.initAbilities();
         this.initPlayer();
@@ -67,6 +68,10 @@ class MainScene extends Scene{
         let playerContainer = new PIXI.Container();
         this.addChild(playerContainer);
         arcInc.objectStore.put('playerContainer', playerContainer);
+
+        let particleContainer = new PIXI.ParticleContainer();
+        this.addChild(particleContainer);
+        arcInc.objectStore.put('particleContainer', particleContainer);
 
         let guiContainer = new PIXI.Container();
         this.addChild(guiContainer);
@@ -196,6 +201,7 @@ class MainScene extends Scene{
 
         arcInc.eventEmitter.emit(Events.CLEANUP_PHASE_STARTED, frameDelta);
 
+        this.particleEmitter.update();
         this.updateGui();
         arcInc.objectStore.get('abilityBar').update(frameDelta);
     }
