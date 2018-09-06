@@ -1,7 +1,7 @@
 class EnemyProjectile extends PIXI.Sprite{
-    constructor(texture, spriteId, x, y, vx, vy, tint, damage) {
+    constructor(texture, x, y, vx, vy, tint, damage) {
         super(texture);
-        this.init(spriteId, x, y, vx, vy, tint, damage);
+        this.init(x, y, vx, vy, tint, damage);
 
         this.id = 'EnemyProjectile-' + Utils.getUUID();
         this.markedForDestruction = false;
@@ -20,10 +20,9 @@ class EnemyProjectile extends PIXI.Sprite{
         this.destroy();
     }
 
-    init(spriteId, x, y, vx, vy, tint, damage) {
+    init(x, y, vx, vy, tint, damage) {
         let enemyProjectileContainer = arcInc.objectStore.get('enemyProjectileContainer');
         this.scale.set(0.3);
-        this.spriteId = spriteId;
 
         this.x = x;
         this.y = y;

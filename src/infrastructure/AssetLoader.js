@@ -5,6 +5,7 @@ class AssetLoader {
             .add('assets/sprites/enemies/BossEnemy.png')
             .add('assets/sprites/enemies/AsteroidEnemy.png')
             .add('assets/sprites/enemies/SuicideBomberEnemy.png')
+            .add('assets/sprites/enemies/IndustrialMinerEnemy.png')
 
             .add('assets/sprites/abilities/armorRepairer.png')
             .add('assets/sprites/abilities/comingSoon.png')
@@ -18,6 +19,7 @@ class AssetLoader {
             .add('assets/sprites/Bullet.png')
             .add('assets/sprites/Bullet2.png')
             .add('assets/sprites/Bullet3.png')
+            .add('assets/sprites/Laser.png')
 
             .add('assets/sprites/TacticalNuke.png')
             .add('assets/sprites/BlackHole.png')

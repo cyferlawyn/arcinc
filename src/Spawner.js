@@ -31,7 +31,7 @@ class Spawner {
                     spawnAmount = 25;
                 }
 
-                let enemyType = Math.floor(Math.random()*3);
+                let enemyType = Math.floor(Math.random() * 4);
                 switch(enemyType) {
                     case 0:
                         for (let i = 0; i < spawnAmount; i++) {
@@ -48,6 +48,12 @@ class Spawner {
                     case 2:
                         for (let i = 0; i < spawnAmount; i++) {
                             this.spawnSuicideBomberEnemy(effectiveWave);
+                            amountSpawned++;
+                        }
+                        break;
+                    case 3:
+                        for (let i = 0; i < spawnAmount; i++) {
+                            this.spawnIndustrialMinerEnemy(effectiveWave);
                             amountSpawned++;
                         }
                         break;
@@ -73,6 +79,25 @@ class Spawner {
 
         let enemy = new CrawlerEnemy(enemyStats);
         enemy.tint = this.enemyColors[Math.floor(Math.random()*this.enemyColors.length)];
+
+        // Randomize positioning
+        enemy.x = Math.random() * (Utils.getEffectiveScreenWidth() - enemy.width);
+        enemy.y = Math.random() * -(Utils.getEffectiveScreenHeight()/2) - enemy.height;
+
+        enemy.vx = 0;
+        enemy.vy = 2;
+    }
+
+    spawnIndustrialMinerEnemy(wave) {
+        // Initialize stats
+        let enemyStats = EnemyStats.get();
+        enemyStats.maxHealth = Math.floor(enemyStats.maxHealth * Math.pow(arcInc.growth, wave));
+        enemyStats.currentHealth = enemyStats.maxHealth;
+        enemyStats.credits = Math.floor(enemyStats.credits * Math.pow(arcInc.growth, wave));
+        enemyStats.damage = Math.floor(enemyStats.damage * Math.pow(arcInc.growth, wave));
+        enemyStats.wave = wave;
+
+        let enemy = new IndustrialMinerEnemy(enemyStats);
 
         // Randomize positioning
         enemy.x = Math.random() * (Utils.getEffectiveScreenWidth() - enemy.width);
@@ -139,6 +164,10 @@ class Spawner {
         enemy.vy = 1;
     }
 
+    spawnEnemyLaserProjectile(x, y, vx, vy, tint, damage) {
+        new EnemyProjectile(PIXI.Loader.shared.resources["assets/sprites/Laser.png"].texture, x, y, vx, vy, tint, damage);
+    }
+
     spawnPlayerProjectile(x, y, vx, vy, damage, original) {
         return new PlayerProjectile(PIXI.Loader.shared.resources["assets/sprites/Bullet.png"].texture, x, y, vx, vy, damage, original);
     }
@@ -151,10 +180,10 @@ class Spawner {
 
         switch(spriteId) {
             case 3:
-                new EnemyProjectile(PIXI.Loader.shared.resources["assets/sprites/Bullet3.png"].texture, 3, x, y, vx, vy, tint, damage);
+                new EnemyProjectile(PIXI.Loader.shared.resources["assets/sprites/Bullet3.png"].texture, x, y, vx, vy, tint, damage);
                 break;
             default:
-                new EnemyProjectile(PIXI.Loader.shared.resources["assets/sprites/Bullet2.png"].texture, 2, x, y, vx, vy, tint, damage);
+                new EnemyProjectile(PIXI.Loader.shared.resources["assets/sprites/Bullet2.png"].texture, x, y, vx, vy, tint, damage);
         }
     }
 }
