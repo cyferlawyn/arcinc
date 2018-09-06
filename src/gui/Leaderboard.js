@@ -45,6 +45,10 @@ class Leaderboard {
             let wave = document.createElement('td');
             wave.textContent = 'Wave: ' + leaderboardData[i].highestWave;
             tableRow.appendChild(wave);
+
+            let antimatter = document.createElement('td');
+            antimatter.textContent = 'Active Antimatter: ' + Utils.format(leaderboardData[i].activeAntimatter);
+            tableRow.appendChild(antimatter);
         }
     }
 }
