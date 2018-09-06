@@ -47,8 +47,8 @@ class PlayerStats {
         this.effectiveMaxEnergy = 100;
         this.effectiveEnergyRegenerationPerTick = this.solarPanelScaling / 60;
 
-        this.effectiveMaxShield = 100 * this.maxShield * this.plasmaField * this.factoryScaling;
-        this.effectiveMaxArmor = 750 * this.maxArmor * this.titaniumAlloy * this.factoryScaling;
+        this.effectiveMaxShield = 100 * (1 + 0.01 * arcInc.savegame.activeAntimatter) * this.maxShield * this.plasmaField * this.factoryScaling;
+        this.effectiveMaxArmor = 750 * (1 + 0.01 * arcInc.savegame.activeAntimatter) * this.maxArmor * this.titaniumAlloy * this.factoryScaling;
 
         this.effectiveShieldRechargePerTickInCombat = this.effectiveMaxShield / (600 / (this.shieldRechargeTime) * 60);
         this.effectiveShieldRechargePerTickOutOfCombat = this.effectiveShieldRechargePerTickInCombat * this.shieldRechargeAccelerator;
@@ -62,7 +62,7 @@ class PlayerStats {
 
         this.effectiveProjectileSpread = this.projectileSpread;
 
-        this.effectiveProjectileDamage = 10 * this.projectileDamage * this.clusterAmmunition * this.effectiveProjectileAmountCompensation;
+        this.effectiveProjectileDamage = 10 * (1 + 0.01 * arcInc.savegame.activeAntimatter) * this.projectileDamage * this.clusterAmmunition * this.effectiveProjectileAmountCompensation;
         this.effectiveCriticalHitDamageMultiplier = this.criticalHitDamage * this.factoryScaling ** 0.75;
         this.effectiveFireDelayInTicks = 60 / this.rateOfFire;
 

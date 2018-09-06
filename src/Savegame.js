@@ -1,8 +1,10 @@
 class Savegame {
     constructor() {
-        this.version = 'v0.15';
+        this.version = 'v0.17';
         this.credits = 0;
         this.highestWave = 0;
+        this.activeAntimatter = 0;
+        this.pendingAntimatter = 0;
         this.upgrades = {
             'movementSpeed': 0,
             'maxShield': 0,

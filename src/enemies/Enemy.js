@@ -148,15 +148,19 @@ class Enemy extends PIXI.Sprite {
         this.stats.currentHealth -= damage;
     }
 
-    cleanup(frameDelta) {
+    cleanup() {
         if (this.stats.currentHealth <= 0) {
             let player = arcInc.objectStore.get('player');
             arcInc.savegame.credits += this.stats.credits * player.stats.effectiveKillCreditMultiplier;
             arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
 
             if (this.stats.isBoss) {
+                arcInc.savegame.pendingAntimatter += this.stats.antimatter;
+                arcInc.eventEmitter.emit(Events.ANTIMATTER_UPDATED, arcInc.savegame.pendingAntimatter);
+
                 arcInc.savegame.highestWave = this.stats.wave + 1;
                 arcInc.saveSavegame();
+                arcInc.eventEmitter.emit(Events.HIGHEST_WAVE_REACHED, arcInc.savegame.highestWave);
             }
             this.markedForDestruction = true;
         }

@@ -96,6 +96,7 @@ class ArcInc {
         let parent = document.querySelector('#container-right');
         Chat.prepare(parent);
         Leaderboard.prepare(parent);
+        Antimatter.prepare(parent);
         StationModules.prepare(parent);
         ShipUpgrades.prepare(parent);
         StatsAndFormulas.prepare(parent);
@@ -129,7 +130,30 @@ class ArcInc {
         if (this.savegame === null) {
             this.savegame = new Savegame();
         } else {
-            if (this.savegame.version !== 'v0.15') {
+            if (this.savegame.version === 'v0.15') {
+                this.savegame.version = 'v0.16';
+            }
+
+            if (this.savegame.version === 'v0.16') {
+                this.savegame.version = 'v0.17';
+
+                let pendingAntimatter = 0;
+
+                for (let i = 0; i < this.savegame.highestWave; i++) {
+                    if (i % 1000 === 0) {
+                        pendingAntimatter += i * 25 * (0.1 * 300);
+                    } else if (i % 100 === 0) {
+                        pendingAntimatter += i * 5 * (0.1 * 300);
+                    }else if (i % 10 === 0) {
+                        pendingAntimatter += i * (0.1 * 300);
+                    }
+                }
+
+                this.savegame.activeAntimatter = 0;
+                this.savegame.pendingAntimatter = pendingAntimatter;
+            }
+
+            if (this.savegame.version !== 'v0.17') {
                 this.savegame = new Savegame();
             }
         }

@@ -1,5 +1,7 @@
 class Events {
     static get CREDITS_UPDATED() {return 'creditsUpdated'};
+    static get ANTIMATTER_UPDATED() {return 'antimatterUpdated'};
+    static get HIGHEST_WAVE_REACHED() {return 'highestWaveReached'};
 
     // game phases
     static get CREATION_PHASE_STARTED() {return 'creationPhaseStarted'};
