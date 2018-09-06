@@ -74,7 +74,7 @@ class Station {
                 let key = Object.keys(arcInc.station.modules)[i];
                 let value = arcInc.station.modules[key];
 
-                cps += value.effect * arcInc.savegame.activeAntimatter * arcInc.savegame.modules[key];
+                cps += value.effect * (1 + 0.01 * arcInc.savegame.activeAntimatter) * arcInc.savegame.modules[key];
             }
 
             arcInc.station.cps = cps;
