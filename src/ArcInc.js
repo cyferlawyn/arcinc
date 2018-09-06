@@ -155,7 +155,7 @@ class ArcInc {
 
             if (this.savegame.version === 'v0.17') {
                 if (!this.savegame.hasOwnProperty('highestWaveEver')) {
-                    this.savegame.highestWaveEver = 0;
+                    this.savegame.highestWaveEver = this.savegame.highestWave;
                 }
             }
 
