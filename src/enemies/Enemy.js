@@ -75,9 +75,8 @@ class Enemy extends PIXI.Sprite {
     testCollision() {
         // Collision with player projectiles
         let playerProjectileContainer = arcInc.objectStore.get('playerProjectileContainer');
-        for (let i = 0; i < playerProjectileContainer.children.length-1; i++) {
+        for (let i = 0; i < playerProjectileContainer.children.length; i++) {
             let projectile = playerProjectileContainer.children[i];
-
             if (!projectile.markedForDestruction && !projectile.ignore.includes(this.id) && Utils.intersect(this, projectile)) {
                 this.hitBy(projectile);
             }

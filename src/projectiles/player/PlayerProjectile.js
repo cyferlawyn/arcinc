@@ -15,8 +15,8 @@ class PlayerProjectile extends PIXI.Sprite {
         arcInc.eventEmitter.unsubscribe(Events.MOVEMENT_PHASE_STARTED, this.id);
         arcInc.eventEmitter.unsubscribe(Events.CLEANUP_PHASE_STARTED,this.id);
 
-        let enemyProjectileContainer = arcInc.objectStore.get('playerProjectileContainer');
-        enemyProjectileContainer.removeChild(this);
+        let playerProjectileContainer = arcInc.objectStore.get('playerProjectileContainer');
+        playerProjectileContainer.removeChild(this);
         this.destroy();
     }
 
@@ -44,6 +44,8 @@ class PlayerProjectile extends PIXI.Sprite {
     move(frameDelta) {
         this.x += this.vx * frameDelta;
         this.y += this.vy * frameDelta;
+
+        console.log(this.id + ' ' + this.x + ' ' + this.y);
 
         if (Utils.leftBounds(this)) {
             this.markedForDestruction = true;
