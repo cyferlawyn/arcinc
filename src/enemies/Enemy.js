@@ -157,7 +157,10 @@ class Enemy extends PIXI.Sprite {
                 arcInc.savegame.pendingAntimatter += this.stats.antimatter;
                 arcInc.eventEmitter.emit(Events.ANTIMATTER_UPDATED, arcInc.savegame.pendingAntimatter);
 
-                arcInc.savegame.highestWave = this.stats.wave + 1;
+                arcInc.savegame.highestWave = this.stats.wave;
+                if (arcInc.savegame.highestWave > arcInc.savegame.highestWaveEver) {
+                    arcInc.savegame.highestWaveEver = arcInc.savegame.highestWave;
+                }
                 arcInc.saveSavegame();
                 arcInc.eventEmitter.emit(Events.HIGHEST_WAVE_REACHED, arcInc.savegame.highestWave);
             }

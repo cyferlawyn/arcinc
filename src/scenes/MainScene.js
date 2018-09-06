@@ -7,7 +7,7 @@ class MainScene extends Scene{
     }
 
     init() {
-        this.wave = arcInc.savegame.highestWave - 1;
+        this.wave = arcInc.savegame.highestWave;
         if (this.wave < 0) {
             this.wave = 0;
         }
@@ -41,7 +41,7 @@ class MainScene extends Scene{
         player.currentArmor = player.stats.effectiveMaxArmor;
         player.currentEnergy = player.stats.effectiveMaxEnergy;
 
-        this.wave = Math.floor(arcInc.savegame.highestWave - 1);
+        this.wave = arcInc.savegame.highestWave;
         if (this.wave < 0) {
             this.wave = 0;
         }

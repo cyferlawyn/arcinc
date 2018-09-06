@@ -153,6 +153,12 @@ class ArcInc {
                 this.savegame.pendingAntimatter = pendingAntimatter;
             }
 
+            if (this.savegame.version === 'v0.17') {
+                if (!this.savegame.hasOwnProperty('highestWaveEver')) {
+                    this.savegame.highestWaveEver = 0;
+                }
+            }
+
             if (this.savegame.version !== 'v0.17') {
                 this.savegame = new Savegame();
             }

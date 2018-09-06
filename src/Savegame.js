@@ -3,6 +3,7 @@ class Savegame {
         this.version = 'v0.17';
         this.credits = 0;
         this.highestWave = 0;
+        this.highestWaveEver = 0;
         this.activeAntimatter = 0;
         this.pendingAntimatter = 0;
         this.upgrades = {

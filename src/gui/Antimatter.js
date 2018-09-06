@@ -45,9 +45,13 @@ class Antimatter {
         button.innerText = 'Warp to Parallel Universe';
         button.addEventListener('click', function() {
             let newSavegame = new Savegame();
+
             newSavegame.activeAntimatter = arcInc.savegame.activeAntimatter + arcInc.savegame.pendingAntimatter;
+            newSavegame.highestWaveEver = arcInc.savegame.highestWaveEver;
+
             arcInc.savegame = newSavegame;
             arcInc.saveSavegame();
+
             let savegameString = JSON.stringify(arcInc.savegame);
             localStorage.setItem(savegameName, savegameString);
             location.reload();
