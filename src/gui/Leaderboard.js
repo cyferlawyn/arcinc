@@ -13,6 +13,17 @@ class Leaderboard {
         table.classList.add('table-sm', 'text-light', 'table-dark', 'bg-st-patricks-blue');
         scrollBlock.appendChild(table);
 
+        let tableHead = document.createElement('thead');
+        tableHead.innerHTML =
+            '<tr>\n' +
+            '  <th>#</th>\n' +
+            '  <th>Name</th>\n' +
+            '  <th>Highest Wave Ever</th>\n' +
+            '  <th>Highest Wave</th>\n' +
+            '  <th>Active Antimatter</th>\n' +
+            '</tr>'
+        table.appendChild(tableHead);
+
         let leaderboardTableBody = document.createElement('tbody');
         leaderboardTableBody.id = 'leaderboard-table-body';
         table.appendChild(leaderboardTableBody);
@@ -35,19 +46,23 @@ class Leaderboard {
             leaderboardTableBody.appendChild(tableRow);
 
             let pos = document.createElement('td');
-            pos.textContent = '#' + leaderboardData[i].rank;
+            pos.textContent = leaderboardData[i].rank;
             tableRow.appendChild(pos);
 
             let name = document.createElement('td');
             name.textContent = leaderboardData[i].name;
             tableRow.appendChild(name);
 
-            let wave = document.createElement('td');
-            wave.textContent = 'Wave: ' + leaderboardData[i].highestWave;
-            tableRow.appendChild(wave);
+            let highestWaveEver = document.createElement('td');
+            highestWaveEver.textContent = leaderboardData[i].highestWaveEver;
+            tableRow.appendChild(highestWaveEver);
+
+            let highestWave = document.createElement('td');
+            highestWave.textContent = leaderboardData[i].highestWave;
+            tableRow.appendChild(highestWave);
 
             let antimatter = document.createElement('td');
-            antimatter.textContent = 'Active Antimatter: ' + Utils.format(leaderboardData[i].activeAntimatter);
+            antimatter.textContent = Utils.format(leaderboardData[i].activeAntimatter);
             tableRow.appendChild(antimatter);
         }
     }
