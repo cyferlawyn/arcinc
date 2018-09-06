@@ -15,6 +15,7 @@ class StationModules {
 
             Card.prepare(
                 cardDeck,
+                'modules',
                 key,
                 value.title,
                 value.description,

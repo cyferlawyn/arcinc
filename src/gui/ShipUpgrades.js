@@ -15,6 +15,7 @@ class ShipUpgrades {
 
             Card.prepare(
                 cardDeck,
+                'upgrades',
                 key,
                 value.title,
                 value.description,

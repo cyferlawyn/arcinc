@@ -70,6 +70,7 @@ class Antimatter {
             arcInc.eventEmitter.subscribe(Events.STATION_MODULE_PURCHASED, '#warp-button', function(stationModule) {
                 if(stationModule === 'warpDrive') {
                     document.querySelector('#warp-button').classList.remove('d-none');
+                    arcInc.eventEmitter.unsubscribe(Events.STATION_MODULE_PURCHASED, '#warp-button')
                 }
             } );
         }

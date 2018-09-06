@@ -25,11 +25,8 @@ class EventEmitter {
             //console.log('Emitted an event to an event stream that no-one ever subscribed to: ' + event);
             return;
         }
-        Object.keys(this.events[event]).forEach(function(key) {
-            if (key.startsWith('Boss')) {
-                console.log('Emitting ' + event + ' to ' + key);
-            }
-            arcInc.eventEmitter.events[event][key](payload);
+        Object.keys(this.events[event]).forEach(function(id) {
+            arcInc.eventEmitter.events[event][id](payload);
         });
     }
 }

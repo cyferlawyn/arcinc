@@ -1,5 +1,5 @@
 class Card {
-    static prepare(parent, name, headerText, description, bodyText, anchorText, callback) {
+    static prepare(parent, category, name, headerText, description, bodyText, anchorText, callback) {
         let card = document.createElement('div');
         card.id = name + '-card';
         card.classList.add('card', 'bg-st-patricks-blue');
@@ -78,5 +78,29 @@ class Card {
             cardAnchor.intervalDelay = 250;
         });
         cardBody.appendChild(cardAnchor);
+
+        let cardAnchorAll = document.createElement('p');
+        cardAnchorAll.innerText = 'Buy All';
+        cardAnchorAll.style.cursor = 'pointer';
+        cardAnchorAll.style.textDecoration = 'underline';
+        cardAnchorAll.addEventListener('click', function(){
+            if (category === 'modules') {
+                while (arcInc.savegame.credits >= Math.ceil(arcInc.station.modules[name].cost * Math.pow(arcInc.growth, arcInc.savegame.modules[name]))) {
+                    cardAnchor.click();
+                }
+            }
+
+            if (category === 'upgrades') {
+                while (arcInc.savegame.credits >= Math.ceil(arcInc.objectStore.get('player').upgrades[name].cost * Math.pow(arcInc.growth, arcInc.savegame.upgrades[name]))) {
+                    if (cardAnchor.style.visibility === 'hidden') {
+                        this.style.visibility = 'hidden';
+                        break;
+                    }
+
+                    cardAnchor.click();
+                }
+            }
+        });
+        cardBody.appendChild(cardAnchorAll);
     }
 }
