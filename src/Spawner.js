@@ -5,39 +5,49 @@ class Spawner {
         this.enemyColors = ["0xCB3301", "0xFF0066", "0xFF6666", "0xFEFF99", "0xFFFF67", "0xCCFF66", "0x99FE00", "0xEC8EED", "0xFF99CB", "0xFE349A", "0xCC99FE", "0x6599FF", "0x03CDFF", "0xFF0000", "0xFFFF00", "0x00FF00", "0x00FFFF", "0x0000FF", "0xFF00FF"];
     }
 
-    spawnEnemyWave(wave) {
+    spawnEnemyWave(wave, compress) {
         let amountSpawned = 0;
 
-        if (wave % 1000 === 0) {
-            this.spawnBoss(wave, 1250);
-            amountSpawned++;
-        } else if (wave % 100 === 0) {
-            this.spawnBoss(wave, 250);
-            amountSpawned++;
-        }else if (wave % 10 === 0) {
-            this.spawnBoss(wave, 50);
-            amountSpawned++;
-        } else {
-            let spawnAmount = Math.ceil(0.2 * wave + 4);
-            if (spawnAmount > 25) {
-                spawnAmount = 25;
-            }
-            amountSpawned = 0;
-            let enemyType = Math.round(Math.random());
-            switch(enemyType) {
-                case 0:
-                    for (let i = 0; i < spawnAmount; i++) {
-                        this.spawnCrawlerEnemy(wave);
-                        amountSpawned++;
-                    }
-                    break;
-                case 1:
-                    for (let i = 0; i < spawnAmount; i++) {
-                        this.spawnAsteroidEnemy(wave);
-                        amountSpawned++;
-                    }
+        let waveToSpawn = wave;
+        let effectiveWave = wave;
+
+        if (compress) {
+            waveToSpawn -= 9;
+        }
+
+        while (waveToSpawn <= effectiveWave) {
+            if (waveToSpawn % 1000 === 0) {
+                this.spawnBoss(effectiveWave, 1250);
+                amountSpawned++;
+            } else if (waveToSpawn % 100 === 0) {
+                this.spawnBoss(effectiveWave, 250);
+                amountSpawned++;
+            }else if (waveToSpawn % 10 === 0) {
+                this.spawnBoss(effectiveWave, 50);
+                amountSpawned++;
+            } else {
+                let spawnAmount = Math.ceil(0.2 * effectiveWave + 4);
+                if (spawnAmount > 25) {
+                    spawnAmount = 25;
+                }
+
+                let enemyType = Math.round(Math.random());
+                switch(enemyType) {
+                    case 0:
+                        for (let i = 0; i < spawnAmount; i++) {
+                            this.spawnCrawlerEnemy(effectiveWave);
+                            amountSpawned++;
+                        }
+                        break;
+                    case 1:
+                        for (let i = 0; i < spawnAmount; i++) {
+                            this.spawnAsteroidEnemy(effectiveWave);
+                            amountSpawned++;
+                        }
+                }
             }
 
+            waveToSpawn++;
         }
 
         return amountSpawned;

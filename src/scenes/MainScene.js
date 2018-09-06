@@ -210,10 +210,16 @@ class MainScene extends Scene{
         this.framesTillWave -= frameDelta;
 
         if (this.framesTillWave <= 0 || this.remainingEnemies === 0) {
-            this.wave++;
+            let compress = this.wave < arcInc.savegame.highestWaveEver/2;
+            if (compress) {
+                this.wave += 10;
+            } else {
+                this.wave++;
+            }
+
             StatsAndFormulas.update();
             this.framesTillWave = 600;
-            this.remainingEnemies = arcInc.spawner.spawnEnemyWave(this.wave);
+            this.remainingEnemies = arcInc.spawner.spawnEnemyWave(this.wave, compress);
         }
     }
 

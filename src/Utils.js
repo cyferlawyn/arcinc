@@ -102,6 +102,13 @@ class Utils {
             || r.y < -Utils.getEffectiveScreenHeight());
     }
 
+    static leftBoundsStrict(r) {
+        return (r.x - r.width > Utils.getEffectiveScreenWidth()
+            || r.x + r.width < 0
+            || r.y - r.height > Utils.getEffectiveScreenHeight()
+            || r.y + r.height < 0);
+    }
+
     static getEffectiveScreenWidth() {
         return arcInc.pixiApp.screen.width / arcInc.pixiApp.stage.scale.x;
     }

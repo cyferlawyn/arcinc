@@ -43,7 +43,7 @@ class EnemyProjectile extends PIXI.Sprite{
         this.x += this.vx * frameDelta;
         this.y += this.vy * frameDelta;
 
-        if (Utils.leftBounds(this)) {
+        if (Utils.leftBoundsStrict(this)) {
             this.markedForDestruction = true;
         }
     }
