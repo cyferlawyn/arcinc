@@ -1,6 +1,7 @@
 class Card {
-    static prepare(parent, category, name, headerText, description, bodyText, anchorText, callback) {
+    static prepare(parent, category, name, headerText, description, callback) {
         let card = document.createElement('div');
+        card.name = name;
         card.id = name + '-card';
         card.classList.add('card', 'bg-st-patricks-blue');
         parent.appendChild(card);
@@ -42,12 +43,10 @@ class Card {
         let cardText = document.createElement('p');
         cardText.id = name + '-card-text';
         cardText.classList.add('card-text');
-        cardText.innerText = bodyText;
         cardBody.appendChild(cardText);
 
         let cardAnchor = document.createElement('p');
         cardAnchor.id = name + '-card-anchor';
-        cardAnchor.innerText = anchorText;
         cardAnchor.name = name;
         cardAnchor.style.cursor = 'pointer';
         cardAnchor.style.textDecoration = 'underline';
@@ -84,23 +83,100 @@ class Card {
         cardAnchorAll.style.cursor = 'pointer';
         cardAnchorAll.style.textDecoration = 'underline';
         cardAnchorAll.addEventListener('click', function(){
-            if (category === 'modules') {
-                while (arcInc.savegame.credits >= Math.ceil(arcInc.station.modules[name].cost * Math.pow(arcInc.growth, arcInc.savegame.modules[name]))) {
-                    cardAnchor.click();
-                }
-            }
+            let currentLevel = arcInc.savegame[category][name];
+            let levelsToBuy = -1;
+            let totalCost = 0;
+            let nextTotalCost = 0;
 
-            if (category === 'upgrades') {
-                while (arcInc.savegame.credits >= Math.ceil(arcInc.objectStore.get('player').upgrades[name].cost * Math.pow(arcInc.growth, arcInc.savegame.upgrades[name]))) {
-                    if (cardAnchor.style.visibility === 'hidden') {
-                        this.style.visibility = 'hidden';
+            do {
+                totalCost = nextTotalCost;
+                levelsToBuy++;
+
+                if (category === 'modules') {
+                    nextTotalCost += Math.ceil(arcInc.station.modules[name].cost * Math.pow(arcInc.growth, currentLevel + levelsToBuy));
+                } else if (category === 'upgrades') {
+                    nextTotalCost += Math.ceil(arcInc.objectStore.get('player').upgrades[name].cost * Math.pow(arcInc.growth, currentLevel + levelsToBuy));
+                    if (arcInc.objectStore.get('player').upgrades[name].cap !== undefined &&
+                        arcInc.objectStore.get('player').upgrades[name].cap <= currentLevel + levelsToBuy) {
                         break;
                     }
+                }
+            } while (nextTotalCost <= arcInc.savegame.credits);
 
-                    cardAnchor.click();
+            if (levelsToBuy > 0) {
+                arcInc.savegame.credits -= totalCost;
+                arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
+
+                arcInc.savegame[category][name] += levelsToBuy;
+                arcInc.saveSavegame();
+                arcInc.objectStore.get('player').applyUpgrades();
+
+                if (category === 'modules') {
+                    arcInc.eventEmitter.emit(Events.STATION_MODULE_PURCHASED, {'name': name, 'level': arcInc.savegame.modules[name]});
+                } else if (category === 'upgrades') {
+                    arcInc.eventEmitter.emit(Events.SHIP_UPGRADE_PURCHASED, {'name': name, 'level': arcInc.savegame.upgrades[name]});
                 }
             }
         });
         cardBody.appendChild(cardAnchorAll);
+
+        card.update = function() {
+            let levelText = arcInc.savegame[category][name];
+            let costText;
+            let effectText;
+
+            if (category === 'modules') {
+                costText = Utils.format(Math.ceil(arcInc.station.modules[name].cost * Math.pow(arcInc.growth, arcInc.savegame[category][name])));
+
+                let effect = Utils.format(arcInc.station.modules[name].effect * arcInc.savegame[category][name], 4);
+                effectText = arcInc.station.modules[name].effectTemplate.replace('{EFFECT}', effect);
+            } else if (category === 'upgrades') {
+                costText = Utils.format(Math.ceil(arcInc.objectStore.get('player').upgrades[name].cost * Math.pow(arcInc.growth, arcInc.savegame[category][name])));
+
+                let effect = Utils.format(arcInc.objectStore.get('player').stats[name], 4);
+                effectText = arcInc.objectStore.get('player').upgrades[name].effectTemplate.replace('{EFFECT}', effect);
+
+                if (arcInc.objectStore.get('player').upgrades[name].cap !== undefined &&
+                    arcInc.savegame[category][name] >= arcInc.objectStore.get('player').upgrades[name].cap) {
+                    if (!cardAnchor.classList.contains('d-none')) {
+                        cardAnchor.classList.add('d-none')
+                    }
+                    if (!cardAnchorAll.classList.contains('d-none')) {
+                        cardAnchorAll.classList.add('d-none')
+                    }
+                }
+            }
+
+            cardText.innerText = 'Level {LEVEL} ({EFFECT})'.replace('{LEVEL}', levelText).replace('{EFFECT}', effectText);
+            cardAnchor.innerText = 'Buy 1 ({COST} $)'.replace('{COST}', costText);
+        };
+
+        card.setVisibility = function(visible) {
+            if (visible) {
+                if (card.classList.contains('d-none')) {
+                    card.classList.remove('d-none')
+                }
+            } else {
+                if (!card.classList.contains('d-none')) {
+                    card.classList.add('d-none')
+                }
+            }
+        };
+
+        arcInc.eventEmitter.subscribe(Events.STATION_MODULE_PURCHASED, card.id, function(event) {
+            if (event.name === card.name) {
+                card.update();
+            }
+            card.setVisibility(Utils.areRequirementsMet(category, name));
+        });
+
+        arcInc.eventEmitter.subscribe(Events.SHIP_UPGRADE_PURCHASED, card.id, function(event) {
+            if (event.name === card.name) {
+                card.update();
+            }
+            card.setVisibility(Utils.areRequirementsMet(category, name));
+        });
+
+        return card;
     }
 }

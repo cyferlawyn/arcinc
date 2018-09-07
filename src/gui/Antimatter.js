@@ -67,8 +67,8 @@ class Antimatter {
         if (arcInc.savegame.modules.warpDrive === 0) {
             button.classList.add('d-none');
 
-            arcInc.eventEmitter.subscribe(Events.STATION_MODULE_PURCHASED, '#warp-button', function(stationModule) {
-                if(stationModule === 'warpDrive') {
+            arcInc.eventEmitter.subscribe(Events.STATION_MODULE_PURCHASED, '#warp-button', function(event) {
+                if(event.name === 'warpDrive') {
                     document.querySelector('#warp-button').classList.remove('d-none');
                     arcInc.eventEmitter.unsubscribe(Events.STATION_MODULE_PURCHASED, '#warp-button')
                 }

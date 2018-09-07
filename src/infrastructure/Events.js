@@ -3,6 +3,7 @@ class Events {
     static get ANTIMATTER_UPDATED() {return 'antimatterUpdated'};
     static get HIGHEST_WAVE_REACHED() {return 'highestWaveReached'};
     static get STATION_MODULE_PURCHASED() {return 'stationModulePurchased'};
+    static get SHIP_UPGRADE_PURCHASED() {return 'shipUpgradePurchased'};
     static get ENTITY_DESTROYED() {return 'entityDestroyed'};
 
     // game phases

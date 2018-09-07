@@ -116,4 +116,24 @@ class Utils {
     static getEffectiveScreenHeight() {
         return arcInc.pixiApp.screen.height / arcInc.pixiApp.stage.scale.y;
     }
+
+    static areRequirementsMet(category, name) {
+        let source;
+
+        if (category === 'modules') {
+            source = arcInc.station.modules;
+        } else if (category === 'upgrades') {
+            source = arcInc.objectStore.get('player').upgrades;
+        }
+
+        for (let i = 0; i < source[name].requirements.length; i++) {
+            let requirement = source[name].requirements[i];
+
+            if (arcInc.savegame[requirement.type][requirement.name] < requirement.level) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
