@@ -2,12 +2,19 @@ class ShipUpgrades {
     static prepare(parent) {
         let categoryCardBody = CategoryCard.prepare(parent, 'ship-upgrades', 'Ship Upgrades');
 
+        let cardDeck;
         for (let i = 0; i < Object.keys(arcInc.objectStore.get('player').upgrades).length; i++) {
             let key = Object.keys(arcInc.objectStore.get('player').upgrades)[i];
             let value = arcInc.objectStore.get('player').upgrades[key];
 
+            if (i%2 === 0) {
+                cardDeck = document.createElement('div');
+                cardDeck.classList.add('card-deck');
+                categoryCardBody.appendChild(cardDeck);
+            }
+
             let card = Card.prepare(
-                categoryCardBody,
+                cardDeck,
                 'upgrades',
                 key,
                 value.title,
@@ -28,7 +35,7 @@ class ShipUpgrades {
                 });
 
             card.update();
-            card.setVisibility(Utils.areRequirementsMet('upgrades', key));
+            //card.setVisibility(Utils.areRequirementsMet('upgrades', key));
         }
     }
 }

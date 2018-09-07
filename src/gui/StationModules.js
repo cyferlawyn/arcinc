@@ -2,12 +2,19 @@ class StationModules {
     static prepare(parent) {
         let categoryCardBody = CategoryCard.prepare(parent, 'station-modules', 'Station Modules');
 
+        let cardDeck;
         for (let i = 0; i < Object.keys(arcInc.station.modules).length; i++) {
             let key = Object.keys(arcInc.station.modules)[i];
             let value = arcInc.station.modules[key];
 
+            if (i%2 === 0) {
+                cardDeck = document.createElement('div');
+                cardDeck.classList.add('card-deck');
+                categoryCardBody.appendChild(cardDeck);
+            }
+
             let card = Card.prepare(
-                categoryCardBody,
+                cardDeck,
                 'modules',
                 key,
                 value.title,
@@ -28,7 +35,7 @@ class StationModules {
                 });
 
             card.update();
-            card.setVisibility(Utils.areRequirementsMet('modules', key));
+            //card.setVisibility(Utils.areRequirementsMet('modules', key));
         }
     }
 }

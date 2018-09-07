@@ -167,14 +167,14 @@ class Card {
             if (event.name === card.name) {
                 card.update();
             }
-            card.setVisibility(Utils.areRequirementsMet(category, name));
+            //card.setVisibility(Utils.areRequirementsMet(category, name));
         });
 
         arcInc.eventEmitter.subscribe(Events.SHIP_UPGRADE_PURCHASED, card.id, function(event) {
             if (event.name === card.name) {
                 card.update();
             }
-            card.setVisibility(Utils.areRequirementsMet(category, name));
+            //card.setVisibility(Utils.areRequirementsMet(category, name));
         });
 
         return card;
