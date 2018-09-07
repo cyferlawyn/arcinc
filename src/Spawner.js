@@ -150,7 +150,7 @@ class Spawner {
         enemyStats.currentHealth = enemyStats.maxHealth;
         enemyStats.credits = Math.floor(enemyStats.credits * Math.pow(arcInc.growth, wave) * scalingFactor);
         enemyStats.damage = Math.floor(enemyStats.damage / 5 * Math.pow(arcInc.growth, wave));
-        enemyStats.antimatter = wave * scalingFactor / 50 * (0.1 * arcInc.savegame.modules.antimatterSiphon);
+        enemyStats.antimatter = Math.max((wave-500)/500, 0)**2 * 1.015**(wave-500) * scalingFactor / 10000 * (arcInc.savegame.modules.antimatterSiphon);
         enemyStats.wave = wave;
         enemyStats.isBoss = true;
 

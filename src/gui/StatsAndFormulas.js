@@ -31,16 +31,32 @@ class StatsAndFormulas {
         StatsAndFormulas.prepareCard(
             categoryCardBody,
             'Current Wave Enemy Credits',
-            '-> 10 * [Growth Factor] ^ [Wave]',
-            '-> 10 * [' + arcInc.growth + '] ^ [' + arcInc.sceneManager.scenes['main'].wave + ']',
-            '-> ' + Utils.format(10 * arcInc.growth ** arcInc.sceneManager.scenes['main'].wave ));
+            '-> 10 * [Growth Factor] ^ [Wave] * [Effective Kill Credit Multiplier]',
+            '-> 10 * [' + arcInc.growth + '] ^ [' + arcInc.sceneManager.scenes['main'].wave + '] * [' + Utils.evStat('effectiveKillCreditMultiplier') + ']',
+            '-> ' + Utils.format(10 * arcInc.growth ** arcInc.sceneManager.scenes['main'].wave ) * arcInc.objectStore.get('player').stats.effectiveKillCreditMultiplier);
+
+        // Energy
+        StatsAndFormulas.prepareCard(
+            categoryCardBody,
+            'Effective Energy regeneration Per Tick',
+            '-> [Solar Panel Scaling] / 60',
+            '-> [' + Utils.evStat('solarPanelScaling') + '] / 60',
+            '-> ' + Utils.evStat('effectiveEnergyRegenerationPerTick'));
+
+        // Antimatter
+        StatsAndFormulas.prepareCard(
+            categoryCardBody,
+            'Antimatter Scaling',
+            '-> 1 + 0.01 * [Active Antimatter]',
+            '-> 1 * 0.01 * [' + Utils.format(arcInc.savegame.activeAntimatter) + ']',
+            '-> ' + Utils.evStat('antimatterScaling'));
 
         // Offense
         StatsAndFormulas.prepareCard(
             categoryCardBody,
             'Effective Projectile Damage',
-            '-> 10 * [Projectile Damage] * [Cluster Ammunition] * [Effective Projectile Amount Compensation]',
-            '-> 10 * [' + Utils.evStat('projectileDamage') + '] * [' + Utils.evStat('clusterAmmunition') + '] * [' + Utils.evStat('effectiveProjectileAmountCompensation') + ']',
+            '-> 10 * [Projectile Damage] * [Cluster Ammunition] * [Effective Projectile Amount Compensation] * [Antimatter Scaling]',
+            '-> 10 * [' + Utils.evStat('projectileDamage') + '] * [' + Utils.evStat('clusterAmmunition') + '] * [' + Utils.evStat('effectiveProjectileAmountCompensation') + '] * [' + Utils.evStat('antimatterScaling') + ']',
             '-> ' + Utils.evStat('effectiveProjectileDamage'));
 
         StatsAndFormulas.prepareCard(
@@ -77,15 +93,15 @@ class StatsAndFormulas {
         StatsAndFormulas.prepareCard(
             categoryCardBody,
             'Effective Max Shield',
-            '-> 100 * [Max Shield] * [Plasma Field] * [Factory Scaling]',
-            '-> 100 * [' + Utils.evStat('maxShield') + '] * [' + Utils.evStat('plasmaField') + '] * [' + Utils.evStat('factoryScaling') +  ']',
+            '-> 100 * [Max Shield] * [Plasma Field] * [Factory Scaling] * [Antimatter Scaling]',
+            '-> 100 * [' + Utils.evStat('maxShield') + '] * [' + Utils.evStat('plasmaField') + '] * [' + Utils.evStat('factoryScaling') +  '] * [' + Utils.evStat('antimatterScaling') + ']',
             '-> ' + Utils.evStat('effectiveMaxShield'));
 
         StatsAndFormulas.prepareCard(
             categoryCardBody,
             'Effective Max Armor',
-            '-> 250 * [Max Armor] * [Titanium Alloy] * [Factory Scaling]',
-            '-> 250 * [' + Utils.evStat('maxArmor') + '] * [' + Utils.evStat('titaniumAlloy') + '] * [' + Utils.evStat('factoryScaling') +  ']',
+            '-> 250 * [Max Armor] * [Titanium Alloy] * [Factory Scaling] * [Antimatter Scaling]',
+            '-> 250 * [' + Utils.evStat('maxArmor') + '] * [' + Utils.evStat('titaniumAlloy') + '] * [' + Utils.evStat('factoryScaling') +  '] * [' + Utils.evStat('antimatterScaling') + ']',
             '-> ' + Utils.evStat('effectiveMaxArmor'));
 
         // Utility

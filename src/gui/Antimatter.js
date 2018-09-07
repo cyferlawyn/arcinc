@@ -21,7 +21,7 @@ class Antimatter {
         activeAntimatterOuterDiv.appendChild(activeAntimatter);
 
         let activeAntimatterEffect = document.createElement('p');
-        activeAntimatterEffect.textContent = 'Base stat boost this prestige: ' + Utils.format(arcInc.savegame.activeAntimatter/100) + '%';
+        activeAntimatterEffect.textContent = 'Base stat boost this prestige: ' + Utils.format(arcInc.savegame.activeAntimatter) + '%';
         activeAntimatterOuterDiv.appendChild(activeAntimatterEffect);
 
         let pendingAntimatterOuterDiv = document.createElement('div');
@@ -38,10 +38,10 @@ class Antimatter {
 
         let pendingAntimatterEffect = document.createElement('p');
         pendingAntimatterEffect.id = 'pending-antimatter-effect';
-        pendingAntimatterEffect.textContent = 'Base stat boost after prestige: ' + Utils.format((arcInc.savegame.activeAntimatter + arcInc.savegame.pendingAntimatter)/100) + '%';
+        pendingAntimatterEffect.textContent = 'Base stat boost after prestige: ' + Utils.format((arcInc.savegame.activeAntimatter + arcInc.savegame.pendingAntimatter)) + '%';
         pendingAntimatterOuterDiv.appendChild(pendingAntimatterEffect);
         arcInc.eventEmitter.subscribe(Events.ANTIMATTER_UPDATED, '#pending-antimatter-effect', function() {
-            document.querySelector('#pending-antimatter-effect').textContent = 'Base stat boost after prestige: ' + Utils.format((arcInc.savegame.activeAntimatter + arcInc.savegame.pendingAntimatter)/100) + '%';
+            document.querySelector('#pending-antimatter-effect').textContent = 'Base stat boost after prestige: ' + Utils.format((arcInc.savegame.activeAntimatter + arcInc.savegame.pendingAntimatter)) + '%';
         } );
 
         let button = document.createElement('button');
