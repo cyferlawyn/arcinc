@@ -10,7 +10,9 @@ class Utils {
             number = Math.abs(number);
         }
 
-        let suffixes = ['', 'K', 'M', 'B', 't', 'q', 'Q', 's', 'S', 'o', 'n'];
+        let suffixes = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc", "UDc", "DDc",
+            "TDc", "QaDc", "QiDc", "SxDc", "SpDc", "ODc", "NoDc", "Vg", "UVg", "DVg", "TVg", "QaVg",
+            "QiVg", "SxVg", "SpVg", "OVg", "NoVg", "Tg"];
 
         if (decPlaces === undefined) {
             decPlaces = 3;
