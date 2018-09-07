@@ -73,10 +73,6 @@ table {
     padding: 5px 15px;
 }
 
-.card-columns {
-    column-count: 2;
-}
-
 * {
     font-size: 12px;
     line-height: 1.25;

@@ -2,16 +2,12 @@ class StationModules {
     static prepare(parent) {
         let categoryCardBody = CategoryCard.prepare(parent, 'station-modules', 'Station Modules');
 
-        let cardDeck = document.createElement('div');
-        cardDeck.classList.add('card-columns');
-        categoryCardBody.appendChild(cardDeck);
-
         for (let i = 0; i < Object.keys(arcInc.station.modules).length; i++) {
             let key = Object.keys(arcInc.station.modules)[i];
             let value = arcInc.station.modules[key];
 
             let card = Card.prepare(
-                cardDeck,
+                categoryCardBody,
                 'modules',
                 key,
                 value.title,

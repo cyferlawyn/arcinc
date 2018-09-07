@@ -97,8 +97,13 @@ class ArcInc {
         Chat.prepare(parent);
         Leaderboard.prepare(parent);
         Antimatter.prepare(parent);
-        StationModules.prepare(parent);
-        ShipUpgrades.prepare(parent);
+
+        let cardDeck = document.createElement('div');
+        cardDeck.classList.add('card-deck');
+        parent.appendChild(cardDeck);
+
+        StationModules.prepare(cardDeck);
+        ShipUpgrades.prepare(cardDeck);
         StatsAndFormulas.prepare(parent);
 
         this.eventEmitter.subscribe(Events.CREDITS_UPDATED, '#credits', function(credits) {

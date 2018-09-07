@@ -2,16 +2,12 @@ class ShipUpgrades {
     static prepare(parent) {
         let categoryCardBody = CategoryCard.prepare(parent, 'ship-upgrades', 'Ship Upgrades');
 
-        let cardDeck = document.createElement('div');
-        cardDeck.classList.add('card-columns');
-        categoryCardBody.appendChild(cardDeck);
-
         for (let i = 0; i < Object.keys(arcInc.objectStore.get('player').upgrades).length; i++) {
             let key = Object.keys(arcInc.objectStore.get('player').upgrades)[i];
             let value = arcInc.objectStore.get('player').upgrades[key];
 
             let card = Card.prepare(
-                cardDeck,
+                categoryCardBody,
                 'upgrades',
                 key,
                 value.title,
