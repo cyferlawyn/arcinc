@@ -216,7 +216,7 @@ class MainScene extends Scene{
         this.framesTillWave -= frameDelta;
 
         if (this.framesTillWave <= 0 || this.remainingEnemies === 0) {
-            let compress = this.wave < arcInc.savegame.highestWaveEver/2;
+            let compress = this.wave < arcInc.savegame.highestWaveEver - 200;
             if (compress) {
                 this.wave += 10;
             } else {
