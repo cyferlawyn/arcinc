@@ -1,0 +1,189 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>Perks Tree PoC</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <script src="lib/js/cytoscape.min.js"></script>
+    <script src="lib/js/popper.js"></script>
+    <script src="lib/js/tooltip.min.js"></script>
+    <script src="lib/js/cytoscape-popper.js"></script>
+    <script src="src/Model.js"></script>
+
+    <style>
+        body {
+            font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
+            font-size: 14px
+        }
+
+        #cy {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 1;
+        }
+
+        h1 {
+            opacity: 0.5;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .popper-div {
+            border: 1px solid red;
+            background: #fff;
+            z-index: 9999;
+            padding: 0.25em;
+            pointer-events: none;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let model = Model.model;
+            let cyConfig = {
+                container: document.getElementById('cy'),
+                style: [
+                    {
+                        selector: 'node',
+                        style: {
+                            'content': 'data(level)',
+                            "text-valign": "center",
+                            "text-halign": "center",
+                            'height': 80,
+                            'width': 80,
+                            'background-fit': 'cover',
+                            'border-color': '#000',
+                            'border-width': 3,
+                            'border-opacity': 0.5
+                        }
+                    },
+                    {
+                        selector: 'edge',
+                        style: {
+                            'curve-style': 'unbundled-bezier',
+                            'width': 6,
+                            'target-arrow-shape': 'triangle',
+                            'line-color': '#666666',
+                            'target-arrow-color': '#666666'
+                        }
+                    },
+                    {
+                        selector: '.stationModules',
+                        style: {
+                            'background-color': '#ffaaaa'
+                        }
+                    },
+                    {
+                        selector: '.shipUpgrades',
+                        style: {
+                            'background-color': '#aaffaa'
+                        }
+                    },
+                    {
+                        selector: '.mechanic',
+                        style: {
+                            'background-color': '#aaaaff'
+                        }
+                    },
+                    {
+                        selector: '.stat',
+                        style: {
+                            'background-color': '#eeeeee'
+                        }
+                    },
+                    {
+                        selector: '.edge-hidden',
+                        style: {
+                            'display': 'none'
+                        }
+                    }
+                ],
+                elements: {
+                    nodes: [],
+                    edges: []
+                },
+                layout: {
+                    name: 'breadthfirst',
+                    //roots: ['warpDrive', 'antimatterSiphon', 'hangar', 'droneBay', 'teleporter', 'waterTreatmentPlant', 'crewQuarters', 'factory', 'scienceLab', 'solarPanels'],
+                    circle: false,
+                    directed: true,
+                    fit: true,
+                    avoidOverlap: true,
+                    padding: 10
+                }
+            };
+
+            Object.keys(model).forEach(function(key) {
+                cyConfig.elements.nodes.push({
+                    "data": {
+                        "id": key,
+                        "title": model[key].title,
+                        "level": Math.random() * 900
+                    },
+                    "classes": model[key].type
+                });
+
+                model[key].requirements.forEach(function(requirement) {
+                    cyConfig.elements.edges.push({
+                        "data": {
+                            "source": requirement.name,
+                            "target": key
+                        }
+                    });
+                });
+            });
+
+            console.log(JSON.stringify(cyConfig));
+
+            let cy = window.cy = cytoscape(cyConfig);
+
+            let makeDiv = function (id) {
+                let div = document.createElement('div');
+                div.classList.add('popper-div');
+                div.innerHTML = id;
+                document.body.appendChild(div);
+
+                let tooltip = document.createElement('div');
+                tooltip.id = 'tooltip-' + id;
+                tooltip.style.display = 'none';
+                tooltip.innerHTML = 'Cost: 848$<br/>Effect: +466 $/s';
+                div.appendChild(tooltip);
+
+                return div;
+            };
+
+            cy.nodes().forEach(function( ele ) {
+                let popper = ele.popper({
+                    content: function () {
+                        return makeDiv(ele.data('id'));
+                    }
+                });
+
+                ele.on('position', function () {
+                    popper.scheduleUpdate();
+                });
+
+                ele.on('mouseover', function() {
+                    document.getElementById('tooltip-' + ele.data('id')).style.display = 'block';
+                    cy.nodes().edgesWith(ele).toggleClass('edge-hidden', false);
+                });
+                ele.on('mouseout', function() {
+                    document.getElementById('tooltip-' + ele.data('id')).style.display = 'none';
+                    cy.nodes().edgesWith(ele).toggleClass('edge-hidden', true);
+                });
+            });
+
+
+            //cy.on('pan zoom resize', updateA);
+        });
+    </script>
+</head>
+
+<body>
+<h1>Perks Tree PoC</h1>
+<div id="cy"></div>
+</body>
+
+</html>
