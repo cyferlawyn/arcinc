@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calc</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let perks = [
+                {
+                    "name": "projectileDamage",
+                    "baseCost": 50000000,
+                    "level": 0,
+                    "weight": 0.75
+                },
+                {
+                    "name": "clusterAmmunition",
+                    "baseCost": 5000000000000,
+                    "level": 0,
+                    "weight": 0.25
+                },
+                {
+                    "name": "projectileAmount",
+                    "baseCost": 500000,
+                    "level": 0,
+                    "weight": 1
+                },
+                {
+                    "name": "criticalHitDamage",
+                    "baseCost": 5000000000,
+                    "level": 0,
+                    "weight": 0.5
+                },
+                {
+                    "name": "factory",
+                    "baseCost": 250,
+                    "level": 0,
+                    "weight": 0.5
+                }
+            ];
+
+            let findBestPerk = function(perks) {
+                let bestPick = -1;
+                let weight = 0;
+
+                perks.forEach(function(perk, index) {
+                    let perkCost = perk.baseCost * 1.03**perk.level;
+                    let currentWeight = perk.weight / perkCost;
+                    if (currentWeight > weight) {
+                        weight = currentWeight;
+                        bestPick = index;
+                    }
+                });
+
+                return bestPick;
+            };
+
+            let tr = function(tableBody) {
+                let tableRow = document.createElement('tr');
+                tableBody.appendChild(tableRow);
+                return tableRow;
+            };
+
+            let td = function(tableRow, textContent) {
+                let td = document.createElement('td');
+                td.textContent = textContent;
+                tableRow.appendChild(td);
+            };
+
+            let tableBody = document.getElementById("table-body");
+
+            let enemyCreditsTotal = 0;
+            let playerCreditsTotal = 0;
+
+            let bestPick = findBestPerk(perks);
+
+            for (let i = 1; i < 2001; i++) {
+                let tableRow = tr(tableBody);
+
+                td(tableRow, i);
+
+                let enemyHealth = Math.floor(10 * 1.03**i);
+                let enemyDamage = Math.floor(5 * 1.03**i);
+                let enemyCredits = 25 * Math.floor(10 * 1.03**i);
+
+                td(tableRow, enemyHealth);
+                td(tableRow, enemyDamage);
+                td(tableRow, enemyCredits);
+                td(tableRow, enemyCreditsTotal);
+                td(tableRow, playerCreditsTotal);
+
+                let bestPickCost = perks[bestPick].baseCost * 1.03**perks[bestPick].level;
+
+                while (bestPickCost < playerCreditsTotal) {
+                    perks[bestPick].level++;
+                    playerCreditsTotal -= bestPickCost;
+                    bestPick = findBestPerk(perks);
+                }
+
+                let projectileDamage = 1 + perks[0].level * perks[0].weight;
+                let clusterAmmunition = 1 + perks[1].level * perks[1].weight;
+                let effectiveProjectileAmountCompensation = 1 + perks[2].level * perks[2].weight;
+                let criticalHitDamage = 1 + perks[3].level * perks[3].weight;
+                let factoryScaling = 1 + perks[4].level * perks[4].weight;
+                let effectiveProjectileDamage = 10 * projectileDamage * clusterAmmunition * effectiveProjectileAmountCompensation * criticalHitDamage * factoryScaling;
+
+                td(tableRow, effectiveProjectileDamage);
+                td(tableRow, perks[0].level);
+                td(tableRow, perks[1].level);
+                td(tableRow, perks[2].level);
+                td(tableRow, perks[3].level);
+                td(tableRow, perks[4].level);
+                td(tableRow, enemyHealth / (5 * effectiveProjectileDamage));
+
+                enemyCreditsTotal += enemyCredits;
+                playerCreditsTotal += enemyCredits;
+            }
+        });
+    </script>
+</head>
+<body>
+    <div id="root">
+        <table>
+            <thead>
+                <tr>
+                    <th>Wave</th>
+                    <th>Enemy Health</th>
+                    <th>Enemy Damage</th>
+                    <th>Enemy Credits</th>
+                    <th>Enemy Credits Total</th>
+                    <th>Player Credits Total</th>
+                    <th>Effective Projectile Damage</th>
+                    <th>Projectile Damage</th>
+                    <th>Cluster Ammunition</th>
+                    <th>Effective Projectile Amount Compensation</th>
+                    <th>Critical Hit Damage</th>
+                    <th>Factory</th>
+                    <th>Killtime [s]</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+</body>
+</html>
