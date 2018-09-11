@@ -10,7 +10,7 @@ class SceneManager {
 
     update() {
         if (!this.paused) {
-            let frameDelta = Math.min(2, 60 * this.pixiApp.ticker.elapsedMS / 1000);
+            let frameDelta = Math.min(60, 60 * this.pixiApp.ticker.elapsedMS / 1000);
             this.currentScene.update(frameDelta);
         }
     }
