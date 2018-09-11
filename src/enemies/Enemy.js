@@ -124,6 +124,7 @@ class Enemy extends PIXI.Sprite {
         // Skip ailment calculations for direct kills
         if (this.stats.currentHealth > damage) {
             // test freeze
+            /*
             if (player.stats.chanceHappened('freezeChance')) {
                 if (!this.stats.isBoss) {
                     this.vx = this.vx * 0.98;
@@ -135,7 +136,7 @@ class Enemy extends PIXI.Sprite {
                         this.vy = this.stats.baseMovementSpeed/4;
                     }
                 }
-            }
+            }*/
 
             // test burn
             if (player.stats.chanceHappened('burnChance')) {
