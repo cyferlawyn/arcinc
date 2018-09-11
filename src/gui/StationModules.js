@@ -20,6 +20,7 @@ class StationModules {
                 value.title,
                 value.description,
                 function (event) {
+                    event.preventDefault();
                     let key = event.currentTarget.name;
                     let effectiveCost = Math.ceil(value.cost * Math.pow(arcInc.growth, arcInc.savegame.modules[key]));
                     if (arcInc.savegame.credits >= effectiveCost) {
@@ -32,6 +33,7 @@ class StationModules {
                         arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
                         arcInc.eventEmitter.emit(Events.STATION_MODULE_PURCHASED, {'name': key, 'level': arcInc.savegame.modules[key]});
                     }
+                    return false;
                 });
 
             card.update();
