@@ -149,8 +149,8 @@ class ArcInc {
                     }
                 }
 
-                this.savegame.activeAntimatter = "0";
-                this.savegame.pendingAntimatter = "" + pendingAntimatter;
+                this.savegame.activeAntimatter = 0;
+                this.savegame.pendingAntimatter = pendingAntimatter;
             }
 
             if (this.savegame.version === 'v0.17') {
