@@ -7,12 +7,22 @@ class WaveTemplateStore {
         }
 
         for (let rep = 1; rep <= repetitions; rep++) {
-            for (let i = mask.length - 1; i >= 0; i--) {
-                for (let j = 0; j < mask[i].length; j++) {
-                    if (mask[i][j] === "*") {
-                        let frame = ((mask.length * rep) - i) * (300/(mask.length * repetitions));
-                        let x = 1 / (mask[i].length+1) * (j+1);
-                        keyFrames.push(new KeyFrame(frame, {"operation": "spawnEnemy", "reference": type + ((j + 1) * (i + 1)), "type": type, "wave": wave, "x": x, "y": -0.25, "vx": 0, "vy": 2}));
+            if (wave % 10 === 0 && rep === 1) {
+                if (wave % 1000 === 0) {
+                    keyFrames.push(new KeyFrame(150, {"operation": "spawnBoss", "reference": "Boss", "type": "bossX000", "wave": wave}));
+                } else if (wave % 100 === 0) {
+                    keyFrames.push(new KeyFrame(150, {"operation": "spawnBoss", "reference": "Boss", "type": "bossX00", "wave": wave}));
+                }else {
+                    keyFrames.push(new KeyFrame(150, {"operation": "spawnBoss", "reference": "Boss", "type": "bossX0", "wave": wave}));
+                }
+            } else {
+                for (let i = mask.length - 1; i >= 0; i--) {
+                    for (let j = 0; j < mask[i].length; j++) {
+                        if (mask[i][j] === "*") {
+                            let frame = ((mask.length * rep) - i) * (300/(mask.length * repetitions));
+                            let x = 1 / (mask[i].length+1) * (j+1);
+                            keyFrames.push(new KeyFrame(frame, {"operation": "spawnEnemy", "reference": type + ((j + 1) * (i + 1)), "type": type, "wave": wave, "x": x, "y": -0.25, "vx": 0, "vy": 2}));
+                        }
                     }
                 }
             }
@@ -20,7 +30,7 @@ class WaveTemplateStore {
 
         let asteroidCount = Math.max(1, Math.floor(Math.random() * 30));
         for (let i = 0; i < asteroidCount; i++) {
-            let frame = i * (300/asteroidCount);
+            let frame = i * (300/asteroidCount) + 150;
             let x = Math.random() * 2 - 0.5;
 
             let vx = 4 * (0.5 - x);
@@ -57,6 +67,7 @@ class WaveTemplateStore {
     };*/
 
     static template(wave, compress) {
+
         let type = ["crawler", "industrialMiner", "suicideBomber"];
         return WaveTemplateStore.fromBitMask(Formation.formations[Math.floor(Math.random() * Formation.formations.length)],
             type[Math.floor(Math.random() * type.length)],

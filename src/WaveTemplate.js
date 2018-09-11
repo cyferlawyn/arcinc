@@ -24,6 +24,8 @@ class WaveTemplate
 
                 this.enemies[action.reference].vx = action.vx;
                 this.enemies[action.reference].vy = action.vy;
+            } else if (action.operation === "spawnBoss") {
+                this.enemies[action.reference] = arcInc.spawner.spawnBoss(action.type, action.wave);
             }
 
             this.keyframes.splice(0, 1);
