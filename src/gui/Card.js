@@ -45,11 +45,15 @@ class Card {
         cardText.classList.add('card-text');
         cardBody.appendChild(cardText);
 
-        let cardAnchor = document.createElement('p');
+        let cardPurchaseOptions = document.createElement('div');
+        cardPurchaseOptions.classList.add('card-purchase-options');
+        cardBody.appendChild(cardPurchaseOptions);
+
+        let cardAnchor = document.createElement('a');
         cardAnchor.id = name + '-card-anchor';
         cardAnchor.name = name;
-        cardAnchor.style.cursor = 'pointer';
-        cardAnchor.style.textDecoration = 'underline';
+        cardAnchor.classList.add('card-purchase');
+        cardAnchor.classList.add('card-purchase-single');
 
         cardAnchor.addEventListener('click', callback);
         cardAnchor.interval = null;
@@ -76,13 +80,15 @@ class Card {
             clearInterval(cardAnchor.interval);
             cardAnchor.intervalDelay = 250;
         });
-        cardBody.appendChild(cardAnchor);
+        cardPurchaseOptions.appendChild(cardAnchor);
 
-        let cardAnchorAll = document.createElement('p');
-        cardAnchorAll.innerText = 'Buy All';
-        cardAnchorAll.style.cursor = 'pointer';
-        cardAnchorAll.style.textDecoration = 'underline';
-        cardAnchorAll.addEventListener('click', function(){
+        let cardAnchorAll = document.createElement('a');
+        cardAnchorAll.innerText = 'Buy Max';
+        cardAnchorAll.classList.add('card-purchase');
+        cardAnchorAll.classList.add('card-purchase-all');
+        cardAnchorAll.addEventListener('click', function(ev){
+            ev.preventDefault();
+
             let currentLevel = arcInc.savegame[category][name];
             let levelsToBuy = -1;
             let totalCost = 0;
@@ -117,8 +123,10 @@ class Card {
                     arcInc.eventEmitter.emit(Events.SHIP_UPGRADE_PURCHASED, {'name': name, 'level': arcInc.savegame.upgrades[name]});
                 }
             }
+
+            return false;
         });
-        cardBody.appendChild(cardAnchorAll);
+        cardPurchaseOptions.appendChild(cardAnchorAll);
 
         card.update = function() {
             let levelText = arcInc.savegame[category][name];

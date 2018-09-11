@@ -66,11 +66,41 @@ table {
 }
 
 .card-body {
-    padding: 5px 20px;
+    padding: 10px;
 }
 
 .card-header {
     padding: 5px 15px;
+}
+
+.card-purchase-options {
+    display: flex;
+    flex-flow: row;
+    margin-left: -5px;
+    margin-right: -5px;
+}
+.card-purchase {
+    display: block;
+    background-color: #474b96;
+    padding: 7px 5px;
+    text-align: center;
+    margin: 0 5px;
+    flex-shrink: 1;
+    flex-grow: 1;
+    flex-basis: 0;
+    cursor: pointer;
+}
+.card-purchase-single {
+    flex-grow: 2;
+}
+.card-purchase:hover,
+.card-purchase:focus {
+    background-color: #4c60b0;
+}
+
+.card-purchase:active {
+    padding: 9px 5px 5px 5px;
+    box-shadow: 0 1px 0 1px #141852 inset;
 }
 
 * {
