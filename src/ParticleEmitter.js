@@ -54,25 +54,30 @@ class ParticleEmitter extends PIXI.particles.Emitter {
         this.now = Date.now();
         this.elapsed = Date.now();
         this.emit = false;
+        this.disabled = false;
 
         arcInc.eventEmitter.subscribe(Events.ENTITY_DESTROYED, 'ParticleEmitter', this.emitExplostion.bind(this));
 
         document.querySelector('#disable-particle').addEventListener('click', function() {
            if (this.checked) {
                arcInc.eventEmitter.unsubscribe(Events.ENTITY_DESTROYED, 'ParticleEmitter');
+               this.disabled = true;
            }  else {
                let particleEmitter = arcInc.sceneManager.scenes['main'].particleEmitter;
                arcInc.eventEmitter.subscribe(Events.ENTITY_DESTROYED, 'ParticleEmitter', particleEmitter.emitExplostion.bind(particleEmitter));
+               this.disabled = false;
            }
         });
     }
 
     update() {
-        this.now = Date.now();
+        if (!this.disabled) {
+            this.now = Date.now();
 
-        super.update((this.now - this.elapsed) * 0.001);
+            super.update((this.now - this.elapsed) * 0.001);
 
-        this.elapsed = this.now;
+            this.elapsed = this.now;
+        }
     }
 
     emitExplostion(pos) {
