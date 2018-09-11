@@ -69,6 +69,8 @@ class Backend {
                     let response = JSON.parse(this.responseText);
                     let savegame = response['savegame'];
                     savegame.credits = Math.round(parseFloat(savegame.credits));
+                    savegame.activeAntimatter = Math.round(parseFloat(savegame.activeAntimatter));
+                    savegame.pendingAntimatter = Math.round(parseFloat(savegame.pendingAntimatter));
                     successCallback(savegame);
                 }
                 else {
