@@ -68,6 +68,35 @@ class Spawner {
         return amountSpawned;
     }
 
+    spawnEnemy(type, wave) {
+        // Initialize stats
+        let enemyStats = EnemyStats.get();
+        enemyStats.maxHealth = Math.floor(enemyStats.maxHealth * Math.pow(arcInc.growth, wave));
+        enemyStats.currentHealth = enemyStats.maxHealth;
+        enemyStats.credits = Math.floor(enemyStats.credits * Math.pow(arcInc.growth, wave));
+        enemyStats.damage = Math.floor(enemyStats.damage * Math.pow(arcInc.growth, wave));
+        enemyStats.wave = wave;
+
+        let enemy;
+        switch(type) {
+            case "crawler": {
+                enemy = new CrawlerEnemy(enemyStats);
+                enemy.tint = arcInc.spawner.enemyColors[Math.floor(Math.random()*arcInc.spawner.enemyColors.length)];
+            } break;
+            case "industrialMiner": {
+                enemy = new IndustrialMinerEnemy(enemyStats);
+            } break;
+            case "suicideBomber": {
+                enemy = new SuicideBomberEnemy(enemyStats);
+            } break;
+            case "asteroid": {
+                enemy = new AsteroidEnemy(enemyStats);
+            } break;
+        }
+
+        return enemy;
+    }
+
     spawnCrawlerEnemy(wave) {
         // Initialize stats
         let enemyStats = EnemyStats.get();

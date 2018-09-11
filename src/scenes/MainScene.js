@@ -225,8 +225,11 @@ class MainScene extends Scene{
 
             StatsAndFormulas.update();
             this.framesTillWave = 600;
-            this.remainingEnemies = arcInc.spawner.spawnEnemyWave(this.wave, compress);
+            this.waveTemplate = WaveTemplateStore.template(this.wave, compress);
+            this.remainingEnemies = this.waveTemplate.keyframes.length;
         }
+
+        this.waveTemplate.update(frameDelta);
     }
 
     checkForCollisions() {
