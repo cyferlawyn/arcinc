@@ -43,7 +43,16 @@ class Chat {
                 localStorage.removeItem(authTokenName);
                 localStorage.removeItem(savegameName);
                 location.reload();
-            } else {
+            } else if (text === '/debug') {
+                window.setInterval(function() {
+                    console.log('-----------------------------------------------------------------------');
+                    console.log(new Date().toISOString());
+                    console.log('enemy container entities: ' + arcInc.objectStore.get('enemyContainer').children.length);
+                    console.log('enemy projectile container entities: ' + arcInc.objectStore.get('enemyProjectileContainer').children.length);
+                    console.log('player projectile container entities: ' + arcInc.objectStore.get('playerProjectileContainer').children.length);
+                    console.log('particle container entities: ' + arcInc.objectStore.get('particleContainer').children.length);
+                }, 10000);
+            }  else {
                 arcInc.backend.sendChat(arcInc.authToken, text);
             }
             event.target.value = '';
