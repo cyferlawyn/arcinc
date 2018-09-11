@@ -3,24 +3,33 @@ class Player extends PIXI.Sprite {
         super(texture);
 
         this.upgrades = {
+            'burnChance': {
+                'title': 'Burn Chance',
+                'cost': 1e6,
+                'description': 'Chance that the enemy catches fire upon impact, dealing 1% of [Projectile Damage] each tick. Stacks additive',
+                'effectTemplate': '{EFFECT}% chance',
+                'cap': 400,
+                'requirements': [{'type': 'upgrades', 'name': 'clusterAmmunition', 'level': 1}]
+            },
+            'freezeChance': {
+                'title': 'Freeze Chance',
+                'cost': 1e6,
+                'description': 'Chance that the enemy is frozen, which reduces his movement speed by 2% per hit. Stacks multiplicative',
+                'effectTemplate': '{EFFECT}% chance',
+                'cap': 400,
+                'requirements': [{'type': 'upgrades', 'name': 'clusterAmmunition', 'level': 1}]
+            },
             // Offense (Hit damage)
             'projectileDamage': {
                 'title': 'Projectile Damage',
-                'cost': 50,
+                'cost': 5e7,
                 'description': 'Increases the projectile damage',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
             },
-            'clusterAmmunition': {
-                'title': 'Cluster Ammunition',
-                'cost': 500000,
-                'description': 'Increases the projectile damage',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'upgrades', 'name': 'projectileDamage', 'level': 1}]
-            },
             'criticalHitChance': {
                 'title': 'Critical Hit Chance',
-                'cost': 10000,
+                'cost': 5e7,
                 'description': 'Chance to perform a critical hit',
                 'effectTemplate': '{EFFECT}% chance',
                 'cap': 400,
@@ -28,53 +37,37 @@ class Player extends PIXI.Sprite {
             },
             'criticalHitDamage': {
                 'title': 'Critical Hit Damage',
-                'cost': 10000,
+                'cost': 5e9,
                 'description': 'Increases the damage dealt when performing a critical hit',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'criticalHitChance', 'level': 1}]
             },
-            'freezeChance': {
-                'title': 'Freeze Chance',
-                'cost': 100000,
-                'description': 'Chance that the enemy is frozen, which reduces his movement speed by 2% per hit. Stacks multiplicative',
-                'effectTemplate': '{EFFECT}% chance',
-                'cap': 400,
-                'requirements': [{'type': 'upgrades', 'name': 'clusterAmmunition', 'level': 1}]
-            },
-            'burnChance': {
-                'title': 'Burn Chance',
-                'cost': 500000,
-                'description': 'Chance that the enemy catches fire upon impact, dealing 1% of [Projectile Damage] each tick. Stacks additive',
-                'effectTemplate': '{EFFECT}% chance',
-                'cap': 400,
-                'requirements': [{'type': 'upgrades', 'name': 'clusterAmmunition', 'level': 1}]
+            'clusterAmmunition': {
+                'title': 'Cluster Ammunition',
+                'cost': 5e12,
+                'description': 'Increases the projectile damage',
+                'effectTemplate': '{EFFECT}x multiplier',
+                'requirements': [{'type': 'upgrades', 'name': 'projectileDamage', 'level': 1}]
             },
 
             // Offense (Hit amount)
             'rateOfFire': {
                 'title': 'Rate of Fire',
-                'cost': 50,
+                'cost': 5e2,
                 'description': 'Increases the projectile fire rate',
                 'effectTemplate': '{EFFECT} shots/60ticks',
                 'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
             },
             'projectileAmount': {
                 'title': 'Projectile Amount',
-                'cost': 5000,
+                'cost': 5e4,
                 'description': 'Increases the amount of projectiles to up to 5. Subsequent levels instead increase the projectile damage further',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'rateOfFire', 'level': 1}]
             },
-            'projectileSpread': {
-                'title': 'Projectile Spread',
-                'cost': 5000,
-                'description': 'Increases the spread in case more than 1 projectile is fired at once',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'upgrades', 'name': 'projectileAmount', 'level': 1}]
-            },
             'projectilePierceChance': {
                 'title': 'Projectile Pierce Chance',
-                'cost': 25000,
+                'cost': 5e4,
                 'description': 'Chance that the projectile is not consumed upon impact. Can not hit the same enemy multiple times',
                 'effectTemplate': '{EFFECT}% chance',
                 'cap': 400,
@@ -82,79 +75,86 @@ class Player extends PIXI.Sprite {
             },
             'projectileForkChance': {
                 'title': 'Projectile Fork Chance',
-                'cost': 25000,
+                'cost': 5e5,
                 'description': 'Chance that the projectile is split into 3 upon impact. Can not hit the same enemy multiple times',
                 'effectTemplate': '{EFFECT}% chance',
                 'cap': 400,
                 'requirements': [{'type': 'upgrades', 'name': 'projectilePierceChance', 'level': 1}]
             },
+            'projectileSpread': {
+                'title': 'Projectile Spread',
+                'cost': 5e7,
+                'description': 'Increases the spread in case more than 1 projectile is fired at once',
+                'effectTemplate': '{EFFECT}x multiplier',
+                'requirements': [{'type': 'upgrades', 'name': 'projectileAmount', 'level': 1}]
+            },
 
             // Defense (Shield)
             'maxShield': {
                 'title': 'Shield Amount',
-                'cost': 50000,
+                'cost': 5e4,
                 'description': 'Increases the Maximum Shield',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
             },
-            'plasmaField': {
-                'title': 'Plasma Field',
-                'cost': 1000000000,
-                'description': 'Increases the Maximum Shield',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'upgrades', 'name': 'maxShield', 'level': 1}]
-            },
-            'overshieldChance': {
-                'title': 'Overshield Chance',
-                'cost': 100000,
-                'description': 'Chance that a hit is fully absorbed by the shield without affecting armor . ' +
-                    'Requires full shield to trigger and will deplete the whole shield bar',
-                'effectTemplate': '{EFFECT}% chance',
-                'cap': 400,
-                'requirements': [{'type': 'upgrades', 'name': 'plasmaField', 'level': 1}]
-            },
             'shieldRechargeTime': {
                 'title': 'Shield Recharge',
-                'cost': 25,
+                'cost': 5e2,
                 'description': 'Decreases the Shield Recharge Time (<i>Aka increases the shield regeneration per frame</i>)',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'maxShield', 'level': 1}]
             },
             'shieldRechargeAccelerator': {
                 'title': 'Shield Recharge Accelerator',
-                'cost': 5000,
+                'cost': 5e6,
                 'description': 'When not being hit for 300 frames, decreases the Shield Recharge Time substantially (<i>Aka increases the shield regeneration per frame</i>)',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'shieldRechargeTime', 'level': 1}]
+            },
+            'plasmaField': {
+                'title': 'Plasma Field',
+                'cost': 1e9,
+                'description': 'Increases the Maximum Shield',
+                'effectTemplate': '{EFFECT}x multiplier',
+                'requirements': [{'type': 'upgrades', 'name': 'maxShield', 'level': 1}]
+            },
+            'overshieldChance': {
+                'title': 'Overshield Chance',
+                'cost': 1e9,
+                'description': 'Chance that a hit is fully absorbed by the shield without affecting armor . ' +
+                    'Requires full shield to trigger and will deplete the whole shield bar',
+                'effectTemplate': '{EFFECT}% chance',
+                'cap': 400,
+                'requirements': [{'type': 'upgrades', 'name': 'plasmaField', 'level': 1}]
             },
 
             // Defense (Armor)
             'maxArmor': {
                 'title': 'Armor Amount',
-                'cost': 50000,
+                'cost': 5e4,
                 'description': 'Increases the Maximum Armor',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
             },
-            'titaniumAlloy': {
-                'title': 'Titanium Alloy',
-                'cost': 1000000000,
-                'description': 'Increases the Maximum Armor',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'upgrades', 'name': 'maxArmor', 'level': 1}]
-            },
             'armorPlating': {
                 'title': 'Armor Plating',
-                'cost': 100000,
+                'cost': 5e6,
                 'description': 'Reduces armor  damage taken by an absolute value',
                 'effectTemplate': '{EFFECT} abs. reduction',
+                'requirements': [{'type': 'upgrades', 'name': 'maxArmor', 'level': 1}]
+            },
+            'titaniumAlloy': {
+                'title': 'Titanium Alloy',
+                'cost': 1e9,
+                'description': 'Increases the Maximum Armor',
+                'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'maxArmor', 'level': 1}]
             },
 
             // Defense (General)
             'repulsorField': {
                 'title': 'Repulsor Field',
-                'cost': 50000000000,
+                'cost': 5e10,
                 'description': 'Reduces all incoming damage by a relative amount',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'cap': 520,
@@ -164,14 +164,14 @@ class Player extends PIXI.Sprite {
             // Utility
             'movementSpeed': {
                 'title': 'Movement Speed',
-                'cost': 10,
+                'cost': 5e2,
                 'description': 'Increases the Movement Speed',
                 'effectTemplate': '{EFFECT} pixel/tick',
                 'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
             },
             'salvager': {
                 'title': 'Salvager',
-                'cost': 50000000000,
+                'cost': 5e10,
                 'description': 'Increases the credits gained for killing enemies by salvaging the wreckage',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'movementSpeed', 'level': 1}]

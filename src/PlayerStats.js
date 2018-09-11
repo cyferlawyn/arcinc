@@ -2,10 +2,10 @@ class PlayerStats {
     calculate() {
         // Module based scaling
         this.solarPanelScaling =  0.005 *  (this.ml('solarPanels'));
-        this.factoryScaling = 1 + Math.max(0, 0.25 * (this.ml('factory') - 100));
+        this.factoryScaling = 1 + 0.5 * (this.ml('factory'));
 
         // Upgrade based scaling
-        this.movementSpeed = 1 + 0.05 * this.ul('movementSpeed');
+        this.movementSpeed = 1 + 0.01 * this.ul('movementSpeed');
 
         this.maxShield = 1 + 0.5 * this.ul('maxShield');
         this.plasmaField = 1 + this.ul('plasmaField');
@@ -22,15 +22,15 @@ class PlayerStats {
         this.shieldRechargeTime = 1 + 0.025 * this.ul('shieldRechargeTime');
         this.shieldRechargeAccelerator = 1 + 0.02 * this.ul('shieldRechargeAccelerator');
 
-        this.projectileDamage = 1 + 0.5 * this.ul('projectileDamage');
-        this.clusterAmmunition = 1 + 0.25 * this.ul('clusterAmmunition');
+        this.projectileDamage = 1 + 0.75 * this.ul('projectileDamage');
+        this.clusterAmmunition = 1 + 0.5 * this.ul('clusterAmmunition');
 
         this.projectileAmount = (1 + this.ul('projectileAmount'));
         this.projectileSpread = (1 + 0.005 * this.ul('projectileSpread'));
 
-        this.criticalHitDamage = 1 + 0.1 * this.ul('criticalHitDamage');
+        this.criticalHitDamage = 1 + 0.5 * this.ul('criticalHitDamage');
 
-        this.rateOfFire = 1 + 3 * (1 - Math.pow(0.995, this.ul('rateOfFire')));
+        this.rateOfFire = 2 + 3 * (1 - Math.pow(0.995, this.ul('rateOfFire')));
 
         this.overshieldChance = 0.25 * this.ul('overshieldChance');
         this.projectilePierceChance = 0.25 * this.ul('projectilePierceChance');
@@ -44,7 +44,7 @@ class PlayerStats {
         this.antimatterScaling = (1 + 0.01 * arcInc.savegame.activeAntimatter);
 
         // effective stats
-        this.effectiveMovementSpeed = 5 * this.movementSpeed;
+        this.effectiveMovementSpeed = 10 + this.movementSpeed;
 
         this.effectiveMaxEnergy = 100;
         this.effectiveEnergyRegenerationPerTick = this.solarPanelScaling / 60;
@@ -64,8 +64,8 @@ class PlayerStats {
 
         this.effectiveProjectileSpread = this.projectileSpread;
 
-        this.effectiveProjectileDamage = 10 * this.projectileDamage * this.clusterAmmunition * this.effectiveProjectileAmountCompensation * this.antimatterScaling;
-        this.effectiveCriticalHitDamageMultiplier = this.criticalHitDamage * this.factoryScaling ** 0.75;
+        this.effectiveProjectileDamage = 10 * this.projectileDamage * this.clusterAmmunition * this.effectiveProjectileAmountCompensation * this.factoryScaling * this.antimatterScaling;
+        this.effectiveCriticalHitDamageMultiplier = this.criticalHitDamage;
         this.effectiveFireDelayInTicks = 60 / this.rateOfFire;
 
         this.effectiveKillCreditMultiplier = this.salvager;

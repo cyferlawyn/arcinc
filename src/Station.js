@@ -1,29 +1,29 @@
 class Station {
     constructor() {
         this.modules = {
-            'solarPanels': {
-                'title': 'Solar Panels',
+            'factory': {
+                'title': 'Factory',
                 'cost': 100,
                 'effect': 1,
+                'description': 'Generates a static amount of credits each second',
+                'effectTemplate': '+{EFFECT} $/s',
+                'requirements': [{'type': 'modules', 'name': 'scienceLab', 'level': 1}]
+            },
+            'solarPanels': {
+                'title': 'Solar Panels',
+                'cost': 1100,
+                'effect': 8,
                 'description': 'Generates a static amount of credits each second',
                 'effectTemplate': '+{EFFECT} $/s',
                 'requirements': []
             },
             'scienceLab': {
                 'title': 'Science Lab',
-                'cost': 1100,
-                'effect': 8,
-                'description': 'Generates a static amount of credits each second',
-                'effectTemplate': '+{EFFECT} $/s',
-                'requirements': [{'type': 'modules', 'name': 'solarPanels', 'level': 1}]
-            },
-            'factory': {
-                'title': 'Factory',
                 'cost': 12000,
                 'effect': 47,
                 'description': 'Generates a static amount of credits each second',
                 'effectTemplate': '+{EFFECT} $/s',
-                'requirements': [{'type': 'modules', 'name': 'scienceLab', 'level': 1}]
+                'requirements': [{'type': 'modules', 'name': 'solarPanels', 'level': 1}]
             },
             'crewQuarters': {
                 'title': 'Crew Quarters',
