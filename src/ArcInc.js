@@ -102,7 +102,7 @@ class ArcInc {
         StatsAndFormulas.prepare(parent);
 
         this.eventEmitter.subscribe(Events.CREDITS_UPDATED, '#credits', function(credits) {
-            document.querySelector('#credits').innerText = 'Credits: ' + Utils.format(credits, 2) + ' $ (+ ' + Utils.format(arcInc.station.cps) + ' $ / s)';
+            document.querySelector('#credits').innerText = 'Credits: ' + Utils.format(credits, 1) + ' $ (+ ' + Utils.format(arcInc.station.cps, 1) + ' $ / s)';
         });
     }
 

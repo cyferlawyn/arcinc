@@ -19,7 +19,7 @@ class Utils {
         }
 
         if (number >= 1) {
-            let suffix = suffixes[Math.floor(Math.log10(number) / 3)];
+            let suffix = " " + suffixes[Math.floor(Math.log10(number) / 3)];
             number = +(Math.pow(10, (Math.log10(number) % 3))).toFixed(decPlaces);
 
             return prefix + number + suffix;
