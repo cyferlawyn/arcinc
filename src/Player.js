@@ -202,6 +202,12 @@ class Player extends PIXI.Sprite {
 
         this.destination = null;
 
+        this.anchor.set(0.5, 0.5);
+
+        this.hitArea = new PIXI.Polygon([
+            0,0, 0,1, 1,1, 1,0
+        ]);
+
         this.applyUpgrades();
 
         this.currentDelay = 0;
@@ -227,12 +233,12 @@ class Player extends PIXI.Sprite {
 
     move(frameDelta) {
         if (this.destination !== null) {
-            let pX = this.x + this.width / 2;
-            let pY = this.y + this.height / 2;
+            let pX = this.x;
+            let pY = this.y;
 
             // To prevent costly calculations in case the player is already very close to the cursor, start with a check
             if (Math.abs(pX - this.destination.x / arcInc.pixiApp.stage.scale.x) < this.stats.effectiveMovementSpeed && Math.abs(pY - this.destination.y / arcInc.pixiApp.stage.scale.y) < this.stats.effectiveMovementSpeed) {
-                this.position.set(this.destination.x / arcInc.pixiApp.stage.scale.x - this.width / 2, this.destination.y / arcInc.pixiApp.stage.scale.y - this.height / 2);
+                this.position.set(this.destination.x / arcInc.pixiApp.stage.scale.x, this.destination.y / arcInc.pixiApp.stage.scale.y);
                 this.destination = null;
             } else {
 

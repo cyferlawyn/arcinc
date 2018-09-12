@@ -22,11 +22,12 @@ class BlackHole extends Ability {
         let playerContainer = arcInc.objectStore.get('playerContainer');
         let player = arcInc.objectStore.get('player');
         let blackHole= new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/BlackHole.png"].texture);
+
         blackHole.remainingFrames = 450;
         playerContainer.addChild(blackHole);
 
-        blackHole.x = player.x + player.width/2 - blackHole.width/2;
-        blackHole.y = player.y + player.height/2 - blackHole.height/2 - 250;
+        blackHole.x = player.x;
+        blackHole.y = player.y - 250;
         blackHole.anchor.set(0.5, 0.5);
         this.blackHoles.push(blackHole);
     }
