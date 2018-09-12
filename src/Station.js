@@ -13,7 +13,7 @@ class Station {
                 'title': 'Solar Panels',
                 'cost': 1100,
                 'effect': 8,
-                'description': 'Generates a static amount of credits each second. Slightly increases your ship\'s energy recharge rate.',
+                'description': 'Generates a static amount of credits each second. Slightly increases your ship\'s max energy.',
                 'effectTemplate': '+{EFFECT} $/s',
                 'requirements': []
             },
@@ -69,7 +69,7 @@ class Station {
                 'title': 'Antimatter Siphon',
                 'cost': 18000000000,
                 'effect': 4987284,
-                'description': 'Generates a static amount of credits each second.',
+                'description': 'Generates a static amount of credits each second. Also acts as a collection multiplier for Antimatter.',
                 'effectTemplate': '+{EFFECT} $/s',
                 'requirements': [{'type': 'modules', 'name': 'hangar', 'level': 1}]
             },
@@ -77,7 +77,7 @@ class Station {
                 'title': 'Warp Drive',
                 'cost': 190000000000,
                 'effect': 42424242,
-                'description': 'Generates a static amount of credits each second.',
+                'description': 'Generates a static amount of credits each second. Also unlocks the Warp-Button to prestige.',
                 'effectTemplate': '+{EFFECT} $/s',
                 'requirements': [{'type': 'modules', 'name': 'antimatterSiphon', 'level': 1}]
             }
