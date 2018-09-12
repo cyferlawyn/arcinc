@@ -23,10 +23,11 @@ class TacticalNuke extends Ability {
         let player = arcInc.objectStore.get('player');
         let tacticalNuke = new PIXI.Sprite(PIXI.Loader.shared.resources["assets/sprites/TacticalNuke.png"].texture);
         tacticalNuke.scale.set(0.5);
+        tacticalNuke.anchor.set(0.5, 0.5);
         playerContainer.addChild(tacticalNuke);
 
-        tacticalNuke.x = player.x + player.width/2 - tacticalNuke.width/2;
-        tacticalNuke.y = player.y + player.height/2 - tacticalNuke.height/2;
+        tacticalNuke.x = player.x;
+        tacticalNuke.y = player.y - player.height;
         this.tacticalNukes.push(tacticalNuke);
 
     }
