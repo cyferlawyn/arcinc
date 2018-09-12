@@ -303,8 +303,8 @@ class Player extends PIXI.Sprite {
             for (let i = 1; i <= this.stats.effectiveProjectileAmount; i++){
                 let radius = this.width/2;
                 let angle =  Math.PI/(this.stats.effectiveProjectileAmount+1) * i + Math.PI;
-                let x = Math.cos(angle) * radius + this.x + this.width/2;
-                let y = Math.sin(angle) * radius + this.y + this.height/2;
+                let x = Math.cos(angle) * radius + this.x;
+                let y = Math.sin(angle) * radius + this.y;
 
                 let vx = 0;
                 if (this.stats.effectiveProjectileAmount > 1) {
