@@ -38,10 +38,10 @@ class StatsAndFormulas {
         // Energy
         StatsAndFormulas.prepareCard(
             categoryCardBody,
-            'Effective Energy regeneration Per Tick',
-            '-> [Solar Panel Scaling] / 60',
-            '-> [' + Utils.evStat('solarPanelScaling') + '] / 60',
-            '-> ' + Utils.evStat('effectiveEnergyRegenerationPerTick'));
+            'Effective Max Energy',
+            '-> 100 * 0.1 * [Solar Panel Scaling]',
+            '-> 100 * 0.1 * [' + Utils.evStat('solarPanelScaling') + ']',
+            '-> ' + Utils.evStat('effectiveMaxEnergy'));
 
         // Antimatter
         StatsAndFormulas.prepareCard(

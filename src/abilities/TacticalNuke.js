@@ -1,7 +1,7 @@
 class TacticalNuke extends Ability {
     constructor() {
         super();
-        this.energyConsumption = 50;
+        this.energyConsumption = 30;
         this.tacticalNukes = [];
     }
 

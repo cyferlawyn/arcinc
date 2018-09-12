@@ -1,7 +1,7 @@
 class PlayerStats {
     calculate() {
         // Module based scaling
-        this.solarPanelScaling =  0.005 *  (this.ml('solarPanels'));
+        this.solarPanelScaling =  0.1 *  (this.ml('solarPanels'));
         this.factoryScaling = 1 + 0.5 * (this.ml('factory'));
 
         // Upgrade based scaling
@@ -47,8 +47,8 @@ class PlayerStats {
         // effective stats
         this.effectiveMovementSpeed = 10 + this.movementSpeed;
 
-        this.effectiveMaxEnergy = 100;
-        this.effectiveEnergyRegenerationPerTick = this.solarPanelScaling / 60;
+        this.effectiveMaxEnergy = 100 + 1 * this.solarPanelScaling;
+        this.effectiveEnergyRegenerationPerTick = 5 / 60;
 
         this.effectiveMaxShield = 100 * this.maxShield * this.plasmaField * this.lifeSupportSystems * this.factoryScaling * this.antimatterScaling;
         this.effectiveMaxArmor = 750 * this.maxArmor * this.titaniumAlloy * this.lifeSupportSystems * this.factoryScaling * this.antimatterScaling;

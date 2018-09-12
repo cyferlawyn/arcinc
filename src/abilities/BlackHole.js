@@ -1,7 +1,7 @@
 class BlackHole extends Ability {
     constructor() {
         super();
-        this.energyConsumption = 100;
+        this.energyConsumption = 75;
         this.blackHoles = [];
     }
 
@@ -34,7 +34,6 @@ class BlackHole extends Ability {
     updateBlackHoles(frameDelta) {
         let enemyContainer = arcInc.objectStore.get('enemyContainer');
         let enemyProjectileContainer = arcInc.objectStore.get('enemyProjectileContainer');
-        //let playerProjectileContainer = arcInc.objectStore.get('playerProjectileContainer');
 
         for (let i = this.blackHoles.length - 1; i >= 0; i--) {
             let blackHole = this.blackHoles[i];
@@ -68,18 +67,6 @@ class BlackHole extends Ability {
                         }
                     }
                 }
-
-                /*
-                for (let playerProjectileIndex = playerProjectileContainer.children.length - 1; playerProjectileIndex >= 0; playerProjectileIndex--) {
-                    let playerProjectile = playerProjectileContainer.children[playerProjectileIndex];
-                    if (playerProjectile.visible) {
-                        let normVector = Utils.getNormVector(blackHole, playerProjectile);
-                        let distance = Utils.getDistance(blackHole, playerProjectile);
-                        playerProjectile.x += normVector.vx * 10 * (50 / Math.max(25, distance)) * frameDelta;
-                        playerProjectile.y += normVector.vy * 10 * (50 / Math.max(25, distance)) * frameDelta;
-                    }
-                }
-                */
             }
         }
     }
