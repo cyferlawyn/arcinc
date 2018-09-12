@@ -6,7 +6,7 @@ class Player extends PIXI.Sprite {
             'burnChance': {
                 'title': 'Burn Chance',
                 'cost': 1e6,
-                'description': 'Chance that the enemy catches fire upon impact, dealing 1% of [Projectile Damage] each tick. Stacks additive',
+                'description': 'Chance that the enemy catches fire upon impact, dealing 1% of [Projectile Damage] each tick. Stacks additive.',
                 'effectTemplate': '{EFFECT}% chance',
                 'cap': 400,
                 'requirements': [{'type': 'upgrades', 'name': 'clusterAmmunition', 'level': 1}]
@@ -14,7 +14,7 @@ class Player extends PIXI.Sprite {
             'freezeChance': {
                 'title': 'Freeze Chance',
                 'cost': 1e6,
-                'description': 'Chance that the enemy is frozen, which reduces his movement speed by 2% per hit. Stacks multiplicative',
+                'description': 'Chance that the enemy is frozen, which reduces his movement speed by 2% per hit. Stacks multiplicative.',
                 'effectTemplate': '{EFFECT}% chance',
                 'cap': 400,
                 'requirements': [{'type': 'upgrades', 'name': 'clusterAmmunition', 'level': 1}]
@@ -23,14 +23,14 @@ class Player extends PIXI.Sprite {
             'projectileDamage': {
                 'title': 'Projectile Damage',
                 'cost': 5e7,
-                'description': 'Increases the projectile damage',
+                'description': 'Increases your ship\'s weapon damage.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
             },
             'criticalHitChance': {
                 'title': 'Critical Hit Chance',
                 'cost': 5e7,
-                'description': 'Chance to perform a critical hit',
+                'description': 'Chance to perform a critical hit.',
                 'effectTemplate': '{EFFECT}% chance',
                 'cap': 400,
                 'requirements': [{'type': 'upgrades', 'name': 'clusterAmmunition', 'level': 1}]
@@ -38,21 +38,21 @@ class Player extends PIXI.Sprite {
             'criticalHitDamage': {
                 'title': 'Critical Hit Damage',
                 'cost': 5e9,
-                'description': 'Increases the damage dealt when performing a critical hit',
+                'description': 'Increases the damage dealt when performing a critical hit.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'criticalHitChance', 'level': 1}]
             },
             'clusterAmmunition': {
                 'title': 'Cluster Ammunition',
                 'cost': 5e12,
-                'description': 'Increases the projectile damage',
+                'description': 'Increases your ship\'s weapon damage.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'projectileDamage', 'level': 1}]
             },
             'tacticalWarhead': {
                 'title': 'Tactical Warhead',
                 'cost': 1e30,
-                'description': 'Increases the projectile damage',
+                'description': 'Increases your ship\'s weapon damage.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'projectileDamage', 'level': 1}]
             },
@@ -61,21 +61,21 @@ class Player extends PIXI.Sprite {
             'rateOfFire': {
                 'title': 'Rate of Fire',
                 'cost': 5e2,
-                'description': 'Increases the projectile fire rate',
+                'description': 'Increases how fast your ship can fire.',
                 'effectTemplate': '{EFFECT} shots/60ticks',
                 'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
             },
             'projectileAmount': {
                 'title': 'Projectile Amount',
                 'cost': 5e4,
-                'description': 'Increases the amount of projectiles to up to 5. Subsequent levels instead increase the projectile damage further',
+                'description': 'Increases the amount of projectiles to up to 5. Subsequent levels increase your ship\'s weapon damage further instead.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'rateOfFire', 'level': 1}]
             },
             'projectilePierceChance': {
                 'title': 'Projectile Pierce Chance',
                 'cost': 5e4,
-                'description': 'Chance that the projectile is not consumed upon impact. Can not hit the same enemy multiple times',
+                'description': 'Increases the chance your ship\'s projectiles pierce through enemy ships. Can not hit the same enemy multiple times.',
                 'effectTemplate': '{EFFECT}% chance',
                 'cap': 400,
                 'requirements': [{'type': 'upgrades', 'name': 'projectileAmount', 'level': 1}]
@@ -83,7 +83,7 @@ class Player extends PIXI.Sprite {
             'projectileForkChance': {
                 'title': 'Projectile Fork Chance',
                 'cost': 5e5,
-                'description': 'Chance that the projectile is split into 3 upon impact. Can not hit the same enemy multiple times',
+                'description': 'Increases the chance your ship\'s projectiles split into 3 on impact. Can not hit the same enemy multiple times.',
                 'effectTemplate': '{EFFECT}% chance',
                 'cap': 400,
                 'requirements': [{'type': 'upgrades', 'name': 'projectilePierceChance', 'level': 1}]
@@ -91,7 +91,7 @@ class Player extends PIXI.Sprite {
             'projectileSpread': {
                 'title': 'Projectile Spread',
                 'cost': 5e7,
-                'description': 'Increases the spread in case more than 1 projectile is fired at once',
+                'description': 'Increases the spread when more than 1 projectile is fired at once.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'projectileAmount', 'level': 1}]
             },
@@ -100,36 +100,36 @@ class Player extends PIXI.Sprite {
             'maxShield': {
                 'title': 'Shield Amount',
                 'cost': 5e4,
-                'description': 'Increases the Maximum Shield',
+                'description': 'Increases the amount of damage your ship\'s shields can sustain.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
             },
             'shieldRechargeTime': {
                 'title': 'Shield Recharge',
                 'cost': 5e2,
-                'description': 'Decreases the Shield Recharge Time (<i>Aka increases the shield regeneration per frame</i>)',
+                'description': 'Improves how fast your ship\'s shields repair themselves.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'maxShield', 'level': 1}]
             },
             'shieldRechargeAccelerator': {
                 'title': 'Shield Recharge Accelerator',
                 'cost': 5e6,
-                'description': 'When not being hit for 300 frames, decreases the Shield Recharge Time substantially (<i>Aka increases the shield regeneration per frame</i>)',
+                'description': 'Significantly increases your ship\'s shield repair rate after not taking damage for 3 seconds.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'shieldRechargeTime', 'level': 1}]
             },
             'plasmaField': {
                 'title': 'Plasma Field',
                 'cost': 1e9,
-                'description': 'Increases the Maximum Shield',
+                'description': 'Increases the amount of damage your ship\'s shields can sustain.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'maxShield', 'level': 1}]
             },
             'overshieldChance': {
                 'title': 'Overshield Chance',
                 'cost': 1e9,
-                'description': 'Chance that a hit is fully absorbed by the shield without affecting armor . ' +
-                    'Requires full shield to trigger and will deplete the whole shield bar',
+                'description': 'Chance that a hit is fully absorbed by your ship\'s shield without affecting armor. ' +
+                    'Requires your shield to be full to trigger and will deplete the whole shield bar.',
                 'effectTemplate': '{EFFECT}% chance',
                 'cap': 400,
                 'requirements': [{'type': 'upgrades', 'name': 'plasmaField', 'level': 1}]
@@ -139,21 +139,21 @@ class Player extends PIXI.Sprite {
             'maxArmor': {
                 'title': 'Armor Amount',
                 'cost': 5e4,
-                'description': 'Increases the Maximum Armor',
+                'description': 'Increases your ship\'s maximum armor.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
             },
             'armorPlating': {
                 'title': 'Armor Plating',
                 'cost': 5e6,
-                'description': 'Reduces armor  damage taken by an absolute value',
+                'description': 'Reduces the damage dealt to your ship\'s armor by a flat amount.',
                 'effectTemplate': '{EFFECT} abs. reduction',
                 'requirements': [{'type': 'upgrades', 'name': 'maxArmor', 'level': 1}]
             },
             'titaniumAlloy': {
                 'title': 'Titanium Alloy',
                 'cost': 1e9,
-                'description': 'Increases the Maximum Armor',
+                'description': 'Increases your ship\'s maximum armor.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'maxArmor', 'level': 1}]
             },
@@ -162,7 +162,7 @@ class Player extends PIXI.Sprite {
             'lifeSupportSystems': {
                 'title': 'Life Support Systems',
                 'cost': 1e30,
-                'description': 'Increases the strength of both, Shield and Armor',
+                'description': 'Improves both your ship\'s shield and armor.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
             },
@@ -170,7 +170,7 @@ class Player extends PIXI.Sprite {
             'repulsorField': {
                 'title': 'Repulsor Field',
                 'cost': 5e10,
-                'description': 'Reduces all incoming damage by a relative amount',
+                'description': 'Reduces <b>all</b> incoming damage to your ship by a relative amount.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'cap': 520,
                 'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
@@ -180,14 +180,14 @@ class Player extends PIXI.Sprite {
             'movementSpeed': {
                 'title': 'Movement Speed',
                 'cost': 5e2,
-                'description': 'Increases the Movement Speed',
+                'description': 'Improves your ship\'s movement speed and handling.',
                 'effectTemplate': '{EFFECT} pixel/tick',
                 'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
             },
             'salvager': {
                 'title': 'Salvager',
                 'cost': 5e10,
-                'description': 'Increases the credits gained for killing enemies by salvaging the wreckage',
+                'description': 'Profit from your enemies\' misfortune! Increases your money earned per kill.',
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'movementSpeed', 'level': 1}]
             }
