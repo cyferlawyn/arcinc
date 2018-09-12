@@ -159,7 +159,21 @@ class ArcInc {
                 }
             }
 
-            if (this.savegame.version !== 'v0.17') {
+            if (this.savegame.version === 'v0.17') {
+                this.savegame.version = 'v0.18';
+            }
+
+            if (this.savegame.version === 'v0.18') {
+                this.savegame.version = 'v0.19';
+            }
+
+            if (this.savegame.version === 'v0.19') {
+                this.savegame.version = 'v0.20';
+                this.savegame.upgrades.tacticalWarhead = 0;
+                this.savegame.upgrades.lifeSupportSystems = 0;
+            }
+
+            if (this.savegame.version !== 'v0.20') {
                 this.savegame = new Savegame();
             }
         }

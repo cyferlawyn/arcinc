@@ -49,6 +49,13 @@ class Player extends PIXI.Sprite {
                 'effectTemplate': '{EFFECT}x multiplier',
                 'requirements': [{'type': 'upgrades', 'name': 'projectileDamage', 'level': 1}]
             },
+            'tacticalWarhead': {
+                'title': 'Tactical Warhead',
+                'cost': 1e30,
+                'description': 'Increases the projectile damage',
+                'effectTemplate': '{EFFECT}x multiplier',
+                'requirements': [{'type': 'upgrades', 'name': 'projectileDamage', 'level': 1}]
+            },
 
             // Offense (Hit amount)
             'rateOfFire': {
@@ -152,6 +159,14 @@ class Player extends PIXI.Sprite {
             },
 
             // Defense (General)
+            'lifeSupportSystems': {
+                'title': 'Life Support Systems',
+                'cost': 1e30,
+                'description': 'Increases the strength of both, Shield and Armor',
+                'effectTemplate': '{EFFECT}x multiplier',
+                'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
+            },
+
             'repulsorField': {
                 'title': 'Repulsor Field',
                 'cost': 5e10,

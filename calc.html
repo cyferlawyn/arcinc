@@ -1,143 +1,240 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Calc</title>
+    <link rel="stylesheet" href="lib/css/bootstrap.min.css">
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            let perks = [
-                {
-                    "name": "projectileDamage",
-                    "baseCost": 50000000,
-                    "level": 0,
-                    "weight": 0.75
-                },
-                {
-                    "name": "clusterAmmunition",
-                    "baseCost": 5000000000000,
-                    "level": 0,
-                    "weight": 0.5
-                },
-                {
-                    "name": "projectileAmount",
-                    "baseCost": 50000,
-                    "level": 0,
-                    "weight": 1
-                },
-                {
-                    "name": "criticalHitDamage",
-                    "baseCost": 5000000000,
-                    "level": 0,
-                    "weight": 0.5
-                },
-                {
-                    "name": "factory",
-                    "baseCost": 250,
-                    "level": 0,
-                    "weight": 0.5
-                }
-            ];
-
-            let findBestPerk = function(perks) {
-                let bestPick = -1;
-                let weight = 0;
-
-                perks.forEach(function(perk, index) {
-                    let perkCost = perk.baseCost * 1.03**perk.level;
-                    let currentWeight = perk.weight / perkCost;
-                    if (currentWeight > weight) {
-                        weight = currentWeight;
-                        bestPick = index;
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("button").addEventListener("click", function() {
+                let offensivePerks = [
+                    {
+                        "name": "factory",
+                        "baseCost": 1e2,
+                        "level": 0,
+                        "weight": 0.5
+                    },
+                    {
+                        "name": "projectileAmount",
+                        "baseCost": 5e4,
+                        "level": 0,
+                        "weight": 1
+                    },
+                    {
+                        "name": "projectileDamage",
+                        "baseCost": 5e7,
+                        "level": 0,
+                        "weight": 0.75
+                    },
+                    {
+                        "name": "criticalHitDamage",
+                        "baseCost": 5e9,
+                        "level": 0,
+                        "weight": 0.5
+                    },
+                    {
+                        "name": "clusterAmmunition",
+                        "baseCost": 5e12,
+                        "level": 0,
+                        "weight": 0.5
+                    },
+                    {
+                        "name": "tacticalWarhead",
+                        "baseCost": 1e30,
+                        "level": 0,
+                        "weight": 5
                     }
-                });
+                ];
 
-                return bestPick;
-            };
+                let defensivePerks = [
+                    {
+                        "name": "maxShield",
+                        "baseCost": 5e4,
+                        "level": 0,
+                        "weight": 0.5
+                    },
+                    {
+                        "name": "plasmaField",
+                        "baseCost": 1e9,
+                        "level": 0,
+                        "weight": 1
+                    },
+                    {
+                        "name": "maxArmor",
+                        "baseCost": 5e4,
+                        "level": 0,
+                        "weight": 0.5
+                    },
+                    {
+                        "name": "titaniumAlloy",
+                        "baseCost": 1e9,
+                        "level": 0,
+                        "weight": 1
+                    },
+                    {
+                        "name": "lifeSupportSystems",
+                        "baseCost": 1e30,
+                        "level": 0,
+                        "weight": 1
+                    },
+                    {
+                        "name": "nanoCapacitors",
+                        "baseCost": 1e50,
+                        "level": 0,
+                        "weight": 0.25
+                    }
+                ];
 
-            let tr = function(tableBody) {
-                let tableRow = document.createElement('tr');
-                tableBody.appendChild(tableRow);
-                return tableRow;
-            };
+                let findBestPerk = function(perks) {
+                    let bestPick = -1;
+                    let weight = 0;
 
-            let td = function(tableRow, textContent) {
-                let td = document.createElement('td');
-                td.textContent = textContent;
-                tableRow.appendChild(td);
-            };
+                    perks.forEach(function(perk, index) {
+                        let perkCost = perk.baseCost * 1.03**perk.level;
+                        let currentWeight = perk.weight / perkCost;
+                        if (currentWeight > weight) {
+                            weight = currentWeight;
+                            bestPick = index;
+                        }
+                    });
 
-            let tableBody = document.getElementById("table-body");
+                    return bestPick;
+                };
 
-            let enemyCreditsTotal = 0;
-            let playerCreditsTotal = 0;
+                let buyBestPerks = function(perks, budget) {
+                    let bestPick = findBestPerk(perks);
+                    let bestPickCost = perks[bestPick].baseCost * 1.03**perks[bestPick].level;
 
-            let bestPick = findBestPerk(perks);
+                    while (bestPickCost < budget) {
+                        perks[bestPick].level++;
+                        budget -= bestPickCost;
+                        bestPick = findBestPerk(perks);
+                        if (bestPick === -1) {
+                            break;
+                        }
+                        bestPickCost = perks[bestPick].baseCost * 1.03**perks[bestPick].level;
+                    }
+                };
 
-            for (let i = 1; i < 2001; i++) {
-                let tableRow = tr(tableBody);
+                let tr = function(tableBody) {
+                    let tableRow = document.createElement('tr');
+                    tableBody.appendChild(tableRow);
+                    return tableRow;
+                };
 
-                td(tableRow, i);
+                let td = function(tableRow, textContent) {
+                    let td = document.createElement('td');
+                    td.textContent = textContent;
+                    tableRow.appendChild(td);
+                };
 
-                let enemyHealth = Math.floor(10 * 1.03**i);
-                let enemyDamage = Math.floor(5 * 1.03**i);
-                let enemyCredits = 25 * Math.floor(10 * 1.03**i);
-
-                td(tableRow, enemyHealth);
-                td(tableRow, enemyDamage);
-                td(tableRow, enemyCredits);
-                td(tableRow, enemyCreditsTotal);
-                td(tableRow, playerCreditsTotal);
-
-                let bestPickCost = perks[bestPick].baseCost * 1.03**perks[bestPick].level;
-
-                while (bestPickCost < playerCreditsTotal) {
-                    perks[bestPick].level++;
-                    playerCreditsTotal -= bestPickCost;
-                    bestPick = findBestPerk(perks);
+                let tableBody = document.getElementById("table-body");
+                while (tableBody.children.length > 0) {
+                    tableBody.removeChild(tableBody.lastChild);
                 }
 
-                let projectileDamage = 1 + perks[0].level * perks[0].weight;
-                let clusterAmmunition = 1 + perks[1].level * perks[1].weight;
-                let effectiveProjectileAmountCompensation = 1 + perks[2].level * perks[2].weight;
-                let criticalHitDamage = 1 + perks[3].level * perks[3].weight;
-                let factoryScaling = 1 + perks[4].level * perks[4].weight;
-                let effectiveProjectileDamage = 10 * projectileDamage * clusterAmmunition * effectiveProjectileAmountCompensation * criticalHitDamage * factoryScaling;
+                let playerCreditsTotal = parseFloat(document.getElementById('credits').value);
+                let offensiveBudget = playerCreditsTotal/2;
+                let defensiveBudget = playerCreditsTotal/2;
 
-                td(tableRow, effectiveProjectileDamage);
-                td(tableRow, perks[0].level);
-                td(tableRow, perks[1].level);
-                td(tableRow, perks[2].level);
-                td(tableRow, perks[3].level);
-                td(tableRow, perks[4].level);
-                td(tableRow, enemyHealth / (5 * effectiveProjectileDamage));
+                buyBestPerks(offensivePerks, offensiveBudget);
+                buyBestPerks(defensivePerks, defensiveBudget);
 
-                enemyCreditsTotal += enemyCredits;
-                playerCreditsTotal += enemyCredits;
-            }
+                let salvager = 1 + 0.025 * parseFloat(document.getElementById("salvager").value);
+
+                let factoryScaling = 1 + offensivePerks[0].level * offensivePerks[0].weight;
+                let antimatterScaling = 1 + 0.01 * parseFloat(document.getElementById('antimatter').value);
+
+                let effectiveProjectileAmountCompensation = 1 + offensivePerks[1].level * offensivePerks[1].weight;
+                let projectileDamage = 1 + offensivePerks[2].level * offensivePerks[2].weight;
+                let criticalHitDamage = 1 + offensivePerks[3].level * offensivePerks[3].weight;
+                let clusterAmmunition = 1 + offensivePerks[4].level * offensivePerks[4].weight;
+                let tacticalWarhead = 1 + offensivePerks[5].level * offensivePerks[5].weight;
+                let effectiveProjectileDamage = 10 * projectileDamage * clusterAmmunition * effectiveProjectileAmountCompensation * criticalHitDamage * tacticalWarhead * factoryScaling * antimatterScaling;
+
+
+                let maxShield = 1 + defensivePerks[0].level * offensivePerks[0].weight;
+                let plasmaField = 1 + defensivePerks[1].level * offensivePerks[1].weight;
+                let maxArmor = 1 + defensivePerks[2].level * offensivePerks[2].weight;
+                let titaniumAlloy = 1 + defensivePerks[3].level * offensivePerks[3].weight;
+                let lifeSupportSystems = 1 + defensivePerks[4].level * offensivePerks[4].weight;
+                let nanoCapacitors = 1 + defensivePerks[5].level * offensivePerks[5].weight;
+                let effectiveMaxShield = 100 * maxShield * plasmaField * lifeSupportSystems * nanoCapacitors * factoryScaling * antimatterScaling;
+                let effectiveMaxArmor = 750 * maxArmor * titaniumAlloy * lifeSupportSystems * nanoCapacitors * factoryScaling * antimatterScaling;
+
+                for (let i = 1; i < 5001; i++) {
+                    let enemyHealth = Math.floor(10 * 1.03**i);
+                    let enemyDamage = Math.floor(5 * 1.03**i) * 0.0001;
+                    let enemyCredits = Math.floor(10 * 1.03**i) * salvager;
+                    let hitsToKill = enemyHealth / effectiveProjectileDamage;
+                    let hitsToDie = (effectiveMaxArmor + effectiveMaxShield) / enemyDamage;
+
+                    if (hitsToKill > 0.01 && hitsToKill < 100) {
+                        let tableRow = tr(tableBody);
+
+                        td(tableRow, i);
+
+                        td(tableRow, enemyHealth.toExponential(3));
+                        td(tableRow, enemyDamage.toExponential(3));
+                        td(tableRow, enemyCredits.toExponential(3));
+
+                        td(tableRow, offensivePerks[0].level);
+                        td(tableRow, offensivePerks[1].level);
+                        td(tableRow, offensivePerks[2].level);
+                        td(tableRow, offensivePerks[3].level);
+                        td(tableRow, offensivePerks[4].level);
+                        td(tableRow, offensivePerks[5].level);
+                        td(tableRow, effectiveProjectileDamage.toExponential(3));
+                        td(tableRow, hitsToKill.toFixed(3));
+
+                        td(tableRow, defensivePerks[0].level);
+                        td(tableRow, defensivePerks[1].level);
+                        td(tableRow, defensivePerks[2].level);
+                        td(tableRow, defensivePerks[3].level);
+                        td(tableRow, defensivePerks[4].level);
+                        td(tableRow, defensivePerks[5].level);
+                        td(tableRow, effectiveMaxShield.toExponential(3));
+                        td(tableRow, effectiveMaxArmor.toExponential(3));
+                        td(tableRow, hitsToDie.toFixed(3));
+                    }
+                }
+            });
         });
     </script>
 </head>
 <body>
     <div id="root">
-        <table>
+        <label for="credits">Credits</label><input id="credits" type="text" value="1e32" />
+        <label for="salvager">Salvager</label><input id="salvager" type="text" value="1850" />
+        <label for="antimatter">Antimatter</label><input id="antimatter" type="text" value="1e14" />
+        <input id ="button" type="button" class="btn" value="Calculate" />
+        <table class="table">
             <thead>
                 <tr>
                     <th>Wave</th>
                     <th>Enemy Health</th>
                     <th>Enemy Damage</th>
                     <th>Enemy Credits</th>
-                    <th>Enemy Credits Total</th>
-                    <th>Player Credits Total</th>
-                    <th>Effective Projectile Damage</th>
-                    <th>Projectile Damage</th>
-                    <th>Cluster Ammunition</th>
-                    <th>Effective Projectile Amount Compensation</th>
-                    <th>Critical Hit Damage</th>
                     <th>Factory</th>
-                    <th>Killtime [s]</th>
+                    <th>Projectile Amount</th>
+                    <th>Projectile Damage</th>
+                    <th>Critical Hit Damage</th>
+                    <th>Cluster Ammunition</th>
+                    <th>Tactical Warhead</th>
+                    <th>Effective Projectile Damage</th>
+                    <th>Hits to kill</th>
+                    <th>Plasma Field</th>
+                    <th>Hits to kill</th>
+                    <th>Max Armor</th>
+                    <th>Titanium Alloy</th>
+                    <th>Life Support Systems</th>
+                    <th>Nano Capacitors</th>
+                    <th>Effective Max Shield</th>
+                    <th>Effective Max Armor</th>
+                    <th>Hits to die</th>
                 </tr>
             </thead>
-            <tbody id="table-body"></tbody>
+            <tbody id="table-body" />
         </table>
     </div>
 </body>

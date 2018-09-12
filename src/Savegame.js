@@ -1,6 +1,6 @@
 class Savegame {
     constructor() {
-        this.version = 'v0.17';
+        this.version = 'v0.20';
         this.highestWave = 0;
         this.highestWaveEver = 0;
         this.credits = 0;
@@ -16,10 +16,12 @@ class Savegame {
             'maxArmor': 0,
             'armorPlating': 0,
             'titaniumAlloy': 0,
+            'lifeSupportSystems': 0,
             'repulsorField': 0,
             'rateOfFire': 0,
             'projectileDamage': 0,
             'clusterAmmunition': 0,
+            'tacticalWarhead': 0,
             'projectileAmount': 0,
             'projectileSpread': 0,
             'criticalHitChance': 0,
