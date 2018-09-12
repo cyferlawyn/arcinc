@@ -260,20 +260,20 @@ class Player extends PIXI.Sprite {
             }
 
             // Enforce boundaries
-            if (this.x + this.width > this.boundaryWidth) {
-                this.x = this.boundaryWidth - this.width;
+            if (this.x + this.width/2 > this.boundaryWidth) {
+                this.x = this.boundaryWidth - this.width/2;
             }
 
-            if (this.y + this.height > this.boundaryHeight) {
-                this.y = this.boundaryHeight - this.height;
+            if (this.y + this.height/2 > this.boundaryHeight) {
+                this.y = this.boundaryHeight - this.height/2;
             }
 
-            if (this.x < 0) {
-                this.x = 0;
+            if (this.x - this.width/2 < 0) {
+                this.x = this.width/2;
             }
 
-            if (this.y < 0) {
-                this.y = 0;
+            if (this.y - this.height/2 < 0) {
+                this.y = this.height/2;
             }
         }
     }
