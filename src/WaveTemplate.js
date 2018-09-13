@@ -32,7 +32,7 @@ class WaveTemplate
         }
 
         let asteroidRoll = Math.random() * 1000;
-        if (asteroidRoll < 10) {
+        if (asteroidRoll < 15) {
             let x = Math.random() * 2 - 0.5;
             let vx = 4 * (0.5 - x);
 
@@ -42,7 +42,7 @@ class WaveTemplate
             asteroid.y = Utils.getEffectiveScreenHeight() * -0.25;
 
             asteroid.vx = 4 * (0.5 - x);
-            asteroid.vy = 2;
+            asteroid.vy = 4;
 
             // Prevent asteroids from keeping the wave open
             asteroid.stats.wave = 0;
