@@ -98,6 +98,7 @@ class ArcInc {
         Chat.prepare(parent);
         Leaderboard.prepare(parent);
         Antimatter.prepare(parent);
+        Acquisitions.prepare(parent);
         StationModules.prepare(parent);
         ShipUpgrades.prepare(parent);
         StatsAndFormulas.prepare(parent);
@@ -186,7 +187,50 @@ class ArcInc {
                 this.savegame.talents.waveCompressionThreshold = 0;
             }
 
-            if (this.savegame.version !== 'v0.21') {
+            if (this.savegame.version === "v0.21") {
+                this.savegame.version = "v0.22";
+                this.savegame.config = {
+                    "acquisitions": [
+                        {"category": "modules", "name": "factory", "skip": false},
+                        {"category": "modules", "name": "solarPanels", "skip": false},
+                        {"category": "modules", "name": "scienceLab", "skip": false},
+                        {"category": "modules", "name": "crewQuarters", "skip": false},
+                        {"category": "modules", "name": "waterTreatmentPlant", "skip": false},
+                        {"category": "modules", "name": "teleporter", "skip": false},
+                        {"category": "modules", "name": "droneBay", "skip": false},
+                        {"category": "modules", "name": "hangar", "skip": false},
+                        {"category": "modules", "name": "antimatterSiphon", "skip": false},
+                        {"category": "modules", "name": "warpDrive", "skip": false},
+
+                        {"category": "upgrades", "name": "movementSpeed", "skip": false},
+                        {"category": "upgrades", "name": "maxShield", "skip": false},
+                        {"category": "upgrades", "name": "shieldRechargeTime", "skip": false},
+                        {"category": "upgrades", "name": "shieldRechargeAccelerator", "skip": false},
+                        {"category": "upgrades", "name": "overshieldChance", "skip": false},
+                        {"category": "upgrades", "name": "plasmaField", "skip": false},
+                        {"category": "upgrades", "name": "maxArmor", "skip": false},
+                        {"category": "upgrades", "name": "armorPlating", "skip": false},
+                        {"category": "upgrades", "name": "titaniumAlloy", "skip": false},
+                        {"category": "upgrades", "name": "lifeSupportSystems", "skip": false},
+                        {"category": "upgrades", "name": "repulsorField", "skip": false},
+                        {"category": "upgrades", "name": "rateOfFire", "skip": false},
+                        {"category": "upgrades", "name": "projectileDamage", "skip": false},
+                        {"category": "upgrades", "name": "clusterAmmunition", "skip": false},
+                        {"category": "upgrades", "name": "tacticalWarhead", "skip": false},
+                        {"category": "upgrades", "name": "projectileAmount", "skip": false},
+                        {"category": "upgrades", "name": "projectileSpread", "skip": true},
+                        {"category": "upgrades", "name": "criticalHitChance", "skip": false},
+                        {"category": "upgrades", "name": "criticalHitDamage", "skip": false},
+                        {"category": "upgrades", "name": "projectilePierceChance", "skip": false},
+                        {"category": "upgrades", "name": "projectileForkChance", "skip": false},
+                        {"category": "upgrades", "name": "freezeChance", "skip": true},
+                        {"category": "upgrades", "name": "burnChance", "skip": false},
+                        {"category": "upgrades", "name": "salvager", "skip": false}
+                    ]
+                };
+            }
+
+            if (this.savegame.version !== 'v0.22') {
                 this.savegame = new Savegame();
             }
         }
