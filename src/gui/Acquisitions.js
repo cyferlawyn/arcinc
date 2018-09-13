@@ -40,11 +40,16 @@ class Acquisitions {
                             if (acquisition.category === "upgrades") {
                                 let value = arcInc.objectStore.get("player").upgrades[acquisition.name];
                                 effectiveCost = Math.ceil(value.cost * Math.pow(value.growthFactor, arcInc.savegame.upgrades[acquisition.name]));
-
+                                if (value.cap !== undefined && arcInc.savegame.upgrades[acquisition.name] >= value.cap){
+                                    break;
+                                }
                             }
                             if (acquisition.category === "modules") {
                                 let value = arcInc.station.modules[acquisition.name];
                                 effectiveCost = Math.ceil(value.cost * Math.pow(value.growthFactor, arcInc.savegame.modules[acquisition.name]));
+                                if (value.cap !== undefined && arcInc.savegame.modules[acquisition.name] >= value.cap){
+                                    break;
+                                }
                             }
 
                             if (arcInc.savegame.credits >= effectiveCost) {
