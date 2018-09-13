@@ -32,7 +32,7 @@ class Acquisitions {
                 if (Math.round(progressBar.progress) >= 100) {
                     progressBar.progress = 0;
 
-                    let acquired = false;
+                    let capped = false;
 
                     for (let acquisition of arcInc.savegame.config.acquisitions) {
                         if (!acquisition.skip) {
@@ -40,22 +40,19 @@ class Acquisitions {
                             if (acquisition.category === "upgrades") {
                                 let value = arcInc.objectStore.get("player").upgrades[acquisition.name];
                                 effectiveCost = Math.ceil(value.cost * Math.pow(value.growthFactor, arcInc.savegame.upgrades[acquisition.name]));
-                                if (value.cap !== undefined && arcInc.savegame.upgrades[acquisition.name] > value.cap){
-                                    break;
-                                }
+                                capped =  (value.cap !== undefined && arcInc.savegame.upgrades[acquisition.name] >= value.cap)
                             }
                             if (acquisition.category === "modules") {
                                 let value = arcInc.station.modules[acquisition.name];
                                 effectiveCost = Math.ceil(value.cost * Math.pow(value.growthFactor, arcInc.savegame.modules[acquisition.name]));
-                                if (value.cap !== undefined && arcInc.savegame.modules[acquisition.name] > value.cap){
-                                    break;
-                                }
+                                capped = (value.cap !== undefined && arcInc.savegame.modules[acquisition.name] >= value.cap)
                             }
 
-                            if (arcInc.savegame.credits >= effectiveCost) {
+                            if (!capped && arcInc.savegame.credits >= effectiveCost) {
                                 arcInc.savegame.credits -= effectiveCost;
                                 arcInc.savegame[acquisition.category][acquisition.name]++;
                                 arcInc.saveSavegame();
+                                arcInc.objectStore.get('player').applyUpgrades();
 
                                 arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
 
@@ -72,18 +69,12 @@ class Acquisitions {
                                         'level': arcInc.savegame.modules[acquisition.name]
                                     });
                                 }
-
-                                acquired = true;
                             }
                         }
                     }
-
-                    if (acquired) {
-                        arcInc.objectStore.get('player').applyUpgrades();
-                    }
                 }
             }
-        }, 100);
+        }, 10);
 
         let scrollBlock = document.createElement('div');
         scrollBlock.style.maxHeight = '200px';
