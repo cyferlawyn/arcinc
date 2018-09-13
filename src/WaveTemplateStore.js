@@ -1,40 +1,41 @@
 class WaveTemplateStore {
-    static fromBitMask(mask, type, wave, compress) {
+    static fromBitMask(mask, type, lastWave) {
         let keyFrames = [];
-        let repetitions = 1;
-        if (compress) {
-            repetitions = 10;
-        }
 
-        for (let rep = 1; rep <= repetitions; rep++) {
-            if (wave % 10 === 0 && rep === 1) {
-                if (wave % 1000 === 0) {
-                    keyFrames.push(new KeyFrame(150, {"operation": "spawnBoss", "reference": "Boss", "type": "bossX000", "wave": wave}));
-                } else if (wave % 100 === 0) {
-                    keyFrames.push(new KeyFrame(150, {"operation": "spawnBoss", "reference": "Boss", "type": "bossX00", "wave": wave}));
-                }else {
-                    keyFrames.push(new KeyFrame(150, {"operation": "spawnBoss", "reference": "Boss", "type": "bossX0", "wave": wave}));
-                }
-            } else {
-                for (let i = mask.length - 1; i >= 0; i--) {
-                    for (let j = 0; j < mask[i].length; j++) {
-                        if (mask[i][j] === "*") {
-                            let frame = ((mask.length * rep) - i) * (300/(mask.length * repetitions));
-                            let x = 1 / (mask[i].length+1) * (j+1);
-                            keyFrames.push(new KeyFrame(frame, {"operation": "spawnEnemy", "reference": type + ((j + 1) * (i + 1)), "type": type, "wave": wave, "x": x, "y": -0.25, "vx": 0, "vy": 2}));
-                        }
-                    }
-                }
+        let wavesToSpawn = 1;
+        if (lastWave < arcInc.antimatterTalents.waveCompressionThreshold)
+        {
+            wavesToSpawn = arcInc.antimatterTalents.waveCompressionStrength;
+        }
+        let targetWave = lastWave + wavesToSpawn;
+
+        arcInc.sceneManager.scenes['main'].wave += wavesToSpawn;
+
+        let bossScalingFactor= 0;
+        for (let currentWave = lastWave + 1; currentWave <= targetWave; currentWave++) {
+            if (currentWave % 10 === 0){
+                bossScalingFactor += 50;
+            }
+            if (currentWave % 100 === 0){
+                bossScalingFactor += 250;
+            }
+            if (currentWave % 1000 === 0){
+                bossScalingFactor += 1250;
             }
         }
 
-        let asteroidCount = Math.max(1, Math.floor(Math.random() * 30));
-        for (let i = 0; i < asteroidCount; i++) {
-            let frame = i * (300/asteroidCount) + 150;
-            let x = Math.random() * 2 - 0.5;
+        if (bossScalingFactor > 0) {
+            keyFrames.push(new KeyFrame(150, {"operation": "spawnBoss", "reference": "Boss", "type": "boss", "scalingFactor": bossScalingFactor, "wave": targetWave}));
+        }
 
-            let vx = 4 * (0.5 - x);
-            keyFrames.push(new KeyFrame(frame, {"operation": "spawnEnemy", "reference": "asteroid" + i+1, "type": "asteroid", "wave": wave, "x": x, "y": -0.25, "vx": vx, "vy": 4}));
+        for (let i = mask.length - 1; i >= 0; i--) {
+            for (let j = 0; j < mask[i].length; j++) {
+                if (mask[i][j] === "*") {
+                    let frame = ((mask.length) - i) * (300/(mask.length));
+                    let x = 1 / (mask[i].length+1) * (j+1);
+                    keyFrames.push(new KeyFrame(frame, {"operation": "spawnEnemy", "reference": type + ((j + 1) * (i + 1)), "type": type, "wave": targetWave, "scalingFactor": wavesToSpawn, "x": x, "y": -0.25, "vx": 0, "vy": 2}));
+                }
+            }
         }
 
         keyFrames.sort(function(a,b) {return (a.frame > b.frame) ? 1 : ((b.frame > a.frame) ? -1 : 0);} );
@@ -66,12 +67,11 @@ class WaveTemplateStore {
         return new WaveTemplate(keyFrames);
     };*/
 
-    static template(wave, compress) {
+    static template(wave) {
 
         let type = ["crawler", "industrialMiner", "suicideBomber"];
         return WaveTemplateStore.fromBitMask(Formation.formations[Math.floor(Math.random() * Formation.formations.length)],
             type[Math.floor(Math.random() * type.length)],
-            wave,
-            compress);
+            wave);
     };
 }

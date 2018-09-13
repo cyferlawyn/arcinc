@@ -216,17 +216,10 @@ class MainScene extends Scene{
         this.framesTillWave -= frameDelta;
 
         if (this.framesTillWave <= 0 || this.remainingEnemies === 0) {
-            let compress = this.wave < arcInc.savegame.highestWaveEver - 200;
-            if (compress) {
-                this.wave += 10;
-            } else {
-                this.wave++;
-            }
-
-            StatsAndFormulas.update();
-            this.framesTillWave = 600;
-            this.waveTemplate = WaveTemplateStore.template(this.wave, compress);
+            this.waveTemplate = WaveTemplateStore.template(this.wave);
             this.remainingEnemies = this.waveTemplate.keyframes.length;
+            this.framesTillWave = 600;
+            StatsAndFormulas.update();
         }
 
         this.waveTemplate.update(frameDelta);

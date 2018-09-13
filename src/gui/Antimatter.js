@@ -1,6 +1,6 @@
 class Antimatter {
     static prepare(parent) {
-        let antimatter = CategoryCard.prepare(parent, 'antimatter', 'Antimatter');
+        let categoryCardBody = CategoryCard.prepare(parent, 'antimatter', 'Antimatter');
 
         let explanation = document.createElement('p');
         explanation.innerHTML = '<b>Antimatter</b> is this games prestige currency.<br/>' +
@@ -10,23 +10,31 @@ class Antimatter {
             '<br/>' +
             'To prestige, you will need to install a <b>Warp Drive</b> on your Station.<br/>' +
             '<br/>';
-        antimatter.appendChild(explanation);
+        categoryCardBody.appendChild(explanation);
 
         let activeAntimatterOuterDiv = document.createElement('div');
         activeAntimatterOuterDiv.classList.add('d-flex', 'justify-content-between');
-        antimatter.appendChild(activeAntimatterOuterDiv);
+        categoryCardBody.appendChild(activeAntimatterOuterDiv);
 
         let activeAntimatter = document.createElement('p');
+        activeAntimatter.id = "active-antimatter";
         activeAntimatter.textContent = 'Active Antimatter: ' + Utils.format(arcInc.savegame.activeAntimatter);
         activeAntimatterOuterDiv.appendChild(activeAntimatter);
+        arcInc.eventEmitter.subscribe(Events.ANTIMATTER_UPDATED, '#active-antimatter', function() {
+            document.querySelector('#active-antimatter').textContent = 'Active Antimatter: ' + Utils.format(arcInc.savegame.activeAntimatter);
+        } );
 
         let activeAntimatterEffect = document.createElement('p');
-        activeAntimatterEffect.textContent = 'Base stat boost this prestige: ' + Utils.format(arcInc.savegame.activeAntimatter) + '%';
+        activeAntimatterEffect.id = "active-antimatter-effect";
+        activeAntimatterEffect.textContent = 'Base stat boost this prestige: ' + Utils.format(arcInc.savegame.activeAntimatter) + ' %';
         activeAntimatterOuterDiv.appendChild(activeAntimatterEffect);
+        arcInc.eventEmitter.subscribe(Events.ANTIMATTER_UPDATED, '#active-antimatter-effect', function() {
+            document.querySelector('#active-antimatter-effect').textContent = 'Base stat boost this prestige: ' + Utils.format(arcInc.savegame.activeAntimatter) + ' %';
+        } );
 
         let pendingAntimatterOuterDiv = document.createElement('div');
         pendingAntimatterOuterDiv.classList.add('d-flex', 'justify-content-between');
-        antimatter.appendChild(pendingAntimatterOuterDiv);
+        categoryCardBody.appendChild(pendingAntimatterOuterDiv);
 
         let pendingAntimatter = document.createElement('p');
         pendingAntimatter.id = 'pending-antimatter';
@@ -38,10 +46,10 @@ class Antimatter {
 
         let pendingAntimatterEffect = document.createElement('p');
         pendingAntimatterEffect.id = 'pending-antimatter-effect';
-        pendingAntimatterEffect.textContent = 'Base stat boost after prestige: ' + Utils.format((arcInc.savegame.activeAntimatter + arcInc.savegame.pendingAntimatter)) + '%';
+        pendingAntimatterEffect.textContent = 'Base stat boost after prestige: ' + Utils.format((arcInc.savegame.activeAntimatter + arcInc.savegame.pendingAntimatter)) + ' %';
         pendingAntimatterOuterDiv.appendChild(pendingAntimatterEffect);
         arcInc.eventEmitter.subscribe(Events.ANTIMATTER_UPDATED, '#pending-antimatter-effect', function() {
-            document.querySelector('#pending-antimatter-effect').textContent = 'Base stat boost after prestige: ' + Utils.format((arcInc.savegame.activeAntimatter + arcInc.savegame.pendingAntimatter)) + '%';
+            document.querySelector('#pending-antimatter-effect').textContent = 'Base stat boost after prestige: ' + Utils.format((arcInc.savegame.activeAntimatter + arcInc.savegame.pendingAntimatter)) + ' %';
         } );
 
         let button = document.createElement('button');
@@ -53,6 +61,7 @@ class Antimatter {
 
             newSavegame.activeAntimatter = arcInc.savegame.activeAntimatter + arcInc.savegame.pendingAntimatter;
             newSavegame.highestWaveEver = arcInc.savegame.highestWaveEver;
+            newSavegame.talents = arcInc.savegame.talents;
 
             arcInc.savegame = newSavegame;
             arcInc.saveSavegame();
@@ -61,7 +70,7 @@ class Antimatter {
             localStorage.setItem(savegameName, savegameString);
             location.reload();
         });
-        antimatter.appendChild(button);
+        categoryCardBody.appendChild(button);
 
         // Hide the warp button until the warp drive module is purchased
         if (arcInc.savegame.modules.warpDrive === 0) {
@@ -73,6 +82,42 @@ class Antimatter {
                     arcInc.eventEmitter.unsubscribe(Events.STATION_MODULE_PURCHASED, '#warp-button')
                 }
             } );
+        }
+
+        let cardDeck;
+        for (let i = 0; i < Object.keys(arcInc.antimatterTalents.talents).length; i++) {
+            let key = Object.keys(arcInc.antimatterTalents.talents)[i];
+            let value = arcInc.antimatterTalents.talents[key];
+
+            if (i%2 === 0) {
+                cardDeck = document.createElement('div');
+                cardDeck.classList.add('card-deck');
+                categoryCardBody.appendChild(cardDeck);
+            }
+
+            let card = Card.prepare(
+                cardDeck,
+                'talents',
+                key,
+                value.title,
+                value.description,
+                function (event) {
+                    let name = event.currentTarget.name;
+                    let effectiveCost = Math.ceil(value.cost * Math.pow(arcInc.antimatterTalents.talents[name].growthFactor, arcInc.savegame.talents[name]));
+                    if (arcInc.savegame.activeAntimatter >= effectiveCost) {
+                        arcInc.savegame.activeAntimatter -= effectiveCost;
+                        arcInc.savegame.talents[name]++;
+
+                        arcInc.saveSavegame();
+                        arcInc.antimatterTalents.calculate();
+
+                        arcInc.eventEmitter.emit(Events.ANTIMATTER_UPDATED, arcInc.savegame.credits);
+                        arcInc.eventEmitter.emit(Events.ANTIMATTER_TALENT_PURCHASED, {'name': name, 'level': arcInc.savegame.talents[name]});
+                    }
+                });
+
+            card.update();
+            //card.setVisibility(Utils.areRequirementsMet('talents', name));
         }
     }
 }

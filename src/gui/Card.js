@@ -82,51 +82,60 @@ class Card {
         });
         cardPurchaseOptions.appendChild(cardAnchor);
 
-        let cardAnchorAll = document.createElement('a');
-        cardAnchorAll.innerText = 'Buy Max';
-        cardAnchorAll.classList.add('card-purchase');
-        cardAnchorAll.classList.add('card-purchase-all');
-        cardAnchorAll.addEventListener('click', function(ev){
-            ev.preventDefault();
+        let cardAnchorAll;
+        if (category === "upgrades" || category === "modules") {
+            cardAnchorAll = document.createElement('a');
+            cardAnchorAll.innerText = 'Buy Max';
+            cardAnchorAll.classList.add('card-purchase');
+            cardAnchorAll.classList.add('card-purchase-all');
+            cardAnchorAll.addEventListener('click', function (ev) {
+                ev.preventDefault();
 
-            let currentLevel = arcInc.savegame[category][name];
-            let levelsToBuy = -1;
-            let totalCost = 0;
-            let nextTotalCost = 0;
+                let currentLevel = arcInc.savegame[category][name];
+                let levelsToBuy = -1;
+                let totalCost = 0;
+                let nextTotalCost = 0;
 
-            do {
-                totalCost = nextTotalCost;
-                levelsToBuy++;
+                do {
+                    totalCost = nextTotalCost;
+                    levelsToBuy++;
 
-                if (category === 'modules') {
-                    nextTotalCost += Math.ceil(arcInc.station.modules[name].cost * Math.pow(arcInc.growth, currentLevel + levelsToBuy));
-                } else if (category === 'upgrades') {
-                    nextTotalCost += Math.ceil(arcInc.objectStore.get('player').upgrades[name].cost * Math.pow(arcInc.growth, currentLevel + levelsToBuy));
-                    if (arcInc.objectStore.get('player').upgrades[name].cap !== undefined &&
-                        arcInc.objectStore.get('player').upgrades[name].cap <= currentLevel + levelsToBuy) {
-                        break;
+                    if (category === 'modules') {
+                        nextTotalCost += Math.ceil(arcInc.station.modules[name].cost * Math.pow(arcInc.station.modules[name].growthFactor, currentLevel + levelsToBuy));
+                    } else if (category === 'upgrades') {
+                        nextTotalCost += Math.ceil(arcInc.objectStore.get('player').upgrades[name].cost * Math.pow(arcInc.objectStore.get('player').upgrades[name].growthFactor, currentLevel + levelsToBuy));
+                        if (arcInc.objectStore.get('player').upgrades[name].cap !== undefined &&
+                            arcInc.objectStore.get('player').upgrades[name].cap <= currentLevel + levelsToBuy) {
+                            break;
+                        }
+                    }
+                } while (nextTotalCost <= arcInc.savegame.credits);
+
+                if (levelsToBuy > 0) {
+                    arcInc.savegame.credits -= totalCost;
+                    arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
+
+                    arcInc.savegame[category][name] += levelsToBuy;
+                    arcInc.saveSavegame();
+                    arcInc.objectStore.get('player').applyUpgrades();
+
+                    if (category === 'modules') {
+                        arcInc.eventEmitter.emit(Events.STATION_MODULE_PURCHASED, {
+                            'name': name,
+                            'level': arcInc.savegame.modules[name]
+                        });
+                    } else if (category === 'upgrades') {
+                        arcInc.eventEmitter.emit(Events.SHIP_UPGRADE_PURCHASED, {
+                            'name': name,
+                            'level': arcInc.savegame.upgrades[name]
+                        });
                     }
                 }
-            } while (nextTotalCost <= arcInc.savegame.credits);
 
-            if (levelsToBuy > 0) {
-                arcInc.savegame.credits -= totalCost;
-                arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
-
-                arcInc.savegame[category][name] += levelsToBuy;
-                arcInc.saveSavegame();
-                arcInc.objectStore.get('player').applyUpgrades();
-
-                if (category === 'modules') {
-                    arcInc.eventEmitter.emit(Events.STATION_MODULE_PURCHASED, {'name': name, 'level': arcInc.savegame.modules[name]});
-                } else if (category === 'upgrades') {
-                    arcInc.eventEmitter.emit(Events.SHIP_UPGRADE_PURCHASED, {'name': name, 'level': arcInc.savegame.upgrades[name]});
-                }
-            }
-
-            return false;
-        });
-        cardPurchaseOptions.appendChild(cardAnchorAll);
+                return false;
+            });
+            cardPurchaseOptions.appendChild(cardAnchorAll);
+        }
 
         card.update = function() {
             let levelText = arcInc.savegame[category][name];
@@ -134,12 +143,12 @@ class Card {
             let effectText;
 
             if (category === 'modules') {
-                costText = Utils.format(Math.ceil(arcInc.station.modules[name].cost * Math.pow(arcInc.growth, arcInc.savegame[category][name])));
+                costText = Utils.format(Math.ceil(arcInc.station.modules[name].cost * Math.pow(arcInc.station.modules[name].growthFactor, arcInc.savegame[category][name]))) + " $";
 
                 let effect = Utils.format(arcInc.station.modules[name].effect * arcInc.savegame[category][name], 4);
                 effectText = arcInc.station.modules[name].effectTemplate.replace('{EFFECT}', effect);
             } else if (category === 'upgrades') {
-                costText = Utils.format(Math.ceil(arcInc.objectStore.get('player').upgrades[name].cost * Math.pow(arcInc.growth, arcInc.savegame[category][name])));
+                costText = Utils.format(Math.ceil(arcInc.objectStore.get('player').upgrades[name].cost * Math.pow(arcInc.objectStore.get('player').upgrades[name].growthFactor, arcInc.savegame[category][name]))) + " $";
 
                 let effect = Utils.format(arcInc.objectStore.get('player').stats[name], 4);
                 effectText = arcInc.objectStore.get('player').upgrades[name].effectTemplate.replace('{EFFECT}', effect);
@@ -153,10 +162,22 @@ class Card {
                         cardAnchorAll.classList.add('d-none')
                     }
                 }
+            } else if (category === 'talents') {
+                costText = Utils.format(Math.ceil(arcInc.antimatterTalents.talents[name].cost * Math.pow(arcInc.antimatterTalents.talents[name].growthFactor, arcInc.savegame[category][name]))) + " Antimatter";
+
+                let effect = Utils.format(arcInc.antimatterTalents[name], 4);
+                effectText = arcInc.antimatterTalents.talents[name].effectTemplate.replace('{EFFECT}', effect);
+
+                if (arcInc.antimatterTalents.talents[name].cap !== undefined &&
+                    arcInc.savegame[category][name] >= arcInc.antimatterTalents.talents[name].cap) {
+                    if (!cardAnchor.classList.contains('d-none')) {
+                        cardAnchor.classList.add('d-none')
+                    }
+                }
             }
 
             cardText.innerText = 'Level {LEVEL} ({EFFECT})'.replace('{LEVEL}', levelText).replace('{EFFECT}', effectText);
-            cardAnchor.innerText = 'Buy 1 ({COST} $)'.replace('{COST}', costText);
+            cardAnchor.innerText = 'Buy 1 ({COST})'.replace('{COST}', costText);
         };
 
         card.setVisibility = function(visible) {
@@ -179,6 +200,13 @@ class Card {
         });
 
         arcInc.eventEmitter.subscribe(Events.SHIP_UPGRADE_PURCHASED, card.id, function(event) {
+            if (event.name === card.name) {
+                card.update();
+            }
+            //card.setVisibility(Utils.areRequirementsMet(category, name));
+        });
+
+        arcInc.eventEmitter.subscribe(Events.ANTIMATTER_TALENT_PURCHASED, card.id, function(event) {
             if (event.name === card.name) {
                 card.update();
             }

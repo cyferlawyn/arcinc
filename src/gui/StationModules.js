@@ -21,23 +21,23 @@ class StationModules {
                 value.description,
                 function (event) {
                     event.preventDefault();
-                    let key = event.currentTarget.name;
-                    let effectiveCost = Math.ceil(value.cost * Math.pow(arcInc.growth, arcInc.savegame.modules[key]));
+                    let name = event.currentTarget.name;
+                    let effectiveCost = Math.ceil(value.cost * Math.pow(arcInc.station.modules[name].growthFactor, arcInc.savegame.modules[name]));
                     if (arcInc.savegame.credits >= effectiveCost) {
                         arcInc.savegame.credits -= effectiveCost;
-                        arcInc.savegame.modules[key]++;
+                        arcInc.savegame.modules[name]++;
 
                         arcInc.saveSavegame();
                         arcInc.objectStore.get('player').applyUpgrades();
 
                         arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
-                        arcInc.eventEmitter.emit(Events.STATION_MODULE_PURCHASED, {'name': key, 'level': arcInc.savegame.modules[key]});
+                        arcInc.eventEmitter.emit(Events.STATION_MODULE_PURCHASED, {'name': name, 'level': arcInc.savegame.modules[name]});
                     }
                     return false;
                 });
 
             card.update();
-            //card.setVisibility(Utils.areRequirementsMet('modules', key));
+            //card.setVisibility(Utils.areRequirementsMet('modules', name));
         }
     }
 }

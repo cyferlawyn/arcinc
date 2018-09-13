@@ -68,13 +68,13 @@ class Spawner {
         return amountSpawned;
     }
 
-    spawnEnemy(type, wave) {
+    spawnEnemy(type, wave, scalingFactor) {
         // Initialize stats
         let enemyStats = EnemyStats.get();
-        enemyStats.maxHealth = Math.floor(enemyStats.maxHealth * Math.pow(arcInc.growth, wave));
+        enemyStats.maxHealth = Math.floor(enemyStats.maxHealth * Math.pow(arcInc.growth, wave) * scalingFactor);
         enemyStats.currentHealth = enemyStats.maxHealth;
-        enemyStats.credits = Math.floor(enemyStats.credits * Math.pow(arcInc.growth, wave));
-        enemyStats.damage = Math.floor(enemyStats.damage * Math.pow(arcInc.growth, wave));
+        enemyStats.credits = Math.floor(enemyStats.credits * Math.pow(arcInc.growth, wave) * scalingFactor);
+        enemyStats.damage = Math.floor(enemyStats.damage * Math.pow(arcInc.growth, wave) * scalingFactor);
         enemyStats.wave = wave;
 
         let enemy;
@@ -172,22 +172,7 @@ class Spawner {
         enemy.vy = 4;
     }
 
-    spawnBoss(type, wave) {
-        let scalingFactor;
-        switch(type) {
-            case "bossX000": {
-                scalingFactor = 1250;
-            }
-                break;
-            case "bossX00": {
-                scalingFactor = 250;
-            }
-                break;
-            case "bossX0": {
-                scalingFactor = 50;
-            }
-                break;
-        }
+    spawnBoss(type, wave, scalingFactor) {
         // Initialize stats
         let enemyStats = EnemyStats.get();
         enemyStats.maxHealth = Math.floor(enemyStats.maxHealth * Math.pow(arcInc.growth, wave) * scalingFactor);

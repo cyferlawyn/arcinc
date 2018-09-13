@@ -20,22 +20,22 @@ class ShipUpgrades {
                 value.title,
                 value.description,
                 function (event) {
-                    let key = event.currentTarget.name;
-                    let effectiveCost = Math.ceil(value.cost * Math.pow(arcInc.growth, arcInc.savegame.upgrades[key]));
+                    let name = event.currentTarget.name;
+                    let effectiveCost = Math.ceil(value.cost * Math.pow(arcInc.objectStore.get('player').upgrades[name].growthFactor, arcInc.savegame.upgrades[key]));
                     if (arcInc.savegame.credits >= effectiveCost) {
                         arcInc.savegame.credits -= effectiveCost;
-                        arcInc.savegame.upgrades[key]++;
+                        arcInc.savegame.upgrades[name]++;
 
                         arcInc.saveSavegame();
                         arcInc.objectStore.get('player').applyUpgrades();
 
                         arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
-                        arcInc.eventEmitter.emit(Events.SHIP_UPGRADE_PURCHASED, {'name': key, 'level': arcInc.savegame.upgrades[key]});
+                        arcInc.eventEmitter.emit(Events.SHIP_UPGRADE_PURCHASED, {'name': name, 'level': arcInc.savegame.upgrades[name]});
                     }
                 });
 
             card.update();
-            //card.setVisibility(Utils.areRequirementsMet('upgrades', key));
+            //card.setVisibility(Utils.areRequirementsMet('upgrades', name));
         }
     }
 }

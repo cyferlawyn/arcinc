@@ -26,6 +26,7 @@ class ArcInc {
         this.initKeyboard();
         this.initScenes();
         this.initStation();
+        this.initAntimatterTalents();
         this.initPage();
     }
 
@@ -125,6 +126,11 @@ class ArcInc {
         this.station.init();
     }
 
+    initAntimatterTalents() {
+        this.antimatterTalents = new AntimatterTalents();
+        this.antimatterTalents.calculate();
+    }
+
     initSavegame() {
         this.savegame = JSON.parse(localStorage.getItem(savegameName));
         if (this.savegame === null) {
@@ -173,7 +179,14 @@ class ArcInc {
                 this.savegame.upgrades.lifeSupportSystems = 0;
             }
 
-            if (this.savegame.version !== 'v0.20') {
+            if (this.savegame.version === "v0.20") {
+                this.savegame.version = "v0.21";
+                this.savegame.talents = {};
+                this.savegame.talents.waveCompressionStrength = 0;
+                this.savegame.talents.waveCompressionThreshold = 0;
+            }
+
+            if (this.savegame.version !== 'v0.21') {
                 this.savegame = new Savegame();
             }
         }

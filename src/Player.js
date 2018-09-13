@@ -3,197 +3,221 @@ class Player extends PIXI.Sprite {
         super(texture);
 
         this.upgrades = {
-            'burnChance': {
-                'title': 'Burn Chance',
-                'cost': 1e6,
-                'description': 'Chance that the enemy catches fire upon impact, dealing 1% of [Projectile Damage] each tick. Stacks additive.',
-                'effectTemplate': '{EFFECT}% chance',
-                'cap': 400,
-                'requirements': [{'type': 'upgrades', 'name': 'clusterAmmunition', 'level': 1}]
+            "burnChance": {
+                "title": "Burn Chance",
+                "cost": 1e6,
+                "growthFactor": arcInc.growth,
+                "description": "Chance that the enemy catches fire upon impact, dealing 1% of [Projectile Damage] each tick. Stacks additive.",
+                "effectTemplate": "{EFFECT}% chance",
+                "cap": 400,
+                "requirements": [{"type": "upgrades", "name": "clusterAmmunition", "level": 1}]
             },
-            'freezeChance': {
-                'title': 'Freeze Chance',
-                'cost': 1e6,
-                'description': 'Chance that the enemy is frozen, which reduces his movement speed by 2% per hit. Stacks multiplicative.',
-                'effectTemplate': '{EFFECT}% chance',
-                'cap': 400,
-                'requirements': [{'type': 'upgrades', 'name': 'clusterAmmunition', 'level': 1}]
+            "freezeChance": {
+                "title": "Freeze Chance",
+                "cost": 1e6,
+                "growthFactor": arcInc.growth,
+                "description": "Chance that the enemy is frozen, which reduces his movement speed by 2% per hit. Stacks multiplicative.",
+                "effectTemplate": "{EFFECT}% chance",
+                "cap": 400,
+                "requirements": [{"type": "upgrades", "name": "clusterAmmunition", "level": 1}]
             },
             // Offense (Hit damage)
-            'projectileDamage': {
-                'title': 'Projectile Damage',
-                'cost': 5e7,
-                'description': 'Increases your ship\'s weapon damage.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
+            "projectileDamage": {
+                "title": "Projectile Damage",
+                "cost": 5e7,
+                "growthFactor": arcInc.growth,
+                "description": "Increases your ship\"s weapon damage.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "requirements": [{"type": "modules", "name": "factory", "level": 1}]
             },
-            'criticalHitChance': {
-                'title': 'Critical Hit Chance',
-                'cost': 5e7,
-                'description': 'Chance to perform a critical hit.',
-                'effectTemplate': '{EFFECT}% chance',
-                'cap': 400,
-                'requirements': [{'type': 'upgrades', 'name': 'clusterAmmunition', 'level': 1}]
+            "criticalHitChance": {
+                "title": "Critical Hit Chance",
+                "cost": 5e7,
+                "growthFactor": arcInc.growth,
+                "description": "Chance to perform a critical hit.",
+                "effectTemplate": "{EFFECT}% chance",
+                "cap": 400,
+                "requirements": [{"type": "upgrades", "name": "clusterAmmunition", "level": 1}]
             },
-            'criticalHitDamage': {
-                'title': 'Critical Hit Damage',
-                'cost': 5e9,
-                'description': 'Increases the damage dealt when performing a critical hit.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'upgrades', 'name': 'criticalHitChance', 'level': 1}]
+            "criticalHitDamage": {
+                "title": "Critical Hit Damage",
+                "cost": 5e9,
+                "growthFactor": arcInc.growth,
+                "description": "Increases the damage dealt when performing a critical hit.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "requirements": [{"type": "upgrades", "name": "criticalHitChance", "level": 1}]
             },
-            'clusterAmmunition': {
-                'title': 'Cluster Ammunition',
-                'cost': 5e12,
-                'description': 'Increases your ship\'s weapon damage.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'upgrades', 'name': 'projectileDamage', 'level': 1}]
+            "clusterAmmunition": {
+                "title": "Cluster Ammunition",
+                "cost": 5e12,
+                "growthFactor": arcInc.growth,
+                "description": "Increases your ship\"s weapon damage.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "requirements": [{"type": "upgrades", "name": "projectileDamage", "level": 1}]
             },
-            'tacticalWarhead': {
-                'title': 'Tactical Warhead',
-                'cost': 1e30,
-                'description': 'Increases your ship\'s weapon damage.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'upgrades', 'name': 'projectileDamage', 'level': 1}]
+            "tacticalWarhead": {
+                "title": "Tactical Warhead",
+                "cost": 1e30,
+                "growthFactor": arcInc.growth,
+                "description": "Increases your ship\"s weapon damage.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "requirements": [{"type": "upgrades", "name": "projectileDamage", "level": 1}]
             },
 
             // Offense (Hit amount)
-            'rateOfFire': {
-                'title': 'Rate of Fire',
-                'cost': 5e2,
-                'description': 'Increases how fast your ship can fire.',
-                'effectTemplate': '{EFFECT} shots/60ticks',
-                'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
+            "rateOfFire": {
+                "title": "Rate of Fire",
+                "cost": 5e2,
+                "growthFactor": arcInc.growth,
+                "description": "Increases how fast your ship can fire.",
+                "effectTemplate": "{EFFECT} shots/60ticks",
+                "requirements": [{"type": "modules", "name": "factory", "level": 1}]
             },
-            'projectileAmount': {
-                'title': 'Projectile Amount',
-                'cost': 5e4,
-                'description': 'Increases the amount of projectiles to up to 5. Subsequent levels increase your ship\'s weapon damage further instead.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'upgrades', 'name': 'rateOfFire', 'level': 1}]
+            "projectileAmount": {
+                "title": "Projectile Amount",
+                "cost": 5e4,
+                "growthFactor": arcInc.growth,
+                "description": "Increases the amount of projectiles to up to 5. Subsequent levels increase your ship\"s weapon damage further instead.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "requirements": [{"type": "upgrades", "name": "rateOfFire", "level": 1}]
             },
-            'projectilePierceChance': {
-                'title': 'Projectile Pierce Chance',
-                'cost': 5e4,
-                'description': 'Increases the chance your ship\'s projectiles pierce through enemy ships. Can not hit the same enemy multiple times.',
-                'effectTemplate': '{EFFECT}% chance',
-                'cap': 400,
-                'requirements': [{'type': 'upgrades', 'name': 'projectileAmount', 'level': 1}]
+            "projectilePierceChance": {
+                "title": "Projectile Pierce Chance",
+                "cost": 5e4,
+                "growthFactor": arcInc.growth,
+                "description": "Increases the chance your ship\"s projectiles pierce through enemy ships. Can not hit the same enemy multiple times.",
+                "effectTemplate": "{EFFECT}% chance",
+                "cap": 400,
+                "requirements": [{"type": "upgrades", "name": "projectileAmount", "level": 1}]
             },
-            'projectileForkChance': {
-                'title': 'Projectile Fork Chance',
-                'cost': 5e5,
-                'description': 'Increases the chance your ship\'s projectiles split into 3 on impact. Can not hit the same enemy multiple times.',
-                'effectTemplate': '{EFFECT}% chance',
-                'cap': 400,
-                'requirements': [{'type': 'upgrades', 'name': 'projectilePierceChance', 'level': 1}]
+            "projectileForkChance": {
+                "title": "Projectile Fork Chance",
+                "cost": 5e5,
+                "growthFactor": arcInc.growth,
+                "description": "Increases the chance your ship\"s projectiles split into 3 on impact. Can not hit the same enemy multiple times.",
+                "effectTemplate": "{EFFECT}% chance",
+                "cap": 400,
+                "requirements": [{"type": "upgrades", "name": "projectilePierceChance", "level": 1}]
             },
-            'projectileSpread': {
-                'title': 'Projectile Spread',
-                'cost': 5e7,
-                'description': 'Increases the spread when more than 1 projectile is fired at once.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'upgrades', 'name': 'projectileAmount', 'level': 1}]
+            "projectileSpread": {
+                "title": "Projectile Spread",
+                "cost": 5e7,
+                "growthFactor": arcInc.growth,
+                "description": "Increases the spread when more than 1 projectile is fired at once.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "requirements": [{"type": "upgrades", "name": "projectileAmount", "level": 1}]
             },
 
             // Defense (Shield)
-            'maxShield': {
-                'title': 'Shield Amount',
-                'cost': 5e4,
-                'description': 'Increases the amount of damage your ship\'s shields can sustain.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
+            "maxShield": {
+                "title": "Shield Amount",
+                "cost": 5e4,
+                "growthFactor": arcInc.growth,
+                "description": "Increases the amount of damage your ship\"s shields can sustain.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "requirements": [{"type": "modules", "name": "factory", "level": 1}]
             },
-            'shieldRechargeTime': {
-                'title': 'Shield Recharge',
-                'cost': 5e2,
-                'description': 'Improves how fast your ship\'s shields repair themselves.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'upgrades', 'name': 'maxShield', 'level': 1}]
+            "shieldRechargeTime": {
+                "title": "Shield Recharge",
+                "cost": 5e2,
+                "growthFactor": arcInc.growth,
+                "description": "Improves how fast your ship\"s shields repair themselves.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "requirements": [{"type": "upgrades", "name": "maxShield", "level": 1}]
             },
-            'shieldRechargeAccelerator': {
-                'title': 'Shield Recharge Accelerator',
-                'cost': 5e6,
-                'description': 'Significantly increases your ship\'s shield repair rate after not taking damage for 3 seconds.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'upgrades', 'name': 'shieldRechargeTime', 'level': 1}]
+            "shieldRechargeAccelerator": {
+                "title": "Shield Recharge Accelerator",
+                "cost": 5e6,
+                "growthFactor": arcInc.growth,
+                "description": "Significantly increases your ship\"s shield repair rate after not taking damage for 3 seconds.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "requirements": [{"type": "upgrades", "name": "shieldRechargeTime", "level": 1}]
             },
-            'plasmaField': {
-                'title': 'Plasma Field',
-                'cost': 1e9,
-                'description': 'Increases the amount of damage your ship\'s shields can sustain.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'upgrades', 'name': 'maxShield', 'level': 1}]
+            "plasmaField": {
+                "title": "Plasma Field",
+                "cost": 1e9,
+                "growthFactor": arcInc.growth,
+                "description": "Increases the amount of damage your ship\"s shields can sustain.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "requirements": [{"type": "upgrades", "name": "maxShield", "level": 1}]
             },
-            'overshieldChance': {
-                'title': 'Overshield Chance',
-                'cost': 1e9,
-                'description': 'Chance that a hit is fully absorbed by your ship\'s shield without affecting armor. ' +
-                    'Requires your shield to be full to trigger and will deplete the whole shield bar.',
-                'effectTemplate': '{EFFECT}% chance',
-                'cap': 400,
-                'requirements': [{'type': 'upgrades', 'name': 'plasmaField', 'level': 1}]
+            "overshieldChance": {
+                "title": "Overshield Chance",
+                "cost": 1e9,
+                "growthFactor": arcInc.growth,
+                "description": "Chance that a hit is fully absorbed by your ship\"s shield without affecting armor. " +
+                    "Requires your shield to be full to trigger and will deplete the whole shield bar.",
+                "effectTemplate": "{EFFECT}% chance",
+                "cap": 400,
+                "requirements": [{"type": "upgrades", "name": "plasmaField", "level": 1}]
             },
 
             // Defense (Armor)
-            'maxArmor': {
-                'title': 'Armor Amount',
-                'cost': 5e4,
-                'description': 'Increases your ship\'s maximum armor.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
+            "maxArmor": {
+                "title": "Armor Amount",
+                "cost": 5e4,
+                "growthFactor": arcInc.growth,
+                "description": "Increases your ship\"s maximum armor.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "requirements": [{"type": "modules", "name": "factory", "level": 1}]
             },
-            'armorPlating': {
-                'title': 'Armor Plating',
-                'cost': 5e6,
-                'description': 'Reduces the damage dealt to your ship\'s armor by a flat amount.',
-                'effectTemplate': '{EFFECT} abs. reduction',
-                'requirements': [{'type': 'upgrades', 'name': 'maxArmor', 'level': 1}]
+            "armorPlating": {
+                "title": "Armor Plating",
+                "cost": 5e6,
+                "growthFactor": arcInc.growth,
+                "description": "Reduces the damage dealt to your ship\"s armor by a flat amount.",
+                "effectTemplate": "{EFFECT} abs. reduction",
+                "requirements": [{"type": "upgrades", "name": "maxArmor", "level": 1}]
             },
-            'titaniumAlloy': {
-                'title': 'Titanium Alloy',
-                'cost': 1e9,
-                'description': 'Increases your ship\'s maximum armor.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'upgrades', 'name': 'maxArmor', 'level': 1}]
+            "titaniumAlloy": {
+                "title": "Titanium Alloy",
+                "cost": 1e9,
+                "growthFactor": arcInc.growth,
+                "description": "Increases your ship\"s maximum armor.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "requirements": [{"type": "upgrades", "name": "maxArmor", "level": 1}]
             },
 
             // Defense (General)
-            'lifeSupportSystems': {
-                'title': 'Life Support Systems',
-                'cost': 1e30,
-                'description': 'Improves both your ship\'s shield and armor.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
+            "lifeSupportSystems": {
+                "title": "Life Support Systems",
+                "cost": 1e30,
+                "growthFactor": arcInc.growth,
+                "description": "Improves both your ship\"s shield and armor.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "requirements": [{"type": "modules", "name": "factory", "level": 1}]
             },
 
-            'repulsorField': {
-                'title': 'Repulsor Field',
-                'cost': 5e10,
-                'description': 'Reduces <b>all</b> incoming damage to your ship by a relative amount.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'cap': 520,
-                'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
+            "repulsorField": {
+                "title": "Repulsor Field",
+                "cost": 5e10,
+                "growthFactor": arcInc.growth,
+                "description": "Reduces <b>all</b> incoming damage to your ship by a relative amount.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "cap": 520,
+                "requirements": [{"type": "modules", "name": "factory", "level": 1}]
             },
 
             // Utility
-            'movementSpeed': {
-                'title': 'Movement Speed',
-                'cost': 5e2,
-                'description': 'Improves your ship\'s movement speed and handling.',
-                'effectTemplate': '{EFFECT} pixel/tick',
-                'requirements': [{'type': 'modules', 'name': 'factory', 'level': 1}]
+            "movementSpeed": {
+                "title": "Movement Speed",
+                "cost": 5e2,
+                "growthFactor": arcInc.growth,
+                "description": "Improves your ship\"s movement speed and handling.",
+                "effectTemplate": "{EFFECT} pixel/tick",
+                "requirements": [{"type": "modules", "name": "factory", "level": 1}]
             },
-            'salvager': {
-                'title': 'Salvager',
-                'cost': 5e10,
-                'description': 'Profit from your enemies\' misfortune! Increases your money earned per kill.',
-                'effectTemplate': '{EFFECT}x multiplier',
-                'requirements': [{'type': 'upgrades', 'name': 'movementSpeed', 'level': 1}]
+            "salvager": {
+                "title": "Salvager",
+                "cost": 5e10,
+                "growthFactor": arcInc.growth,
+                "description": "Profit from your enemies\" misfortune! Increases your money earned per kill.",
+                "effectTemplate": "{EFFECT}x multiplier",
+                "requirements": [{"type": "upgrades", "name": "movementSpeed", "level": 1}]
             }
         };
 
-        this.id = 'Player-' + Utils.getUUID();
+        this.id = "Player-" + Utils.getUUID();
 
         this.boundaryWidth = boundaryWidth;
         this.boundaryHeight = boundaryHeight;
@@ -339,7 +363,7 @@ class Player extends PIXI.Sprite {
         } else {
             // check for overshield
             if (this.currentShield === this.stats.effectiveMaxShield) {
-                if (this.stats.chanceHappened('overshieldChance')) {
+                if (this.stats.chanceHappened("overshieldChance")) {
                     this.currentShield = 0;
                     return;
                 }
@@ -357,8 +381,8 @@ class Player extends PIXI.Sprite {
         if (this.currentArmor >= damage) {
             this.currentArmor -= damage;
         } else {
-            arcInc.sceneManager.scenes['main'].reset();
-            arcInc.sceneManager.loadScene('main');
+            arcInc.sceneManager.scenes["main"].reset();
+            arcInc.sceneManager.loadScene("main");
         }
     }
 }
