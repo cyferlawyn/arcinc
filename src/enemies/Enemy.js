@@ -87,8 +87,8 @@ class Enemy extends PIXI.Sprite {
         if (Utils.intersect(this, player)) {
             // TODO
             if (this.stats.isBoss) {
-                player.currentShield -= 1;
-                this.damage = this.stats.damage * 1000;
+                arcInc.sceneManager.scenes["main"].reset();
+                arcInc.sceneManager.loadScene("main");
             } else {
                 this.damage = this.stats.damage;
             }
