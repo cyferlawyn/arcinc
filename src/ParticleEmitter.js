@@ -8,7 +8,7 @@ class ParticleEmitter extends PIXI.particles.Emitter {
                     "end": 0.18
                 },
                 "scale": {
-                    "start": 0.025,
+                    "start": 0.015,
                     "end": 0.3,
                     "minimumScaleMultiplier": 1
                 },
@@ -33,16 +33,16 @@ class ParticleEmitter extends PIXI.particles.Emitter {
                 "noRotation": false,
                 "rotationSpeed": {
                     "min": 0,
-                    "max": 200
+                    "max": 50
                 },
                 "lifetime": {
-                    "min": 0.4,
-                    "max": 0.7
+                    "min": 0.3,
+                    "max": 0.8
                 },
                 "blendMode": "normal",
                 "frequency": 0.001,
                 "emitterLifetime": 0.1,
-                "maxParticles": 100,
+                "maxParticles": 50,
                 "pos": {
                     "x": 0,
                     "y": 0

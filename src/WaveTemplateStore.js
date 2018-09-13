@@ -68,7 +68,6 @@ class WaveTemplateStore {
     };*/
 
     static template(wave) {
-
         let type = ["crawler", "industrialMiner", "suicideBomber"];
         return WaveTemplateStore.fromBitMask(Formation.formations[Math.floor(Math.random() * Formation.formations.length)],
             type[Math.floor(Math.random() * type.length)],

@@ -24,24 +24,24 @@ class Antimatter {
             document.querySelector('#active-antimatter').textContent = 'Active Antimatter: ' + Utils.format(arcInc.savegame.activeAntimatter);
         } );
 
-        let activeAntimatterEffect = document.createElement('p');
-        activeAntimatterEffect.id = "active-antimatter-effect";
-        activeAntimatterEffect.textContent = 'Base stat boost this prestige: ' + Utils.format(arcInc.savegame.activeAntimatter) + ' %';
-        activeAntimatterOuterDiv.appendChild(activeAntimatterEffect);
-        arcInc.eventEmitter.subscribe(Events.ANTIMATTER_UPDATED, '#active-antimatter-effect', function() {
-            document.querySelector('#active-antimatter-effect').textContent = 'Base stat boost this prestige: ' + Utils.format(arcInc.savegame.activeAntimatter) + ' %';
+        let pendingAntimatter = document.createElement('p');
+        pendingAntimatter.id = 'pending-antimatter';
+        pendingAntimatter.textContent = 'Pending Antimatter: ' + Utils.format(arcInc.savegame.pendingAntimatter);
+        activeAntimatterOuterDiv.appendChild(pendingAntimatter);
+        arcInc.eventEmitter.subscribe(Events.ANTIMATTER_UPDATED, '#pending-antimatter', function() {
+            document.querySelector('#pending-antimatter').textContent = 'Pending Antimatter: ' + Utils.format(arcInc.savegame.pendingAntimatter);
         } );
 
         let pendingAntimatterOuterDiv = document.createElement('div');
         pendingAntimatterOuterDiv.classList.add('d-flex', 'justify-content-between');
         categoryCardBody.appendChild(pendingAntimatterOuterDiv);
 
-        let pendingAntimatter = document.createElement('p');
-        pendingAntimatter.id = 'pending-antimatter';
-        pendingAntimatter.textContent = 'Pending Antimatter: ' + Utils.format(arcInc.savegame.pendingAntimatter);
-        pendingAntimatterOuterDiv.appendChild(pendingAntimatter);
-        arcInc.eventEmitter.subscribe(Events.ANTIMATTER_UPDATED, '#pending-antimatter', function() {
-            document.querySelector('#pending-antimatter').textContent = 'Pending Antimatter: ' + Utils.format(arcInc.savegame.pendingAntimatter);
+        let activeAntimatterEffect = document.createElement('p');
+        activeAntimatterEffect.id = "active-antimatter-effect";
+        activeAntimatterEffect.textContent = 'Base stat boost this prestige: ' + Utils.format(arcInc.savegame.activeAntimatter) + ' %';
+        pendingAntimatterOuterDiv.appendChild(activeAntimatterEffect);
+        arcInc.eventEmitter.subscribe(Events.ANTIMATTER_UPDATED, '#active-antimatter-effect', function() {
+            document.querySelector('#active-antimatter-effect').textContent = 'Base stat boost this prestige: ' + Utils.format(arcInc.savegame.activeAntimatter) + ' %';
         } );
 
         let pendingAntimatterEffect = document.createElement('p');
@@ -52,11 +52,27 @@ class Antimatter {
             document.querySelector('#pending-antimatter-effect').textContent = 'Base stat boost after prestige: ' + Utils.format((arcInc.savegame.activeAntimatter + arcInc.savegame.pendingAntimatter)) + ' %';
         } );
 
-        let button = document.createElement('button');
-        button.id = 'warp-button';
-        button.classList.add('btn', 'btn-danger');
-        button.innerText = 'Warp to Parallel Universe';
-        button.addEventListener('click', function() {
+        let buttonContainer = document.createElement('div');
+        buttonContainer.classList.add('d-flex', 'justify-content-between');
+        categoryCardBody.appendChild(buttonContainer);
+
+        let talentButton = document.createElement('button');
+        talentButton.classList.add('btn', 'btn-danger');
+        talentButton.innerText = 'Spend Antimatter for talents';
+        talentButton.addEventListener('click', function() {
+            if (talentContainer.classList.contains('d-none')) {
+                talentContainer.classList.remove('d-none');
+            } else {
+                talentContainer.classList.add('d-none');
+            }
+        });
+        buttonContainer.appendChild(talentButton);
+
+        let warpButton = document.createElement('button');
+        warpButton.id = 'warp-button';
+        warpButton.classList.add('btn', 'btn-danger');
+        warpButton.innerText = 'Warp to Parallel Universe';
+        warpButton.addEventListener('click', function() {
             let newSavegame = new Savegame();
 
             newSavegame.activeAntimatter = arcInc.savegame.activeAntimatter + arcInc.savegame.pendingAntimatter;
@@ -70,11 +86,11 @@ class Antimatter {
             localStorage.setItem(savegameName, savegameString);
             location.reload();
         });
-        categoryCardBody.appendChild(button);
+        buttonContainer.appendChild(warpButton);
 
         // Hide the warp button until the warp drive module is purchased
         if (arcInc.savegame.modules.warpDrive === 0) {
-            button.classList.add('d-none');
+            warpButton.classList.add('d-none');
 
             arcInc.eventEmitter.subscribe(Events.STATION_MODULE_PURCHASED, '#warp-button', function(event) {
                 if(event.name === 'warpDrive') {
@@ -84,6 +100,10 @@ class Antimatter {
             } );
         }
 
+        let talentContainer = document.createElement("div");
+        talentContainer.classList.add("d-none");
+        categoryCardBody.appendChild(talentContainer);
+
         let cardDeck;
         for (let i = 0; i < Object.keys(arcInc.antimatterTalents.talents).length; i++) {
             let key = Object.keys(arcInc.antimatterTalents.talents)[i];
@@ -92,7 +112,7 @@ class Antimatter {
             if (i%2 === 0) {
                 cardDeck = document.createElement('div');
                 cardDeck.classList.add('card-deck');
-                categoryCardBody.appendChild(cardDeck);
+                talentContainer.appendChild(cardDeck);
             }
 
             let card = Card.prepare(
