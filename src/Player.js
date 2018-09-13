@@ -214,7 +214,7 @@ class Player extends PIXI.Sprite {
         this.ticksSinceLastHit = 0;
         this.currentShield = this.stats.effectiveMaxShield;
         this.currentArmor = this.stats.effectiveMaxArmor;
-        this.currentEnergy = this.stats.effectiveMaxEnergy;
+        this.currentEnergy = 100;
 
         // Register event listener
         arcInc.eventEmitter.subscribe(Events.REGENERATION_PHASE_STARTED, this.id, this.regenerate.bind(this));
