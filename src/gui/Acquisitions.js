@@ -74,7 +74,7 @@ class Acquisitions {
                     }
                 }
             }
-        }, 10);
+        }, 100);
 
         let scrollBlock = document.createElement('div');
         scrollBlock.style.maxHeight = '200px';
