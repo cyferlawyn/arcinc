@@ -14,4 +14,9 @@ class Events {
     static get ENGAGEMENT_PHASE_STARTED() {return "engagementPhaseStarted"};
     static get COLLISION_DETECTION_PHASE_STARTED() {return "collisionDetectionPhaseStarted"};
     static get CLEANUP_PHASE_STARTED() {return "cleanupPhaseStarted"};
+
+    // Collision detection
+    static get COLLIDER_CREATED() {return "colliderCreated"};
+    static get COLLIDER_MOVED() {return "colliderMoved"};
+    static get COLLIDER_DESTROYED() {return "colliderDestroyed"};
 }

@@ -1,6 +1,7 @@
 class Enemy extends PIXI.Sprite {
     constructor(texture, stats) {
         super(texture);
+        this.container = 2;
         this.stats = stats;
 
         this.prepareProperties();
@@ -14,6 +15,8 @@ class Enemy extends PIXI.Sprite {
         arcInc.eventEmitter.unsubscribe(Events.ENGAGEMENT_PHASE_STARTED, this.id);
         arcInc.eventEmitter.unsubscribe(Events.COLLISION_DETECTION_PHASE_STARTED, this.id);
         arcInc.eventEmitter.unsubscribe(Events.CLEANUP_PHASE_STARTED,this.id);
+
+        arcInc.eventEmitter.emit(Events.COLLIDER_DESTROYED, this);
 
         let enemyContainer = arcInc.objectStore.get('enemyContainer');
         enemyContainer.removeChild(this);
@@ -67,6 +70,8 @@ class Enemy extends PIXI.Sprite {
         if (Utils.leftBounds(this)) {
             this.markedForDestruction = true;
         }
+
+        arcInc.eventEmitter.emit(Events.COLLIDER_MOVED, this);
     }
 
     engage(frameDelta) {
@@ -74,6 +79,21 @@ class Enemy extends PIXI.Sprite {
 
     testCollision() {
         // Collision with player projectiles
+        for (let cellIndex = 0; cellIndex < this.inCellsCurrently.length; cellIndex++) {
+            let cell = this.inCellsCurrently[cellIndex];
+
+            for (let colliderKey of Object.keys(arcInc.collisionManager.cellHash[cell])) {
+                let collider = arcInc.collisionManager.cellHash[cell][colliderKey];
+                if (!collider.markedForDestruction && collider.container === 1 && !collider.ignore.includes(this.id)) {
+                    if (Utils.intersect(this, collider)) {
+                        this.hitBy(collider);
+                    }
+                }
+            }
+        }
+
+
+        /*
         let playerProjectileContainer = arcInc.objectStore.get('playerProjectileContainer');
         for (let i = 0; i < playerProjectileContainer.children.length; i++) {
             let projectile = playerProjectileContainer.children[i];
@@ -81,6 +101,7 @@ class Enemy extends PIXI.Sprite {
                 this.hitBy(projectile);
             }
         }
+        */
 
         // Collision with player
         let player = arcInc.objectStore.get('player');

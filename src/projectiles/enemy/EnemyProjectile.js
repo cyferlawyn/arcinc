@@ -1,10 +1,13 @@
 class EnemyProjectile extends PIXI.Sprite{
     constructor(texture, x, y, vx, vy, tint, damage) {
         super(texture);
+        this.container = 3;
         this.init(x, y, vx, vy, tint, damage);
 
         this.id = 'EnemyProjectile-' + Utils.getUUID();
         this.markedForDestruction = false;
+
+        arcInc.eventEmitter.emit(Events.COLLIDER_CREATED, this);
 
         // Register event listener
         arcInc.eventEmitter.subscribe(Events.MOVEMENT_PHASE_STARTED,this.id, this.move.bind(this));
@@ -14,6 +17,8 @@ class EnemyProjectile extends PIXI.Sprite{
     destructor() {
         arcInc.eventEmitter.unsubscribe(Events.MOVEMENT_PHASE_STARTED, this.id);
         arcInc.eventEmitter.unsubscribe(Events.CLEANUP_PHASE_STARTED,this.id);
+
+        arcInc.eventEmitter.emit(Events.COLLIDER_DESTROYED, this);
 
         let enemyProjectileContainer = arcInc.objectStore.get('enemyProjectileContainer');
         enemyProjectileContainer.removeChild(this);
@@ -45,6 +50,8 @@ class EnemyProjectile extends PIXI.Sprite{
         if (Utils.leftBoundsStrict(this)) {
             this.markedForDestruction = true;
         }
+
+        arcInc.eventEmitter.emit(Events.COLLIDER_MOVED, this);
     }
 
     cleanup(frameDelta) {

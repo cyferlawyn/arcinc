@@ -179,6 +179,9 @@ class MainScene extends Scene{
         player.scale.set(0.5);
         player.x = this.pixiApp.screen.width/this.pixiApp.stage.scale.x/2;
         player.y = this.pixiApp.screen.height/this.pixiApp.stage.scale.y - player.height * 2.5;
+
+        arcInc.eventEmitter.emit(Events.COLLIDER_CREATED, player);
+
         playerContainer.addChild(player);
         arcInc.objectStore.put('player', player);
     }

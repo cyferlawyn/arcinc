@@ -24,5 +24,7 @@ class SuicideBomberEnemy extends Enemy {
         if (Utils.leftBounds(this)) {
             this.markedForDestruction = true;
         }
+
+        arcInc.eventEmitter.emit(Events.COLLIDER_MOVED, this);
     }
 }

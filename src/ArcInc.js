@@ -91,6 +91,7 @@ class ArcInc {
         });
 
         arcInc.spawner = new Spawner(this.pixiApp, this.objectStore);
+        arcInc.collisionManager = new CollisionManager();
     }
 
     initPage() {

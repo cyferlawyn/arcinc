@@ -53,6 +53,8 @@ class BlackHole extends Ability {
                         if (distance > 75) {
                             enemy.x += normVector.vx * enemy.vy * 1.5 * (250 / Math.max(50, distance)) * frameDelta;
                             enemy.y += normVector.vy * enemy.vy * 1.5 * (250 / Math.max(50, distance)) * frameDelta;
+
+                            arcInc.eventEmitter.emit(Events.COLLIDER_MOVED, enemy);
                         }
                     }
                 }
@@ -65,6 +67,8 @@ class BlackHole extends Ability {
                         if (distance > 75) {
                             enemyProjectile.x += normVector.vx * 10 * (75 / Math.max(25, distance)) * frameDelta;
                             enemyProjectile.y += normVector.vy * 10 * (75 / Math.max(25, distance)) * frameDelta;
+
+                            arcInc.eventEmitter.emit(Events.COLLIDER_MOVED, enemyProjectile);
                         }
                     }
                 }

@@ -60,7 +60,7 @@ class PlayerStats {
         this.effectiveAbsoluteIncomingShieldDamageAddition = 0;
         this.effectiveAbsoluteIncomingArmorDamageAddition = this.armorPlating;
 
-        this.effectiveProjectileAmount = Math.min(5, this.projectileAmount);
+        this.effectiveProjectileAmount = Math.min(50, this.projectileAmount);
         this.effectiveProjectileAmountCompensation = 1 + (this.projectileAmount - this.effectiveProjectileAmount) / this.effectiveProjectileAmount;
 
         this.effectiveProjectileSpread = this.projectileSpread;

@@ -1,6 +1,7 @@
 class Player extends PIXI.Sprite {
     constructor(texture, boundaryWidth, boundaryHeight) {
         super(texture);
+        this.container = 0;
 
         this.upgrades = {
             "burnChance": {
@@ -300,6 +301,8 @@ class Player extends PIXI.Sprite {
                 this.y = this.height/2;
             }
         }
+
+        arcInc.eventEmitter.emit(Events.COLLIDER_MOVED, this);
     }
 
     regenerate(frameDelta) {
