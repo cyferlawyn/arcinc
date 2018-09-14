@@ -79,6 +79,7 @@ class Antimatter {
             newSavegame.highestWaveEver = arcInc.savegame.highestWaveEver;
             newSavegame.talents = arcInc.savegame.talents;
             newSavegame.config = arcInc.savegame.config;
+            newSavegame.refiner = arcInc.savegame.refiner;
 
             arcInc.savegame = newSavegame;
             arcInc.saveSavegame();

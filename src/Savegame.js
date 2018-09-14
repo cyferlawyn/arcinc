@@ -1,6 +1,6 @@
 class Savegame {
     constructor() {
-        this.version = "v0.22";
+        this.version = "v0.23";
         this.highestWave = 0;
         this.highestWaveEver = 0;
         this.credits = 0;
@@ -46,7 +46,16 @@ class Savegame {
         };
         this.talents = {
             "waveCompressionThreshold": 0,
-            "waveCompressionStrength": 0
+            "waveCompressionStrength": 0,
+            "refinerBufferVolume": 0,
+            "refinerCycleTime": 0,
+            "refinerCycleVolume": 0,
+            "refinerPurity": 0
+        };
+        this.refiner = {
+            "bufferVolume": 0,
+            "offensiveRefinedAntimatter": 0,
+            "defensiveRefinedAntimatter": 0
         };
         this.config = {
             "acquisitions": [

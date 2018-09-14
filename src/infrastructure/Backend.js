@@ -71,6 +71,9 @@ class Backend {
                     savegame.credits = Math.round(parseFloat(savegame.credits));
                     savegame.activeAntimatter = Math.round(parseFloat(savegame.activeAntimatter));
                     savegame.pendingAntimatter = Math.round(parseFloat(savegame.pendingAntimatter));
+                    savegame.refiner.bufferVolume = Math.round(parseFloat(savegame.refiner.bufferVolume));
+                    savegame.refiner.offensiveRefinedAntimatter = Math.round(parseFloat(savegame.refiner.offensiveRefinedAntimatter));
+                    savegame.refiner.defensiveRefinedAntimatter = Math.round(parseFloat(savegame.refiner.defensiveRefinedAntimatter));
                     successCallback(savegame);
                 }
                 else {

@@ -15,6 +15,8 @@ class ArcInc {
         // auth behavior
         this.authToken = localStorage.getItem(authTokenName);
         CloudManager.initLogin(this.authToken === null);
+
+        this.refinerDelay = 0;
     }
 
     authenticated() {
@@ -99,6 +101,7 @@ class ArcInc {
         Chat.prepare(parent);
         Leaderboard.prepare(parent);
         Antimatter.prepare(parent);
+        Refiner.prepare(parent);
         Acquisitions.prepare(parent);
         StationModules.prepare(parent);
         ShipUpgrades.prepare(parent);
@@ -231,7 +234,20 @@ class ArcInc {
                 };
             }
 
-            if (this.savegame.version !== 'v0.22') {
+            if (this.savegame.version === "v0.22") {
+                this.savegame.version = "v0.23";
+                this.savegame.talents.refinerBufferVolume = 0;
+                this.savegame.talents.refinerCycleTime = 0;
+                this.savegame.talents.refinerCycleVolume = 0;
+                this.savegame.talents.refinerPurity = 0;
+                this.savegame.refiner = {
+                    "bufferVolume": 0,
+                    "offensiveRefinedAntimatter": 0,
+                    "defensiveRefinedAntimatter": 0
+                };
+            }
+
+            if (this.savegame.version !== 'v0.23') {
                 this.savegame = new Savegame();
             }
         }

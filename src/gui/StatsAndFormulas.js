@@ -55,8 +55,8 @@ class StatsAndFormulas {
         StatsAndFormulas.prepareCard(
             categoryCardBody,
             'Effective Projectile Damage',
-            '-> 10 * [Projectile Damage] * [Cluster Ammunition] * [Tactical Warhead] * [Effective Projectile Amount Compensation] * [Antimatter Scaling]',
-            '-> 10 * [' + Utils.evStat('projectileDamage') + '] * [' + Utils.evStat('clusterAmmunition') + '] * [' + Utils.evStat('tacticalWarhead') + '] * [' + Utils.evStat('effectiveProjectileAmountCompensation') + '] * [' + Utils.evStat('antimatterScaling') + ']',
+            '-> 10 * [Projectile Damage] * [Cluster Ammunition] * [Tactical Warhead] * [Effective Projectile Amount Compensation] * ([Antimatter Scaling] + [Offensive Refined Antimatter Scaling])',
+            '-> 10 * [' + Utils.evStat('projectileDamage') + '] * [' + Utils.evStat('clusterAmmunition') + '] * [' + Utils.evStat('tacticalWarhead') + '] * [' + Utils.evStat('effectiveProjectileAmountCompensation') + '] * ([' + Utils.evStat('antimatterScaling') + '] +  [' + Utils.evStat('offensiveRefinedAntimatterScaling') + '])',
             '-> ' + Utils.evStat('effectiveProjectileDamage'));
 
         StatsAndFormulas.prepareCard(
@@ -93,15 +93,15 @@ class StatsAndFormulas {
         StatsAndFormulas.prepareCard(
             categoryCardBody,
             'Effective Max Shield',
-            '-> 100 * [Max Shield] * [Plasma Field] * [Life Support Systems] * [Factory Scaling] * [Antimatter Scaling]',
-            '-> 100 * [' + Utils.evStat('maxShield') + '] * [' + Utils.evStat('plasmaField') + '] * [' + Utils.evStat('lifeSupportSystems') + '] * [' + Utils.evStat('factoryScaling') +  '] * [' + Utils.evStat('antimatterScaling') + ']',
+            '-> 100 * [Max Shield] * [Plasma Field] * [Life Support Systems] * [Factory Scaling] * ([Antimatter Scaling] + [Defensive Refined Antimatter Scaling])',
+            '-> 100 * [' + Utils.evStat('maxShield') + '] * [' + Utils.evStat('plasmaField') + '] * [' + Utils.evStat('lifeSupportSystems') + '] * [' + Utils.evStat('factoryScaling') +  '] * ([' + Utils.evStat('antimatterScaling') + '] +  [' + Utils.evStat('defensiveRefinedAntimatterScaling') + '])',
             '-> ' + Utils.evStat('effectiveMaxShield'));
 
         StatsAndFormulas.prepareCard(
             categoryCardBody,
             'Effective Max Armor',
-            '-> 250 * [Max Armor] * [Titanium Alloy] * [Life Support Systems] * [Factory Scaling] * [Antimatter Scaling]',
-            '-> 250 * [' + Utils.evStat('maxArmor') + '] * [' + Utils.evStat('titaniumAlloy') + '] * [' + Utils.evStat('lifeSupportSystems') + '] * [' + Utils.evStat('factoryScaling') +  '] * [' + Utils.evStat('antimatterScaling') + ']',
+            '-> 250 * [Max Armor] * [Titanium Alloy] * [Life Support Systems] * [Factory Scaling] * ([Antimatter Scaling] + [Defensive Refined Antimatter Scaling])',
+            '-> 250 * [' + Utils.evStat('maxArmor') + '] * [' + Utils.evStat('titaniumAlloy') + '] * [' + Utils.evStat('lifeSupportSystems') + '] * [' + Utils.evStat('factoryScaling') +  '] * ([' + Utils.evStat('antimatterScaling') + '] +  [' + Utils.evStat('defensiveRefinedAntimatterScaling') + '])',
             '-> ' + Utils.evStat('effectiveMaxArmor'));
 
         // Utility

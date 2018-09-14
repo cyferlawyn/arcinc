@@ -72,7 +72,8 @@ class Player extends PIXI.Sprite {
                 "growthFactor": arcInc.growth,
                 "description": "Increases how fast your ship can fire.",
                 "effectTemplate": "{EFFECT} shots/60ticks",
-                "requirements": [{"type": "modules", "name": "factory", "level": 1}]
+                "requirements": [{"type": "modules", "name": "factory", "level": 1}],
+                "cap": 2200
             },
             "projectileAmount": {
                 "title": "Projectile Amount",

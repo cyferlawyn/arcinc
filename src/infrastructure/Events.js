@@ -5,6 +5,7 @@ class Events {
     static get STATION_MODULE_PURCHASED() {return "stationModulePurchased"};
     static get SHIP_UPGRADE_PURCHASED() {return "shipUpgradePurchased"};
     static get ANTIMATTER_TALENT_PURCHASED() {return "antimatterTalentPurchased"};
+    static get ANTIMATTER_REFINER_UPDATED() {return "antimatterRefinerCycleConpleted"};
     static get ENTITY_DESTROYED() {return "entityDestroyed"};
 
     // game phases

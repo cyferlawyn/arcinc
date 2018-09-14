@@ -58,7 +58,8 @@ class CloudManager {
 
     static cloudSave() {
         let savegameString = JSON.stringify(arcInc.savegame, function(key, value) {
-            if (key === 'credits' || key === 'activeAntimatter' || key === 'pendingAntimatter') {
+            if (key === 'credits' || key === 'activeAntimatter' || key === 'pendingAntimatter' ||
+                key === "bufferVolume" || key === "offensiveRefinedAntimatter" || key === "defensiveRefinedAntimatter") {
                 return value.toExponential();
             } else {
                 return value;

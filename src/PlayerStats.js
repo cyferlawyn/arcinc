@@ -43,6 +43,8 @@ class PlayerStats {
         this.salvager = 1 + 0.025 * this.ul('salvager');
 
         this.antimatterScaling = (1 + 0.01 * arcInc.savegame.activeAntimatter);
+        this.offensiveRefinedAntimatterScaling = (1 + 0.01 * arcInc.savegame.refiner.offensiveRefinedAntimatter);
+        this.defensiveRefinedAntimatterScaling = (1 + 0.01 * arcInc.savegame.refiner.defensiveRefinedAntimatter);
 
         // effective stats
         this.effectiveMovementSpeed = 10 + this.movementSpeed;
@@ -50,8 +52,8 @@ class PlayerStats {
         this.effectiveMaxEnergy = 100 + 1 * this.solarPanelScaling;
         this.effectiveEnergyRegenerationPerTick = 5 / 60;
 
-        this.effectiveMaxShield = 100 * this.maxShield * this.plasmaField * this.lifeSupportSystems * this.factoryScaling * this.antimatterScaling;
-        this.effectiveMaxArmor = 750 * this.maxArmor * this.titaniumAlloy * this.lifeSupportSystems * this.factoryScaling * this.antimatterScaling;
+        this.effectiveMaxShield = 100 * this.maxShield * this.plasmaField * this.lifeSupportSystems * this.factoryScaling * (this.antimatterScaling + this.defensiveRefinedAntimatterScaling);
+        this.effectiveMaxArmor = 750 * this.maxArmor * this.titaniumAlloy * this.lifeSupportSystems * this.factoryScaling * (this.antimatterScaling + this.defensiveRefinedAntimatterScaling);
 
         this.effectiveShieldRechargePerTickInCombat = this.effectiveMaxShield / (600 / (this.shieldRechargeTime) * 60);
         this.effectiveShieldRechargePerTickOutOfCombat = this.effectiveShieldRechargePerTickInCombat * this.shieldRechargeAccelerator;
@@ -65,7 +67,7 @@ class PlayerStats {
 
         this.effectiveProjectileSpread = this.projectileSpread;
 
-        this.effectiveProjectileDamage = 10 * this.projectileDamage * this.clusterAmmunition * this.tacticalWarhead * this.effectiveProjectileAmountCompensation * this.factoryScaling * this.antimatterScaling;
+        this.effectiveProjectileDamage = 10 * this.projectileDamage * this.clusterAmmunition * this.tacticalWarhead * this.effectiveProjectileAmountCompensation * this.factoryScaling * (this.antimatterScaling + this.offensiveRefinedAntimatterScaling);
         this.effectiveCriticalHitDamageMultiplier = this.criticalHitDamage;
         this.effectiveFireDelayInTicks = 60 / this.rateOfFire;
 
