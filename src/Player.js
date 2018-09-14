@@ -248,7 +248,14 @@ class Player extends PIXI.Sprite {
     }
 
     applyUpgrades() {
+        let currentShieldPercent = this.currentShield / this.stats.effectiveMaxShield;
+        let currentArmorPercent = this.currentArmor / this.stats.effectiveMaxArmor;
+
         this.stats.calculate();
+
+        this.currentShield = this.stats.effectiveMaxShield * currentShieldPercent;
+        this.currentArmor = this.stats.effectiveMaxArmor  * currentArmorPercent;
+
         StatsAndFormulas.update();
     }
 

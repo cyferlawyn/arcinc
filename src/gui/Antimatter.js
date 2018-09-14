@@ -131,6 +131,7 @@ class Antimatter {
 
                         arcInc.saveSavegame();
                         arcInc.antimatterTalents.calculate();
+                        arcInc.objectStore.get('player').applyUpgrades();
 
                         arcInc.eventEmitter.emit(Events.ANTIMATTER_UPDATED, arcInc.savegame.credits);
                         arcInc.eventEmitter.emit(Events.ANTIMATTER_TALENT_PURCHASED, {'name': name, 'level': arcInc.savegame.talents[name]});
