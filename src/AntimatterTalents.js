@@ -20,6 +20,6 @@ class AntimatterTalents {
 
     calculate() {
         this.waveCompressionStrength = 1 + arcInc.savegame.talents.waveCompressionStrength;
-        this.waveCompressionThreshold = 250 + 125 * arcInc.savegame.talents.waveCompressionThreshold;
+        this.waveCompressionThreshold = Math.min(arcInc.savegame.highestWaveEver-100, 375 + 135 * arcInc.savegame.talents.waveCompressionThreshold);
     }
 }
