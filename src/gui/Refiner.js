@@ -178,8 +178,8 @@ class Refiner {
             if (arcInc.refinerDelay <= 0) {
                 arcInc.refinerDelay += arcInc.antimatterTalents.refinerCycleTime;
 
-                let defensive = document.querySelector("#refiner-distribution").value;
-                let offensive = 100 - defensive;
+                let offensive = document.querySelector("#refiner-distribution").value;
+                let defensive = 100 - offensive;
 
                 let volume = Math.min(arcInc.savegame.refiner.bufferVolume, arcInc.antimatterTalents.refinerCycleVolume);
                 arcInc.savegame.refiner.bufferVolume -= volume;
