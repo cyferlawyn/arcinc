@@ -40,7 +40,7 @@ class MainScene extends Scene{
         let player = arcInc.objectStore.get('player');
         player.currentShield = player.stats.effectiveMaxShield;
         player.currentArmor = player.stats.effectiveMaxArmor;
-        player.currentEnergy = 100;
+        player.currentEnergy = 0;
 
         this.wave = arcInc.savegame.highestWave;
         if (this.wave < 0) {
