@@ -16,7 +16,7 @@ class ArcInc {
         this.authToken = localStorage.getItem(authTokenName);
         CloudManager.initLogin(this.authToken === null);
 
-        this.refinerDelay = 0;
+        this.refinerDelay = 60;
     }
 
     authenticated() {
