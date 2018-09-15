@@ -155,13 +155,13 @@ class Refiner {
 
         let tenPercentButton = document.createElement('button');
         tenPercentButton.classList.add('btn', 'btn-danger');
-        onePercentButton.innerText = 'Refine 10% of your Act. AM';
+        tenPercentButton.innerText = 'Refine 10% of your Act. AM';
         bottommostOuterDiv.appendChild(tenPercentButton);
         tenPercentButton.addEventListener("click", fillTen);
 
         let hundredPercentButton = document.createElement('button');
         hundredPercentButton.classList.add('btn', 'btn-danger');
-        onePercentButton.innerText = 'Refine 100% of your Act. AM';
+        hundredPercentButton.innerText = 'Refine 100% of your Act. AM';
         bottommostOuterDiv.appendChild(hundredPercentButton);
         hundredPercentButton.addEventListener("click", fillHundred);
 
