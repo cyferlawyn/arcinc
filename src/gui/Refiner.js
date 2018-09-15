@@ -126,9 +126,7 @@ class Refiner {
 
         let fill = function(amount) {
             let maxAmount = arcInc.antimatterTalents.refinerBufferVolume - arcInc.savegame.refiner.bufferVolume;
-            let actualAmount = Math.min(maxAmount, Math.round(arcInc.antimatterTalents.refinerBufferVolume * amount));
-
-            actualAmount = Math.min(actualAmount, arcInc.savegame.activeAntimatter);
+            let actualAmount = Math.min(maxAmount, Math.round(arcInc.savegame.activeAntimatter * amount));
 
             arcInc.savegame.activeAntimatter -= actualAmount;
             arcInc.savegame.refiner.bufferVolume += actualAmount;
@@ -151,19 +149,19 @@ class Refiner {
 
         let onePercentButton = document.createElement('button');
         onePercentButton.classList.add('btn', 'btn-danger');
-        onePercentButton.innerText = 'Load 1% of Buffer';
+        onePercentButton.innerText = 'Refine 1% of your Act. AM';
         bottommostOuterDiv.appendChild(onePercentButton);
         onePercentButton.addEventListener("click", fillOne);
 
         let tenPercentButton = document.createElement('button');
         tenPercentButton.classList.add('btn', 'btn-danger');
-        tenPercentButton.innerText = 'Load 10% of Buffer';
+        onePercentButton.innerText = 'Refine 10% of your Act. AM';
         bottommostOuterDiv.appendChild(tenPercentButton);
         tenPercentButton.addEventListener("click", fillTen);
 
         let hundredPercentButton = document.createElement('button');
         hundredPercentButton.classList.add('btn', 'btn-danger');
-        hundredPercentButton.innerText = 'Load 100% of Buffer';
+        onePercentButton.innerText = 'Refine 100% of your Act. AM';
         bottommostOuterDiv.appendChild(hundredPercentButton);
         hundredPercentButton.addEventListener("click", fillHundred);
 
