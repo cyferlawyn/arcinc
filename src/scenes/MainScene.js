@@ -41,6 +41,7 @@ class MainScene extends Scene{
         player.currentShield = player.stats.effectiveMaxShield;
         player.currentArmor = player.stats.effectiveMaxArmor;
         player.currentEnergy = 0;
+        player.armorDegenerations = [];
 
         this.wave = arcInc.savegame.highestWave;
         if (this.wave < 0) {

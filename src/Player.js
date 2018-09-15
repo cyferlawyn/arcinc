@@ -165,11 +165,12 @@ class Player extends PIXI.Sprite {
             },
             "armorPlating": {
                 "title": "Armor Plating",
-                "cost": 5e6,
+                "cost": 1e9,
                 "growthFactor": arcInc.growth,
-                "description": "Reduces the damage dealt to your ship\"s armor by a flat amount.",
-                "effectTemplate": "{EFFECT} abs. reduction",
-                "requirements": [{"type": "upgrades", "name": "maxArmor", "level": 1}]
+                "description": "Adaptive Armor Plating absorbs the explosion impact of Armor hits, but radiates heat back to the armor over time.",
+                "effectTemplate": "Over {EFFECT} sec",
+                "requirements": [{"type": "upgrades", "name": "maxArmor", "level": 1}],
+                "cap": 100
             },
             "titaniumAlloy": {
                 "title": "Titanium Alloy",
@@ -241,6 +242,7 @@ class Player extends PIXI.Sprite {
         this.currentShield = this.stats.effectiveMaxShield;
         this.currentArmor = this.stats.effectiveMaxArmor;
         this.currentEnergy = 0;
+        this.armorDegenerations = [];
 
         // Register event listener
         arcInc.eventEmitter.subscribe(Events.REGENERATION_PHASE_STARTED, this.id, this.regenerate.bind(this));
@@ -327,6 +329,24 @@ class Player extends PIXI.Sprite {
 
         // clamp current shield
         this.currentShield = Math.min(this.stats.effectiveMaxShield, this.currentShield);
+
+        // apply armor degeneration
+        let armorDegenerationDamage = 0;
+        for (let i = this.armorDegenerations.length - 1; i >= 0; i--) {
+            armorDegenerationDamage += this.armorDegenerations[i].damage * frameDelta;
+            this.armorDegenerations[i].ticksLeft -= frameDelta;
+
+            if (this.armorDegenerations[i].ticksLeft <= 0) {
+                this.armorDegenerations.splice(i, 1);
+            }
+        }
+
+        if (this.currentArmor >= armorDegenerationDamage) {
+            this.currentArmor -= armorDegenerationDamage;
+        } else {
+            arcInc.sceneManager.scenes["main"].reset();
+            arcInc.sceneManager.loadScene("main");
+        }
     }
 
     engage(frameDelta) {
@@ -383,9 +403,12 @@ class Player extends PIXI.Sprite {
             this.currentShield = 0;
         }
 
-        // lastly hit armor
-        damage += this.stats.effectiveAbsoluteIncomingArmorDamageAddition;
-        if (damage <= 0) {
+        // then hit armor
+        if (this.stats.effectiveArmorDegenerationTicks > 0) {
+            this.armorDegenerations.push({
+                "damage": Math.round(damage / this.stats.effectiveArmorDegenerationTicks),
+                "ticksLeft": this.stats.effectiveArmorDegenerationTicks
+            });
             return;
         }
 

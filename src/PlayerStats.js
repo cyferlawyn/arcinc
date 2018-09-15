@@ -17,7 +17,7 @@ class PlayerStats {
 
         this.repulsorField = Math.max(0.0001, 0.99 ** this.ul('repulsorField')  / Math.max(1, this.ul('repulsorField') * 0.1 + 1) );
 
-        this.armorPlating = -100 * (0.5 * this.ul('armorPlating') * this.titaniumAlloy);
+        this.armorPlating = Math.min(5, 0.05 * this.ul('armorPlating'));
 
         this.shieldRechargeTime = 1 + 0.025 * this.ul('shieldRechargeTime');
         this.shieldRechargeAccelerator = 1 + 0.02 * this.ul('shieldRechargeAccelerator');
@@ -60,7 +60,7 @@ class PlayerStats {
 
         this.effectiveRelativeIncomingDamageMultiplier = this.repulsorField;
         this.effectiveAbsoluteIncomingShieldDamageAddition = 0;
-        this.effectiveAbsoluteIncomingArmorDamageAddition = this.armorPlating;
+        this.effectiveArmorDegenerationTicks = 60 * this.armorPlating;
 
         this.effectiveProjectileAmount = Math.min(25, this.projectileAmount);
         this.effectiveProjectileAmountCompensation = 1 + (this.projectileAmount - this.effectiveProjectileAmount) / this.effectiveProjectileAmount;
