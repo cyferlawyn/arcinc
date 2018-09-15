@@ -7,13 +7,13 @@ class PlayerStats {
         // Upgrade based scaling
         this.movementSpeed = 1 + 0.01 * this.ul('movementSpeed');
 
-        this.maxShield = 1 + 0.5 * this.ul('maxShield');
-        this.plasmaField = 1 + this.ul('plasmaField');
+        this.maxShield = 1 + this.ul('maxShield');
+        this.plasmaField = 1 + 10 * this.ul('plasmaField');
 
-        this.maxArmor = 1 + 0.5 * this.ul('maxArmor');
-        this.titaniumAlloy = 1 + this.ul('titaniumAlloy');
+        this.maxArmor = 1 + this.ul('maxArmor');
+        this.titaniumAlloy = 1 + 10 * this.ul('titaniumAlloy');
 
-        this.lifeSupportSystems = 1 + this.ul('lifeSupportSystems');
+        this.lifeSupportSystems = 1 + 20 * this.ul('lifeSupportSystems');
 
         this.repulsorField = Math.max(0.0001, 0.99 ** this.ul('repulsorField')  / Math.max(1, this.ul('repulsorField') * 0.1 + 1) );
 
