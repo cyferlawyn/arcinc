@@ -17,13 +17,13 @@ class BlockyEnemy extends Enemy{
         this.y += this.vy * frameDelta;
 
         if (!this.triggered) {
-            if (this.lifetime > 200) {
+            if (this.lifetime > 150 && this.lifetime < 300) {
                 this.vx = 0;
                 this.vy = Math.sin(this.lifetime / 10);
             }
 
-            if (Utils.leftBounds(this)) {
-                this.markedForDestruction = true;
+            if (this.lifetime > 300) {
+                this.triggered = true;
             }
         } else {
             if (this.x < 0){
@@ -51,12 +51,12 @@ class BlockyEnemy extends Enemy{
     }
 
     afterHitBy(projectile) {
-        if (this.stats.currentHealth < this.triggerThreshold)
-        if (!this.triggered) {
+        if (!triggered && this.stats.currentHealth < this.triggerThreshold)
+        {
             this.triggered = true;
             this.scale.set(0.3);
             this.tint = 0xFF0000;
-            this.vx = Math.random() * 20 - 10;
+            this.vx = -20;
             this.vy = Math.random() * 20 - 10;
         }
     }
