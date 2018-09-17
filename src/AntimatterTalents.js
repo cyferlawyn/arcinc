@@ -42,6 +42,13 @@ class AntimatterTalents {
                 "growthFactor": 1000,
                 "description": "Increases the purity of the Refined Antimatter. The purer, the more power can be harnessed.",
                 "effectTemplate": "{EFFECT} times purer"
+            },
+            "refinerOfflineVolume": {
+                "title": "Refiner Offline Volume",
+                "cost": 1e15,
+                "growthFactor": 10,
+                "description": "We are a 24/7 company now. Determines how much your night shift has to work before seeing their families again.",
+                "effectTemplate": "{EFFECT} Antimatter"
             }
         };
     }
@@ -54,5 +61,6 @@ class AntimatterTalents {
         this.refinerCycleTime = 60 * 0.95**arcInc.savegame.talents.refinerCycleTime;
         this.refinerCycleVolume = 1e14 * 10**arcInc.savegame.talents.refinerCycleVolume;
         this.refinerPurity = 10 * 10**arcInc.savegame.talents.refinerPurity;
+        this.refinerOfflineVolume = 1e14 * 10**arcInc.savegame.talents.refinerOfflineVolume;
     }
 }
