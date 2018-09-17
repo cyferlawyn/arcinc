@@ -4,7 +4,7 @@ class BlockyEnemy extends Enemy{
     }
 
     prepareProperties() {
-        this.scale.set(0.2);
+        this.scale.set(0.3);
         this.lifetime = 0;
         this.triggered = false;
         this.triggerThreshold = this.stats.currentHealth / 2;
@@ -51,14 +51,14 @@ class BlockyEnemy extends Enemy{
     }
 
     trigger() {
-        this.scale.set(0.3);
+        this.scale.set(0.1);
         this.tint = 0xFF0000;
         if (Math.random() > 0.5) {
             this.vx = 5;
         } else {
             this.vx = -5;
         }
-        this.vy = -8;
+        this.vy = -5;
         this.triggered = true;
     }
 
