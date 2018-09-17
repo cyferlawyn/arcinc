@@ -167,6 +167,13 @@ class Enemy extends PIXI.Sprite {
 
         // Apply final damage application
         this.stats.currentHealth -= damage;
+
+        // Trigger enemy specific post hit behavior
+        this.afterHitBy(projectile);
+    }
+
+    afterHitBy(projectile) {
+
     }
 
     cleanup() {

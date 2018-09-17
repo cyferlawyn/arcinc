@@ -26,6 +26,9 @@ class Spawner {
             case "suicideBomber": {
                 enemy = new SuicideBomberEnemy(enemyStats);
             } break;
+            case "blocky": {
+                enemy = new BlockyEnemy(enemyStats);
+            } break;
             case "asteroid": {
                 enemy = new AsteroidEnemy(enemyStats);
             } break;

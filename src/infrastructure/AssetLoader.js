@@ -6,6 +6,7 @@ class AssetLoader {
             .add('assets/sprites/enemies/AsteroidEnemy.png')
             .add('assets/sprites/enemies/SuicideBomberEnemy.png')
             .add('assets/sprites/enemies/IndustrialMinerEnemy.png')
+            .add('assets/sprites/enemies/BlockyEnemy.png')
 
             .add('assets/sprites/abilities/armorRepairer.png')
             .add('assets/sprites/abilities/comingSoon.png')
