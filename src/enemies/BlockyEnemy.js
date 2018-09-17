@@ -17,13 +17,13 @@ class BlockyEnemy extends Enemy{
         this.y += this.vy * frameDelta;
 
         if (!this.triggered) {
-            if (this.lifetime > 150 && this.lifetime < 300) {
+            if (this.lifetime > 150 && this.lifetime <= 300) {
                 this.vx = 0;
                 this.vy = Math.sin(this.lifetime / 10);
             }
 
             if (this.lifetime > 300) {
-                this.triggered = true;
+                this.trigger();
             }
         } else {
             if (this.x < 0){
@@ -50,14 +50,18 @@ class BlockyEnemy extends Enemy{
         arcInc.eventEmitter.emit(Events.COLLIDER_MOVED, this);
     }
 
+    trigger() {
+        this.scale.set(0.3);
+        this.tint = 0xFF0000;
+        this.vx = Math.random() * 20 - 10;
+        this.vy = -8;
+        this.triggered = true;
+    }
+
     afterHitBy(projectile) {
         if (!this.triggered && this.stats.currentHealth < this.triggerThreshold)
         {
-            this.triggered = true;
-            this.scale.set(0.3);
-            this.tint = 0xFF0000;
-            this.vx = Math.random() * 20 - 10;
-            this.vy = -8;
+            this.trigger();
         }
     }
 }
