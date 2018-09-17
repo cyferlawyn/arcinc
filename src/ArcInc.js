@@ -29,6 +29,7 @@ class ArcInc {
         this.initScenes();
         this.initStation();
         this.initAntimatterTalents();
+        Refiner.calculateOfflineProgress();
         this.initPage();
     }
 
@@ -247,7 +248,24 @@ class ArcInc {
                 };
             }
 
-            if (this.savegame.version !== 'v0.23') {
+            if (this.savegame.version === "v0.23") {
+                this.savegame.version = "v0.24";
+                this.savegame.talents.refinerOfflineVolume = 0;
+                this.savegame.talents.acquisitionInterval = 0;
+                this.savegame.talents.acquisitionBulkBuy = 0;
+                this.savegame.refiner.lastRun = Date.now();
+                this.savegame.refiner.distribution = {
+                    "offensive": 50,
+                    "defensive": 50
+                };
+                this.savegame.acquisitions = {
+                    "active": false
+                };
+                this.savegame.acquisitions.config = this.savegame.config.acquisitions;
+                delete this.savegame.config;
+            }
+
+            if (this.savegame.version !== 'v0.24') {
                 this.savegame = new Savegame();
             }
         }

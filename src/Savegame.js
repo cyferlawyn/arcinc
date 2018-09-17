@@ -1,6 +1,6 @@
 class Savegame {
     constructor() {
-        this.version = "v0.23";
+        this.version = "v0.24";
         this.highestWave = 0;
         this.highestWaveEver = 0;
         this.credits = 0;
@@ -50,15 +50,24 @@ class Savegame {
             "refinerBufferVolume": 0,
             "refinerCycleTime": 0,
             "refinerCycleVolume": 0,
-            "refinerPurity": 0
+            "refinerPurity": 0,
+            "refinerOfflineVolume": 0,
+            "acquisitionInterval": 0,
+            "acquisitionBulkBuy": 0
         };
         this.refiner = {
             "bufferVolume": 0,
             "offensiveRefinedAntimatter": 0,
-            "defensiveRefinedAntimatter": 0
+            "defensiveRefinedAntimatter": 0,
+            "distribution": {
+                "defensive": 50,
+                "offensive": 50
+            },
+            "lastRun": Date.now()
         };
-        this.config = {
-            "acquisitions": [
+        this.acquisitions = {
+            "active": false,
+            "config": [
                 {"category": "modules", "name": "factory", "skip": false},
                 {"category": "modules", "name": "solarPanels", "skip": false},
                 {"category": "modules", "name": "scienceLab", "skip": false},

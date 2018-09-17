@@ -102,7 +102,7 @@ class Refiner {
 
         let left = document.createElement("span");
         left.classList.add("font-weight-bold", "purple-text", "mr-2");
-        left.textContent = "Def.";
+        left.textContent = "Def. " + arcInc.savegame.refiner.distribution.defensive;
         sliderBar.appendChild(left);
 
         let form = document.createElement("form");
@@ -115,12 +115,19 @@ class Refiner {
         input.type = "range";
         input.min = "0";
         input.max = "100";
-        input.value = "50";
+        input.value = arcInc.savegame.refiner.distribution.offensive;
         form.appendChild(input);
+        input.addEventListener("input", function() {
+            arcInc.savegame.refiner.distribution.offensive = Math.round(document.querySelector("#refiner-distribution").value);
+            arcInc.savegame.refiner.distribution.defensive = Math.round(100 - arcInc.savegame.refiner.distribution.offensive);
+
+            left.textContent = "Def. " + arcInc.savegame.refiner.distribution.defensive;
+            right.textContent = arcInc.savegame.refiner.distribution.offensive + " Off.";
+        });
 
         let right = document.createElement("span");
         right.classList.add("font-weight-bold", "purple-text", "ml-2");
-        right.textContent = "Off.";
+        right.textContent = arcInc.savegame.refiner.distribution.offensive + " Off.";
         sliderBar.appendChild(right);
 
 
@@ -149,21 +156,37 @@ class Refiner {
 
         let onePercentButton = document.createElement('button');
         onePercentButton.classList.add('btn', 'btn-danger');
-        onePercentButton.innerText = 'Refine 1% AM';
+        onePercentButton.innerText = 'Refine 1% AAM';
         bottommostOuterDiv.appendChild(onePercentButton);
         onePercentButton.addEventListener("click", fillOne);
 
         let tenPercentButton = document.createElement('button');
         tenPercentButton.classList.add('btn', 'btn-danger');
-        tenPercentButton.innerText = 'Refine 10% AM';
+        tenPercentButton.innerText = 'Refine 10% AAM';
         bottommostOuterDiv.appendChild(tenPercentButton);
         tenPercentButton.addEventListener("click", fillTen);
 
         let hundredPercentButton = document.createElement('button');
         hundredPercentButton.classList.add('btn', 'btn-danger');
-        hundredPercentButton.innerText = 'Refine 100% AM';
+        hundredPercentButton.innerText = 'Refine 100% AAM';
         bottommostOuterDiv.appendChild(hundredPercentButton);
         hundredPercentButton.addEventListener("click", fillHundred);
+
+        let unloadButton = document.createElement('button');
+        unloadButton.classList.add('btn', 'btn-danger');
+        unloadButton.innerText = 'Unload';
+        bottommostOuterDiv.appendChild(unloadButton);
+        unloadButton.addEventListener("click", function() {
+            arcInc.savegame.activeAntimatter += arcInc.savegame.refiner.bufferVolume;
+            arcInc.savegame.refiner.bufferVolume = 0;
+
+            arcInc.saveSavegame();
+            arcInc.antimatterTalents.calculate();
+            arcInc.objectStore.get('player').applyUpgrades();
+
+            arcInc.eventEmitter.emit(Events.ANTIMATTER_REFINER_UPDATED);
+            arcInc.eventEmitter.emit(Events.ANTIMATTER_UPDATED, arcInc.savegame.activeAntimatter);
+        });
 
         let cycle = function() {
             arcInc.refinerDelay -= 1;
@@ -174,15 +197,13 @@ class Refiner {
             progressBar.style.width = progress + "%";
 
             if (arcInc.refinerDelay <= 0) {
+                arcInc.savegame.refiner.lastRun = Date.now();
                 arcInc.refinerDelay += arcInc.antimatterTalents.refinerCycleTime;
-
-                let offensive = document.querySelector("#refiner-distribution").value;
-                let defensive = 100 - offensive;
 
                 let volume = Math.min(arcInc.savegame.refiner.bufferVolume, arcInc.antimatterTalents.refinerCycleVolume);
                 arcInc.savegame.refiner.bufferVolume -= volume;
-                arcInc.savegame.refiner.defensiveRefinedAntimatter += volume /100 * defensive * arcInc.antimatterTalents.refinerPurity;
-                arcInc.savegame.refiner.offensiveRefinedAntimatter += volume /100 * offensive * arcInc.antimatterTalents.refinerPurity;
+                arcInc.savegame.refiner.defensiveRefinedAntimatter += volume /100 * arcInc.savegame.refiner.distribution.defensive * arcInc.antimatterTalents.refinerPurity;
+                arcInc.savegame.refiner.offensiveRefinedAntimatter += volume /100 * arcInc.savegame.refiner.distribution.offensive * arcInc.antimatterTalents.refinerPurity;
 
                 arcInc.saveSavegame();
                 arcInc.antimatterTalents.calculate();
@@ -194,5 +215,26 @@ class Refiner {
         };
 
         window.setInterval(cycle, 1000);
+    }
+
+    static calculateOfflineProgress() {
+        let offlineSeconds = Math.round((Date.now() - arcInc.savegame.refiner.lastRun)/1000);
+        let offlineCycles = Math.floor(offlineSeconds / arcInc.antimatterTalents.refinerCycleTime);
+        let offlineVolume = Math.min(arcInc.antimatterTalents.refinerCycleVolume * offlineCycles,
+            arcInc.antimatterTalents.refinerOfflineVolume,
+            arcInc.savegame.refiner.bufferVolume);
+
+        if (offlineVolume > 0) {
+            alert("While you have been lazy for " + Math.round(offlineSeconds / 60) + " minutes, your ambitious refiner crew managed to refine another " + Utils.format(offlineVolume) + " Antimatter.");
+
+            arcInc.savegame.refiner.lastRun = Date.now();
+            arcInc.savegame.refiner.bufferVolume -= offlineVolume;
+            arcInc.savegame.refiner.defensiveRefinedAntimatter += offlineVolume / 100 * arcInc.savegame.refiner.distribution.defensive * arcInc.antimatterTalents.refinerPurity;
+            arcInc.savegame.refiner.offensiveRefinedAntimatter += offlineVolume / 100 * arcInc.savegame.refiner.distribution.offensive * arcInc.antimatterTalents.refinerPurity;
+        } else {
+            arcInc.savegame.refiner.lastRun = Date.now();
+        }
+
+        arcInc.saveSavegame();
     }
 }

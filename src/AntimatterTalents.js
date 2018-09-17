@@ -15,6 +15,21 @@ class AntimatterTalents {
                 "description": "While your current wave is lower than [Wave Compression Threshold], the next wave will consist of [Wave Compression Strength] waves merged into a single stronger wave.",
                 "effectTemplate": "{EFFECT} waves"
             },
+            "acquisitionInterval": {
+                "title": "Acquisition Interval",
+                "cost": 1e6,
+                "growthFactor": 10,
+                "description": "Decreases the time between [Acquisition Automaton] activations.",
+                "effectTemplate": "{EFFECT} s",
+                "cap": 10
+            },
+            "acquisitionBulkBuy": {
+                "title": "Acquisition Bulk Buy",
+                "cost": 1e10,
+                "growthFactor": 1000,
+                "description": "Installs the Bulk Buy Module into the Acquisition Automaton. Each activation will try to buy multiple perks at once.",
+                "effectTemplate": "{EFFECT} acquisitions"
+            },
             "refinerBufferVolume": {
                 "title": "Refiner Buffer Volume",
                 "cost": 1e18,
@@ -49,7 +64,7 @@ class AntimatterTalents {
                 "growthFactor": 10,
                 "description": "We are a 24/7 company now. Determines how much your night shift has to work before seeing their families again.",
                 "effectTemplate": "{EFFECT} Antimatter"
-            }
+            },
         };
     }
 
@@ -62,5 +77,8 @@ class AntimatterTalents {
         this.refinerCycleVolume = 1e14 * 10**arcInc.savegame.talents.refinerCycleVolume;
         this.refinerPurity = 10 * 10**arcInc.savegame.talents.refinerPurity;
         this.refinerOfflineVolume = 1e14 * 10**arcInc.savegame.talents.refinerOfflineVolume;
+
+        this.acquisitionInterval = 1.1 - 0.1 * arcInc.savegame.talents.acquisitionInterval;
+        this.acquisitionBulkBuy = 1 + arcInc.savegame.talents.acquisitionBulkBuy;
     }
 }

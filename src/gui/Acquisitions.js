@@ -1,22 +1,30 @@
 class Acquisitions {
     static prepare(parent) {
-        let categoryCardBody = CategoryCard.prepare(parent, 'aquisitions', 'Acquisitions');
+        let categoryCardBody = CategoryCard.prepare(parent, 'acquisitionAutomaton', 'Acquisition Automaton');
 
         let progressContainer = document.createElement("div");
         categoryCardBody.appendChild(progressContainer);
 
         let progressBar = document.createElement("div");
-        progressBar.classList.add("progress-bar", "progress-bar-striped", "bg-danger");
+        progressBar.classList.add("progress-bar", "progress-bar-striped", );
         progressBar.setAttribute("role", "progressbar");
         progressBar.progress = 0;
         progressBar.style.width = "100%";
         progressBar.style.height = "20px";
         progressBar.style.cursor = "pointer";
-        progressBar.active = false;
         progressBar.textContent = "Click to toggle";
+
+        if (!arcInc.savegame.acquisitions.active) {
+            progressBar.classList.remove("progress-bar-animated", "bg-success");
+            progressBar.classList.add("bg-danger");
+        } else {
+            progressBar.classList.add("progress-bar-animated", "bg-success");
+            progressBar.classList.remove("bg-danger");
+        }
+
         progressContainer.appendChild(progressBar);
         progressBar.addEventListener("click", function() {
-           if (progressBar.active) {
+           if (arcInc.savegame.acquisitions.active) {
                progressBar.classList.remove("progress-bar-animated", "bg-success");
                progressBar.classList.add("bg-danger");
            } else {
@@ -24,52 +32,74 @@ class Acquisitions {
                progressBar.classList.remove("bg-danger");
            }
 
-           progressBar.active = !progressBar.active;
+           arcInc.savegame.acquisitions.active = !arcInc.savegame.acquisitions.active;
+           arcInc.saveSavegame();
         });
+
         window.setInterval(function() {
-            if (progressBar.active) {
-                progressBar.progress += 50;
+            if (arcInc.savegame.acquisitions.active) {
+                progressBar.progress += 10 / arcInc.antimatterTalents.acquisitionInterval;
                 if (Math.round(progressBar.progress) >= 100) {
                     progressBar.progress = 0;
 
-                    let capped = false;
-
-                    for (let acquisition of arcInc.savegame.config.acquisitions) {
+                    let overallCost = 0;
+                    let purchases = [];
+                    for (let acquisition of arcInc.savegame.acquisitions.config) {
                         if (!acquisition.skip) {
-                            let effectiveCost;
-                            if (acquisition.category === "upgrades") {
-                                let value = arcInc.objectStore.get("player").upgrades[acquisition.name];
-                                effectiveCost = Math.ceil(value.cost * Math.pow(value.growthFactor, arcInc.savegame.upgrades[acquisition.name]));
-                                capped =  (value.cap !== undefined && arcInc.savegame.upgrades[acquisition.name] >= value.cap)
-                            }
-                            if (acquisition.category === "modules") {
-                                let value = arcInc.station.modules[acquisition.name];
-                                effectiveCost = Math.ceil(value.cost * Math.pow(value.growthFactor, arcInc.savegame.modules[acquisition.name]));
-                                capped = (value.cap !== undefined && arcInc.savegame.modules[acquisition.name] >= value.cap)
-                            }
+                            let purchase = {};
+                            purchase.name = acquisition.name;
+                            purchase.amount = 0;
+                            purchase.category = acquisition.category;
+                            purchase.cost = 0;
 
-                            if (!capped && arcInc.savegame.credits >= effectiveCost) {
-                                arcInc.savegame.credits -= effectiveCost;
-                                arcInc.savegame[acquisition.category][acquisition.name]++;
-                                arcInc.saveSavegame();
-                                arcInc.objectStore.get('player').applyUpgrades();
-
-                                arcInc.eventEmitter.emit(Events.CREDITS_UPDATED, arcInc.savegame.credits);
+                            for (let i = 0; i < arcInc.antimatterTalents.acquisitionBulkBuy; i++) {
+                                let capped;
+                                let effectiveCost;
 
                                 if (acquisition.category === "upgrades") {
-                                    arcInc.eventEmitter.emit(Events.SHIP_UPGRADE_PURCHASED, {
-                                        'name': acquisition.name,
-                                        'level': arcInc.savegame.upgrades[acquisition.name]
-                                    });
-
+                                    let value = arcInc.objectStore.get("player").upgrades[acquisition.name];
+                                    effectiveCost = Math.ceil(value.cost * Math.pow(value.growthFactor, arcInc.savegame.upgrades[acquisition.name]));
+                                    capped =  (value.cap !== undefined && arcInc.savegame.upgrades[acquisition.name] >= value.cap)
                                 }
                                 if (acquisition.category === "modules") {
-                                    arcInc.eventEmitter.emit(Events.STATION_MODULE_PURCHASED, {
-                                        'name': acquisition.name,
-                                        'level': arcInc.savegame.modules[acquisition.name]
-                                    });
+                                    let value = arcInc.station.modules[acquisition.name];
+                                    effectiveCost = Math.ceil(value.cost * Math.pow(value.growthFactor, arcInc.savegame.modules[acquisition.name]));
+                                    capped = (value.cap !== undefined && arcInc.savegame.modules[acquisition.name] >= value.cap)
+                                }
+
+                                if (capped || effectiveCost + overallCost > arcInc.savegame.credits) {
+                                    break;
+                                } else {
+                                    purchase.amount++;
+                                    purchase.cost += effectiveCost;
+                                    overallCost += effectiveCost;
                                 }
                             }
+
+                            if (purchase.amount > 0) {
+                                purchases.push(purchase);
+                            }
+                        }
+                    }
+
+                    for (let purchase of purchases) {
+                        arcInc.savegame.credits -= purchase.cost;
+                        arcInc.savegame[purchase.category][purchase.name] += purchase.amount;
+                        arcInc.saveSavegame();
+                        arcInc.objectStore.get('player').applyUpgrades();
+
+                        if (purchase.category === "upgrades") {
+                            arcInc.eventEmitter.emit(Events.SHIP_UPGRADE_PURCHASED, {
+                                'name': purchase.name,
+                                'level': arcInc.savegame.upgrades[purchase.name]
+                            });
+
+                        }
+                        if (purchase.category === "modules") {
+                            arcInc.eventEmitter.emit(Events.STATION_MODULE_PURCHASED, {
+                                'name': purchase.name,
+                                'level': arcInc.savegame.modules[purchase.name]
+                            });
                         }
                     }
                 }
@@ -103,7 +133,7 @@ class Acquisitions {
         table.appendChild(tableBody);
 
         let index = 0;
-        for (let acquisition of arcInc.savegame.config.acquisitions){
+        for (let acquisition of arcInc.savegame.acquisitions.config){
             index++;
 
             let tableRow = document.createElement('tr');
@@ -134,10 +164,10 @@ class Acquisitions {
             up.height = "10";
             upTd.appendChild(up);
             up.addEventListener("click", function() {
-                let acquisitionIndex = arcInc.savegame.config.acquisitions.indexOf(acquisition);
+                let acquisitionIndex = arcInc.savegame.acquisitions.config.indexOf(acquisition);
                 if (acquisitionIndex > 0) {
-                    let removedElement = arcInc.savegame.config.acquisitions.splice(acquisitionIndex, 1)[0];
-                    arcInc.savegame.config.acquisitions.splice(acquisitionIndex - 1, 0, removedElement);
+                    let removedElement = arcInc.savegame.acquisitions.config.splice(acquisitionIndex, 1)[0];
+                    arcInc.savegame.acquisitions.config.splice(acquisitionIndex - 1, 0, removedElement);
                 }
 
                 let previousRow = tableRow.previousSibling;
@@ -158,9 +188,9 @@ class Acquisitions {
             down.tableRow = index;
             downTd.appendChild(down);
             down.addEventListener("click", function() {
-                let acquisitionIndex = arcInc.savegame.config.acquisitions.indexOf(acquisition);
-                let removedElement = arcInc.savegame.config.acquisitions.splice(acquisitionIndex, 1)[0];
-                arcInc.savegame.config.acquisitions.splice(acquisitionIndex+1, 0, removedElement);
+                let acquisitionIndex = arcInc.savegame.acquisitions.config.indexOf(acquisition);
+                let removedElement = arcInc.savegame.acquisitions.config.splice(acquisitionIndex, 1)[0];
+                arcInc.savegame.acquisitions.config.splice(acquisitionIndex+1, 0, removedElement);
 
                 let nextRow = tableRow.nextSibling;
                 if (nextRow) {

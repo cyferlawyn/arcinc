@@ -75,13 +75,13 @@ class Antimatter {
         warpButton.addEventListener('click', function() {
             let newSavegame = new Savegame();
 
-            newSavegame.activeAntimatter = arcInc.savegame.activeAntimatter + arcInc.savegame.pendingAntimatter;
-            newSavegame.highestWaveEver = arcInc.savegame.highestWaveEver;
-            newSavegame.talents = arcInc.savegame.talents;
-            newSavegame.config = arcInc.savegame.config;
-            newSavegame.refiner = arcInc.savegame.refiner;
+            arcInc.savegame.activeAntimatter += arcInc.savegame.pendingAntimatter;
+            arcInc.savegame.pendingAntimatter = 0;
+            arcInc.savegame.highestWave = 0;
+            arcInc.savegame.credits = 0;
+            arcInc.savegame.modules = newSavegame.modules;
+            arcInc.savegame.upgrades = newSavegame.upgrades;
 
-            arcInc.savegame = newSavegame;
             arcInc.saveSavegame();
 
             let savegameString = JSON.stringify(arcInc.savegame);
