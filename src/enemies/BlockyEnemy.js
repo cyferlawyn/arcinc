@@ -53,7 +53,11 @@ class BlockyEnemy extends Enemy{
     trigger() {
         this.scale.set(0.3);
         this.tint = 0xFF0000;
-        this.vx = Math.random() * 20 - 10;
+        if (Math.random() > 0.5) {
+            this.vx = 5;
+        } else {
+            this.vx = -5;
+        }
         this.vy = -8;
         this.triggered = true;
     }
