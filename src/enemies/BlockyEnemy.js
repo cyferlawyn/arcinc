@@ -51,7 +51,7 @@ class BlockyEnemy extends Enemy{
     }
 
     afterHitBy(projectile) {
-        if (!triggered && this.stats.currentHealth < this.triggerThreshold)
+        if (!this.triggered && this.stats.currentHealth < this.triggerThreshold)
         {
             this.triggered = true;
             this.scale.set(0.3);
