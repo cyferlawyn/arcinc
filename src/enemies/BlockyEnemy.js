@@ -52,7 +52,7 @@ class BlockyEnemy extends Enemy{
         } else {
             this.vx = -5;
         }
-        this.vy = -2;
+        this.vy = 2;
         this.triggered = true;
     }
 
