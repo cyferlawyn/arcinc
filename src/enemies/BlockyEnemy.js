@@ -35,30 +35,20 @@ class BlockyEnemy extends Enemy{
                 this.vx *= -1;
                 this.x = Utils.getEffectiveScreenWidth();
             }
-
-            if (this.y < 0){
-                this.vy *= -1;
-                this.y = 0;
-            }
-
-            if (this.y > Utils.getEffectiveScreenHeight()){
-                this.vy *= -1;
-                this.y = Utils.getEffectiveScreenHeight();
-            }
         }
 
         arcInc.eventEmitter.emit(Events.COLLIDER_MOVED, this);
     }
 
     trigger() {
-        this.scale.set(0.1);
+        this.scale.set(0.15);
         this.tint = 0xFF0000;
         if (Math.random() > 0.5) {
             this.vx = 5;
         } else {
             this.vx = -5;
         }
-        this.vy = -5;
+        this.vy = -2;
         this.triggered = true;
     }
 
