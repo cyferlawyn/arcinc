@@ -76,7 +76,7 @@ class AntimatterTalents {
         this.refinerCycleTime = 60 * 0.95**arcInc.savegame.talents.refinerCycleTime;
         this.refinerCycleVolume = 1e14 * 10**arcInc.savegame.talents.refinerCycleVolume;
         this.refinerPurity = 10 * 10**arcInc.savegame.talents.refinerPurity;
-        this.refinerOfflineVolume = 1e14 * 10**arcInc.savegame.talents.refinerOfflineVolume;
+        this.refinerOfflineVolume = 1e17 * 10**arcInc.savegame.talents.refinerOfflineVolume;
 
         this.acquisitionInterval = 1.1 - 0.1 * arcInc.savegame.talents.acquisitionInterval;
         this.acquisitionBulkBuy = 1 + arcInc.savegame.talents.acquisitionBulkBuy;
