@@ -41,8 +41,8 @@ class BlockyEnemy extends Enemy{
 
         let normVector = Utils.getNormVector(player, this);
 
-        this.vx = normVector.vx * 4;
-        this.vy = normVector.vy * 4;
+        this.vx = normVector.vx * 6;
+        this.vy = normVector.vy * 6;
 
         this.triggered = true;
     }
