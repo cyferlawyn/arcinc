@@ -35,6 +35,10 @@ class BlockyEnemy extends Enemy{
                 this.vx *= -1;
                 this.x = Utils.getEffectiveScreenWidth();
             }
+
+            if (Utils.leftBounds(this)) {
+                this.markedForDestruction = true;
+            }
         }
 
         arcInc.eventEmitter.emit(Events.COLLIDER_MOVED, this);
