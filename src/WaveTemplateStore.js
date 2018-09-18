@@ -34,7 +34,7 @@ class WaveTemplateStore {
                     if (mask[i][j] === "*") {
                         let frame = ((mask.length) - i) * (300/(mask.length));
                         let x = 1 / (mask[i].length+1) * (j+1);
-                        keyFrames.push(new KeyFrame(frame, {"operation": "spawnEnemy", "reference": type + ((j + 1) * (i + 1)), "type": type, "wave": targetWave, "scalingFactor": wavesToSpawn, "x": x, "y": -0.25, "vx": 0, "vy": 2}));
+                        keyFrames.push(new KeyFrame(frame, {"operation": "spawnEnemy", "reference": type + ((j + 1) * (i + 1)), "type": type, "wave": targetWave, "scalingFactor": wavesToSpawn, "x": x, "y": -0.05, "vx": 0, "vy": 2}));
                     }
                 }
             }
