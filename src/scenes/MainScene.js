@@ -47,6 +47,11 @@ class MainScene extends Scene{
         if (this.wave < 0) {
             this.wave = 0;
         }
+
+        this.waveTemplate = WaveTemplateStore.template(this.wave);
+        this.remainingEnemies = this.waveTemplate.keyframes.length;
+        this.framesTillWave = 600;
+        StatsAndFormulas.update();
     }
 
     initContainer() {
