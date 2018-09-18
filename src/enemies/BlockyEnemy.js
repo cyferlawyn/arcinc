@@ -7,7 +7,7 @@ class BlockyEnemy extends Enemy{
         this.scale.set(0.3);
         this.lifetime = 0;
         this.triggered = false;
-        this.triggerThreshold = this.stats.currentHealth / 2;
+        this.triggerThreshold = this.stats.currentHealth / 3;
     }
 
     move(frameDelta){
@@ -26,16 +26,6 @@ class BlockyEnemy extends Enemy{
                 this.trigger();
             }
         } else {
-            if (this.x < 0){
-                this.vx *= -1;
-                this.x = 0;
-            }
-
-            if (this.x > Utils.getEffectiveScreenWidth()){
-                this.vx *= -1;
-                this.x = Utils.getEffectiveScreenWidth();
-            }
-
             if (Utils.leftBounds(this)) {
                 this.markedForDestruction = true;
             }
@@ -47,12 +37,13 @@ class BlockyEnemy extends Enemy{
     trigger() {
         this.scale.set(0.15);
         this.tint = 0xFF0000;
-        if (Math.random() > 0.5) {
-            this.vx = 5;
-        } else {
-            this.vx = -5;
-        }
-        this.vy = 2;
+        let player = arcInc.objectStore.get('player');
+
+        let normVector = Utils.getNormVector(player, this);
+
+        this.vx = normVector.vx * 4;
+        this.vy = normVector.vy * 4;
+
         this.triggered = true;
     }
 
