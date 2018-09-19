@@ -32,6 +32,15 @@ class Spawner {
             case "asteroid": {
                 enemy = new AsteroidEnemy(enemyStats);
             } break;
+            case "lavaRock": {
+                enemy = new LavaRockEnemy(enemyStats);
+            } break;
+            case "plasmaZone": {
+                enemy = new PlasmaZoneEnemy(enemyStats);
+            } break;
+            case "spaceBug": {
+                enemy = new SpaceBugEnemy(enemyStats);
+            } break;
         }
 
         arcInc.eventEmitter.emit(Events.COLLIDER_CREATED, enemy);
@@ -50,7 +59,16 @@ class Spawner {
         enemyStats.wave = wave;
         enemyStats.isBoss = true;
 
-        let enemy = new BossEnemy(enemyStats);
+        let enemy;
+
+        switch(type) {
+            case "boss": {
+                enemy = new BossEnemy(enemyStats);
+            } break;
+            case "superBoss": {
+                enemy = new SuperBossEnemy(enemyStats);
+            } break;
+        }
 
         // positioning
         enemy.x = Utils.getEffectiveScreenWidth() / 2;
@@ -78,10 +96,9 @@ class Spawner {
 
         switch(spriteId) {
             case 3:
-                new EnemyProjectile(PIXI.Loader.shared.resources["assets/sprites/Bullet3.png"].texture, x, y, vx, vy, tint, damage);
-                break;
+                 return new EnemyProjectile(PIXI.Loader.shared.resources["assets/sprites/Bullet3.png"].texture, x, y, vx, vy, tint, damage);
             default:
-                new EnemyProjectile(PIXI.Loader.shared.resources["assets/sprites/Bullet2.png"].texture, x, y, vx, vy, tint, damage);
+                return new EnemyProjectile(PIXI.Loader.shared.resources["assets/sprites/Bullet2.png"].texture, x, y, vx, vy, tint, damage);
         }
     }
 }

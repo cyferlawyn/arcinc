@@ -374,6 +374,11 @@ class Player extends PIXI.Sprite {
     }
 
     hitBy(collider) {
+        if (collider.oneShots) {
+            arcInc.sceneManager.scenes["main"].reset();
+            arcInc.sceneManager.loadScene("main");
+        }
+
         // Reset out of combat timer
         this.ticksSinceLastHit = 0;
 

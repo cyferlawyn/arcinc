@@ -3,9 +3,13 @@ class AssetLoader {
         PIXI.Loader.shared
             .add('assets/sprites/enemies/CrawlerEnemy.png')
             .add('assets/sprites/enemies/BossEnemy.png')
+            .add('assets/sprites/enemies/SuperBossEnemy.png')
             .add('assets/sprites/enemies/AsteroidEnemy.png')
             .add('assets/sprites/enemies/SuicideBomberEnemy.png')
             .add('assets/sprites/enemies/IndustrialMinerEnemy.png')
+            .add('assets/sprites/enemies/LavaRockEnemy.png')
+            .add('assets/sprites/enemies/PlasmaZoneEnemy.png')
+            .add('assets/sprites/enemies/SpaceBugEnemy.png')
             .add('assets/sprites/enemies/BlockyEnemy.png')
 
             .add('assets/sprites/abilities/armorRepairer.png')

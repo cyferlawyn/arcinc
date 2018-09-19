@@ -87,7 +87,7 @@ class BossEnemy extends Enemy{
         this.bossShot2Delay += frameDelta;
         if (this.bossShot2Delay > 3) {
             this.bossShot2Delay -= 3;
-            this.cascadeAngle += 15;
+            this.cascadeAngle += 15 * frameDelta;
             let x = this.x;
             let y = this.y;
 

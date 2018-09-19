@@ -81,4 +81,10 @@ class WaveTemplateStore {
             type[Math.floor(Math.random() * type.length)],
             wave);
     };
+
+    static spawnTest() {
+        let keyFrames = [];
+        keyFrames.push(new KeyFrame(150, {"operation": "spawnBoss", "reference": "Boss", "type": "superBoss", "scalingFactor": 250, "wave": arcInc.sceneManager.scenes["main"].wave}));
+        return new WaveTemplate(keyFrames);
+    }
 }
