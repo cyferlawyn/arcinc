@@ -48,7 +48,7 @@ class MainScene extends Scene{
             this.wave = 0;
         }
 
-        this.waveTemplate = WaveTemplateStore.spawnTest(this.wave);
+        this.waveTemplate = WaveTemplateStore.template(this.wave);
         this.remainingEnemies = this.waveTemplate.keyframes.length;
         this.framesTillWave = 600;
         StatsAndFormulas.update();
@@ -225,7 +225,7 @@ class MainScene extends Scene{
         this.framesTillWave -= frameDelta;
 
         if (this.framesTillWave <= 0 || this.remainingEnemies === 0) {
-            this.waveTemplate = WaveTemplateStore.spawnTest(this.wave);
+            this.waveTemplate = WaveTemplateStore.template(this.wave);
             this.remainingEnemies = this.waveTemplate.keyframes.length;
             this.framesTillWave = 600;
             StatsAndFormulas.update();

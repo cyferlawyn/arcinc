@@ -232,4 +232,11 @@ class SuperBossEnemy extends Enemy{
         guiContainer.removeChild(this.healthBar);
         guiContainer.removeChild(this.healthText);
     }
+
+    beforeDestructor() {
+        let enemyContainer = arcInc.objectStore.get('enemyContainer');
+        for (let i = 0; i < enemyContainer.children.length; i++) {
+            enemyContainer.children[i].markedForDestruction = true;
+        }
+    }
 }

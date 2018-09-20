@@ -20,7 +20,12 @@ class Enemy extends PIXI.Sprite {
 
         let enemyContainer = arcInc.objectStore.get('enemyContainer');
         enemyContainer.removeChild(this);
+        this.beforeDestructor();
         this.destroy();
+    }
+
+    beforeDestructor() {
+
     }
 
     init() {

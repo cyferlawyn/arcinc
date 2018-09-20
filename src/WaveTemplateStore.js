@@ -24,8 +24,11 @@ class WaveTemplateStore {
             }
         }
 
-        if (bossScalingFactor > 0) {
+        if (bossScalingFactor > 0 && bossScalingFactor < 250) {
             keyFrames.push(new KeyFrame(150, {"operation": "spawnBoss", "reference": "Boss", "type": "boss", "scalingFactor": bossScalingFactor, "wave": targetWave}));
+        }
+        if (bossScalingFactor > 250) {
+            keyFrames.push(new KeyFrame(150, {"operation": "spawnBoss", "reference": "Boss", "type": "superBoss", "scalingFactor": bossScalingFactor, "wave": targetWave}));
         }
 
         if (wavesToSpawn > 1 || bossScalingFactor === 0) {

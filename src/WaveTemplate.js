@@ -32,7 +32,7 @@ class WaveTemplate
         }
 
         let asteroidRoll = Math.random() * 1000;
-        if (asteroidRoll < 15) {
+        if (asteroidRoll < 5) {
             let x = Math.random() * 2 - 0.5;
             let vx = 4 * (0.5 - x);
 
