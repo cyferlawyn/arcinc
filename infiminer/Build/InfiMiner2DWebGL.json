@@ -1,0 +1,13 @@
+{
+"companyName": "cook1eegames",
+"productName": "Infinite Miner 2D",
+"dataUrl": "InfiMiner2DWebGL.data.unityweb",
+"asmCodeUrl": "InfiMiner2DWebGL.asm.code.unityweb",
+"asmMemoryUrl": "InfiMiner2DWebGL.asm.memory.unityweb",
+"asmFrameworkUrl": "InfiMiner2DWebGL.asm.framework.unityweb",
+"TOTAL_MEMORY": 268435456,
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}
