@@ -47,7 +47,7 @@ class BlackHole extends Ability {
             } else {
                 for (let enemyIndex = enemyContainer.children.length - 1; enemyIndex >= 0; enemyIndex--) {
                     let enemy = enemyContainer.children[enemyIndex];
-                    if (enemy.visible && !enemy.isBoss) {
+                    if (!enemy.isBoss) {
                         let normVector = Utils.getNormVector(blackHole, enemy);
                         let distance = Utils.getDistance(blackHole, enemy);
                         if (distance > 75) {

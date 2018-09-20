@@ -13,6 +13,8 @@ class SuperBossEnemy extends Enemy{
         this.rotatingFast = false;
         this.rotatingSlow = false;
         this.sucking = false;
+        this.transitionA = true;
+        this.transitionB = false;
         this.plasmaZones = [];
     }
 
@@ -50,22 +52,27 @@ class SuperBossEnemy extends Enemy{
     move(frameDelta) {
         arcInc.sceneManager.scenes['main'].framesTillWave = 600;
 
-        if (this.y > Utils.getEffectiveScreenHeight()/2) {
-            this.y = Utils.getEffectiveScreenHeight()/2;
-            this.vy = 0;
-            this.vx = 0;
-
-            this.rotatingSlow = true;
+        if (this.stats.currentHealth >= this.stats.maxHealth/2) {
+            this.transitionA = true;
         }
 
-        if (!this.rotatingFast && this.stats.currentHealth < this.stats.maxHealth/2) {
-            this.y -= 2 * frameDelta;
+        if (this.stats.currentHealth < this.stats.maxHealth/2) {
+            this.transitionB = true;
         }
 
-        if (this.rotatingSlow && this.y < 100) {
-            this.y = 100;
-            this.rotatingSlow = false;
-            this.rotatingFast = true;
+        if (this.transitionA) {
+            this.transitionA = this.approach(Utils.getEffectiveScreenWidth()/2, Utils.getEffectiveScreenHeight()/2);
+            if (!this.transitionA) {
+                this.rotatingSlow = true;
+            }
+        }
+
+        if (this.transitionB) {
+            this.transitionB = this.approach(Utils.getEffectiveScreenWidth()/2, 100);
+            if (!this.transitionB) {
+                this.rotatingSlow = false;
+                this.rotatingFast = true;
+            }
         }
 
         this.rotate(frameDelta);
@@ -173,6 +180,24 @@ class SuperBossEnemy extends Enemy{
                     this.stats.damage,
                     2);
             }
+        }
+    }
+
+    approach(x, y) {
+        if (Math.abs(this.x - x) > this.stats.baseMovementSpeed || Math.abs(this.y - y) > this.stats.baseMovementSpeed) {
+            let normVector = Utils.getNormVector({"x": x, "y": y}, this);
+            this.vx = normVector.vx * this.stats.baseMovementSpeed;
+            this.vy = normVector.vy * this.stats.baseMovementSpeed;
+
+            return true;
+        } else {
+            this.x = x;
+            this.y = y;
+
+            this.vx = 0;
+            this.vy = 0;
+
+            return false;
         }
     }
 
