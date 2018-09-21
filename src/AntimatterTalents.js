@@ -72,11 +72,11 @@ class AntimatterTalents {
         this.waveCompressionStrength = 1 + arcInc.savegame.talents.waveCompressionStrength;
         this.waveCompressionThreshold = Math.min(arcInc.savegame.highestWaveEver-200, 375 + 135 * arcInc.savegame.talents.waveCompressionThreshold);
 
-        this.refinerBufferVolume = 1e15 * 10**(2 * arcInc.savegame.talents.refinerBufferVolume);
         this.refinerCycleTime = 60 * 0.95**arcInc.savegame.talents.refinerCycleTime;
-        this.refinerCycleVolume = 1e14 * 10**arcInc.savegame.talents.refinerCycleVolume;
+        this.refinerBufferVolume = 1e15 * 10**(2 * arcInc.savegame.talents.refinerBufferVolume);
+        this.refinerCycleVolume = 1e14 * 11**arcInc.savegame.talents.refinerCycleVolume;
+        this.refinerOfflineVolume = 1e17 * 11**arcInc.savegame.talents.refinerOfflineVolume;
         this.refinerPurity = 10 * 10**arcInc.savegame.talents.refinerPurity;
-        this.refinerOfflineVolume = 1e17 * 10**arcInc.savegame.talents.refinerOfflineVolume;
 
         this.acquisitionInterval = 1.1 - 0.1 * arcInc.savegame.talents.acquisitionInterval;
         this.acquisitionBulkBuy = 1 + arcInc.savegame.talents.acquisitionBulkBuy;
