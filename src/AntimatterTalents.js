@@ -54,7 +54,7 @@ class AntimatterTalents {
             "refinerPurity": {
                 "title": "Refiner Purity",
                 "cost": 1e15,
-                "growthFactor": 1000,
+                "growthFactor": 850,
                 "description": "Increases the purity of the Refined Antimatter. The purer, the more power can be harnessed.",
                 "effectTemplate": "{EFFECT} times purer"
             },
